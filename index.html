@@ -6,7 +6,7 @@
 <title>RivalCore · BeDigital</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,300&family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 /* =====================================================================
@@ -960,7 +960,7 @@ header h1{font-weight:300;letter-spacing:-.025em}
 .leg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--muted);margin-top:6px}
 .leg i{display:inline-block;width:9px;height:9px;border-radius:1px;margin-right:6px;vertical-align:-1px}
 .hb{display:grid;gap:7px}
-.hbr{display:grid;grid-template-columns:minmax(90px,170px) 1fr 92px;gap:10px;align-items:center;font-size:12.5px}
+.hbr{display:grid;grid-template-columns:minmax(90px,170px) 1fr minmax(92px,auto);gap:10px;align-items:center;font-size:12.5px}
 .hbr .bt{height:9px;background:var(--track);border-radius:1px;overflow:hidden;display:flex}
 .hbr .bt span{display:block;height:100%}
 .hbr .v{font:500 12px var(--mono);text-align:right;white-space:nowrap}
@@ -1057,6 +1057,171 @@ header h1{font-weight:300;letter-spacing:-.025em}
 .chc .cht{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px}
 .chc .cht i{width:22px;height:22px;display:grid;place-items:center;border-radius:2px;font:600 11px var(--mono);font-style:normal}
 .chc .chs{font:400 11.5px var(--mono);color:var(--muted)}
+
+/* ================================================================ RivalCore 21 · styl BeDigital (brand manual 2024, wzór: raport „BYD – analiza aukcji”)
+   czerń #0B0B0B / jasny #EEEEEE, akcenty #3B72C6 · #172D60 · #8A2F26, Archivo Expanded Light w tytułach, przyciski-pigułki, panele z poświatą */
+:root{--bg:#0b0b0b;--bg-2:#131313;--card:rgba(18,18,18,.86);--card-2:#1b1b1b;--field:#101010;--glass:rgba(11,11,11,.82);
+  --text:#eeeeee;--muted:#9b9b9b;--faint:#6b6b6b;--line:rgba(238,238,238,.11);--line-2:rgba(238,238,238,.17);--line-3:rgba(238,238,238,.32);--track:rgba(238,238,238,.07);--hover:rgba(238,238,238,.05);
+  --accent:#5b8fdb;--accent-hover:#79a5e6;--accent-soft:rgba(59,114,198,.16);--ring:rgba(91,143,219,.4);--on:#eeeeee;--on-ink:#0b0b0b;--navy:#172d60;--heat:#c2564a;
+  --bad:#d0614f;--warn:#d9a441;--good:#4fb58a;--c0:#5b8fdb;--c1:#c2564a;--bar1:#5b8fdb;--bar2:#2b4170;--kc:#5b8fdb;
+  --glow1:rgba(59,114,198,.22);--glow2:rgba(138,47,38,.24);--brandf:"Archivo",Montserrat,system-ui,sans-serif;--r-lg:14px;--r-md:10px;--r-sm:999px}
+:root[data-theme="light"],.light-scope{--bg:#eeeeee;--bg-2:#f7f7f7;--card:#ffffff;--card-2:#f3f3f3;--field:#ffffff;--glass:rgba(238,238,238,.86);
+  --text:#0b0b0b;--muted:#5c5c5c;--faint:#8c8c8c;--line:rgba(11,11,11,.10);--line-2:rgba(11,11,11,.16);--line-3:rgba(11,11,11,.32);--track:rgba(11,11,11,.06);--hover:rgba(11,11,11,.04);
+  --accent:#3b72c6;--accent-hover:#2d61b0;--accent-soft:rgba(59,114,198,.10);--ring:rgba(59,114,198,.28);--on:#0b0b0b;--on-ink:#ffffff;--heat:#8a2f26;
+  --bad:#8a2f26;--warn:#9a6a00;--good:#1a7f4b;--c0:#3b72c6;--c1:#8a2f26;--bar1:#3b72c6;--bar2:#a9c3e8;--kc:#3b72c6;
+  --glow1:rgba(59,114,198,.12);--glow2:rgba(138,47,38,.08);--r-lg:14px;--r-md:10px;--r-sm:999px}
+body{font-size:14.5px;background:radial-gradient(900px 520px at 92% -10%,var(--glow1),transparent 70%),radial-gradient(700px 420px at -10% 110%,var(--glow2),transparent 70%),var(--bg);background-attachment:fixed;min-height:100vh}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.05;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.wrap,.appbar{position:relative;z-index:1}.appbar{z-index:30}
+::selection{background:#3b72c6;color:#fff}
+@media print{body::after{display:none}body{background:#fff!important}}
+/* typografia marki */
+header h1,.ghero h1,.title-row h2,.cmphead h2,.gres-head h2,.card > h2,.card-sum,.rp-h,.rp-hero h1,.eh-t{font-family:var(--brandf);font-weight:300;font-stretch:125%;font-variation-settings:"wdth" 125,"wght" 300;text-transform:uppercase;letter-spacing:.01em}
+header h1{font-size:clamp(34px,5.6vw,62px);line-height:1.02}
+.ghero h1 b{font-weight:300;color:var(--accent)}
+.title-row h2,.cmphead h2,.gres-head h2{font-size:22px;line-height:1.2}
+.card > h2,.card-sum{font-size:17px!important}
+.card h2 .sub,.gres-head h2 .sub,.title-row h2 .sub{font-family:var(--sans);text-transform:none;letter-spacing:0;font-size:13px}
+.hero .kicker,.ghero .kicker,.kicker-s,.section-lbl,.rp-label{font:700 10.5px/1.4 var(--sans);letter-spacing:.12em;text-transform:uppercase}
+.kicker-s{color:var(--accent)}
+.blk > h3{font:700 11.5px/1.35 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--text);opacity:1}
+.blk > h3::before{width:22px;opacity:.5}
+/* karty i panele */
+.card{border-radius:18px;padding:24px 26px;background:var(--card);border-color:var(--line);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+#gResWrap{background:radial-gradient(80% 140% at 100% 0%,var(--glow1),transparent 60%),radial-gradient(60% 120% at 0% 100%,var(--glow2),transparent 60%),var(--card);border-color:color-mix(in srgb,var(--text) 26%,transparent)}
+.kpi,.mk,.mcard,.rec,.rp-sc,.gw,.probctl,.limits,.calib,.adv,.src,.gstep,.chc,.kdbox,.pcmp,.pcb,.mixt,.gtw,.gbt,.loader,.asm-b,.vst{border-radius:14px}
+input,select,textarea{border-radius:10px}
+/* przyciski-pigułki */
+button{border-radius:999px;background:var(--on);color:var(--on-ink);font:600 11.5px/1.2 var(--sans);letter-spacing:.06em;text-transform:uppercase;padding:8px 16px;min-height:34px}
+button:not(.ghost):not(.t1):not(.t2):not(.chip):hover:not(:disabled){background:var(--on);opacity:.86}
+button.ghost{border-color:var(--line-3);color:var(--text)}
+button.ghost:hover:not(:disabled){background:var(--on);color:var(--on-ink);border-color:var(--on)}
+.mini,button.mini{min-height:28px;padding:5px 12px;font-size:10.5px}
+#go{padding:10px 22px;font-size:12px}
+.gstep,.chc,.t1,.bchip,.kdx,.accX,.compX,.blkpng,.candpair button,.cands button,.whyi,.aichk,.disc-row,.chip,.segtog button,.themetog{text-transform:none;letter-spacing:0}
+.gstep,.chc{font:inherit}
+.chip{border-radius:999px}
+/* zakładki jak przełącznik segmentowy */
+.tabs1{gap:6px;border-bottom:0;padding-bottom:6px}
+.t1{border-radius:999px;padding:7px 14px;font-size:12.5px;border-color:var(--line-2)}
+.t1.on{background:var(--on);color:var(--on-ink);border-color:var(--on)}
+.t1.on .t1i{background:color-mix(in srgb,var(--on-ink) 14%,transparent);color:var(--on-ink)}
+.tabs2{gap:4px;padding:9px 22px;margin-top:10px}
+.t2{border-radius:999px;padding:7px 13px;border:1px solid transparent;margin:0;font:600 10.5px/1.2 var(--sans);letter-spacing:.07em;text-transform:uppercase}
+.t2:hover{border-color:var(--line-2)}
+.t2.on{background:var(--on);color:var(--on-ink);border-bottom-color:transparent}
+/* liczby: duże, czytelne, Montserrat z cyframi tabelarycznymi */
+.kpi .v,.mk b,.cost,.mcg b,.pxv b,.rp-sc-g b,.bk .bv,.rp-cover-kpis .v{font-family:var(--sans)!important;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.kpi{padding:16px 18px;background:var(--bg-2)}
+.kpi .v{font-size:26px;line-height:1.1}
+.kpi .l{font-size:10px;font-weight:700;letter-spacing:.09em}
+.mk{background:var(--bg-2)}
+.mk b{font-size:21px}
+.mk span{font-size:11.5px}
+.cost{font-size:21px}
+.mcg b{font-size:17px}
+/* wniosek: pasek z lewej (lead box) */
+.see{border:0;border-left:3px solid var(--accent);border-radius:0 14px 14px 0;background:var(--accent-soft);padding:14px 18px;font-size:14.5px;line-height:1.6;font-weight:500}
+.see > span{display:none}
+.see ul.lines li{font-size:14px}
+.gbox{border-radius:0 12px 12px 0;font-size:13.5px}
+/* karty z dużą liczbą (wzór: karty wniosków BYD) */
+.bigk{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:10px}
+.bk{border:1px solid var(--line);border-radius:14px;padding:16px 18px;background:var(--bg-2);display:grid;gap:6px;align-content:start}
+.bk .bl{font:700 10px/1.4 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.bk .bv{font-size:24px;line-height:1.1}
+.bk .bv small{font-size:13px;font-weight:500;color:var(--muted);margin-left:2px}
+.bk .bs{font-size:12px;color:var(--muted);line-height:1.45}
+.bk .bs .dl{margin-left:0}
+/* Ty vs konkurencja */
+.vst{display:grid;border:1px solid var(--line);overflow:hidden}
+.vst-h,.vst-r{display:grid;grid-template-columns:minmax(160px,1.6fr) 1fr 1fr 90px;gap:12px;padding:9px 16px;align-items:center}
+.vst-h{background:var(--bg-2);font:700 10px/1.3 var(--sans);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.vst-r{border-top:1px solid var(--line);font-size:13.5px}
+.vst-r b{font-variant-numeric:tabular-nums;font-weight:700}
+.vst-r > span:nth-child(3){color:var(--muted);font-variant-numeric:tabular-nums}
+@media (max-width:640px){.vst-h{display:none}.vst-r{grid-template-columns:1fr 1fr}.vst-r > span:first-child{grid-column:1/-1;font-weight:600}}
+/* kanały */
+.chsum{gap:12px}
+.chc{padding:16px 18px;background:var(--bg-2)}
+.chc .cht{font-size:15px}
+.chc .cht i{border-radius:999px;width:24px;height:24px}
+.chc.on{background:var(--accent-soft);border-color:var(--accent)}
+.chc.dis{cursor:not-allowed}
+.chme{margin-left:auto;font:normal 600 10px/1.3 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 50%,transparent);border-radius:999px;padding:2px 8px;white-space:nowrap}
+/* menu eksportu */
+#gResWrap > .title-row{align-items:center}
+.expm{position:relative}
+.expm > summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line-3);border-radius:999px;padding:7px 14px;font:600 11px/1.2 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--text);margin:0}
+.expm > summary::before{display:none}
+.expm > summary::-webkit-details-marker{display:none}
+.expm[open] > summary,.expm > summary:hover{background:var(--on);color:var(--on-ink);border-color:var(--on)}
+.expm-pop{position:absolute;right:0;top:calc(100% + 6px);z-index:20;min-width:250px;display:grid;gap:2px;padding:8px;border:1px solid var(--line-2);border-radius:14px;background:var(--card-2);box-shadow:0 14px 40px rgba(0,0,0,.35)}
+.expm-h{font:700 9.5px/1.4 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:4px 10px 6px}
+.expm-pop button.expi{justify-content:flex-start;background:transparent;color:var(--text);border:0;border-radius:10px;text-transform:none;letter-spacing:0;font:500 13px/1.3 var(--sans);padding:8px 10px;min-height:0;width:100%}
+.expm-pop button.expi:hover:not(:disabled){background:var(--hover);opacity:1}
+.expm-pop button.expi.hidden{display:none}
+.expm:not(:has(button.expi:not(.hidden))){display:none}
+#clear.expi{color:var(--bad)}
+/* lupa detektywa: kompaktowo nad wynikami */
+.marksbar{padding:14px 22px}
+.marksbar[hidden]{display:none!important}
+.mchks{grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:6px;margin-top:10px}
+.mchk{padding:8px 12px;border-radius:999px;align-items:center}
+.mchk small{display:none}
+.mchk i{margin-top:0}
+.mbhint{margin-top:8px;font-size:12px}
+/* pasek aplikacji */
+.appbar{background:var(--glass);border-bottom-color:var(--line)}
+.themetog{min-height:28px;padding:5px 12px;font:600 11px/1.2 var(--sans);background:transparent;color:var(--muted);border:1px solid var(--line-2);white-space:nowrap}
+.themetog:hover:not(:disabled){background:var(--on)!important;color:var(--on-ink);opacity:1!important}
+.rcnav a{font:600 11px var(--sans);letter-spacing:.07em;text-transform:uppercase}
+.rcnav a .src{border-radius:999px;padding:1px 6px}
+/* wyróżnienie mark */
+mark{background:var(--text);color:var(--bg);padding:0 .25em;border-radius:2px}
+/* tabele */
+.gt{font-size:13px}
+.gt th{font:700 10px var(--sans);letter-spacing:.08em}
+.gt tr.me td{background:var(--accent-soft)}
+.gt td small.sub{font-size:11px}
+.recs{gap:12px}
+.rec{background:var(--bg-2);border-left-width:3px}
+.rprio{border-radius:999px;padding:2px 9px}
+.gempty{border-radius:14px}
+.idxchip{font-family:var(--sans);font-weight:700}
+.three{gap:8px 24px}
+.gstep:hover{background:var(--hover)!important}.chc:hover{background:var(--bg-2)!important}.chc.on:hover{background:var(--accent-soft)!important}.bchip:hover,.segtog button:hover{background:var(--hover)!important;opacity:1!important}
+.dl{font-family:var(--sans)!important;font-weight:700;border-radius:999px;padding:1px 7px;font-size:10.5px}
+.gt td:first-child{white-space:nowrap}
+
+/* hero bez ilustracji: jak nagłówek raportu BeDigital */
+.hero{display:grid;grid-template-columns:1fr;gap:0;padding:60px 0 36px;border-bottom:1px solid var(--line)}
+.hero-main{display:grid;gap:14px}
+header h1{margin:0}
+header h1::before{display:none}
+.hero-main p{margin:0;font-size:clamp(16px,2vw,20px);font-weight:600;line-height:1.4;color:var(--text);max-width:58ch}
+.hero-meta{margin-top:6px}
+.hero-meta span{font:500 12px/1 var(--sans);color:var(--muted);padding:7px 12px;border:1px solid var(--line-2);border-radius:999px}
+
+/* napisy w pigułkach optycznie na środku (wersaliki Montserrat siedzą wysoko) */
+@supports (text-box: trim-both cap alphabetic){
+  button:not(.gstep):not(.chc):not(.whyi),.expm > summary,.t2,.rprio,.chme,.hero-meta span,.dl,.t1i,.kdchip,.bchip,.chip,.rcnav a{text-box:trim-both cap alphabetic}
+}
+@supports not (text-box: trim-both cap alphabetic){
+  button:not(.gstep):not(.chc):not(.whyi):not(.expi){padding-top:9.5px;padding-bottom:6.5px}
+  .mini,button.mini{padding-top:6.5px!important;padding-bottom:3.5px!important}
+  .expm > summary,.t2{padding-top:8.5px;padding-bottom:5.5px}
+}
+
+/* jeden krój jak w raportach BeDigital: Montserrat z cyframi tabelarycznymi zamiast monospace (kod SQL zostaje w monospace) */
+:root,:root[data-theme="light"],.light-scope{--mono:"Montserrat",system-ui,sans-serif}
+body{font-variant-numeric:tabular-nums}
+.gcode,code,kbd,#token{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace!important}
+.chc .cht{flex-wrap:wrap;row-gap:6px}
+/* PDF: zostaje papierowy, jasny */
+.rp .card,.rp .kpi,.rp .mk{-webkit-backdrop-filter:none;backdrop-filter:none}
+.rp .see{font-size:9pt;font-weight:400}
+.rp .kpi .v{font-size:13.5pt}
 </style>
 </head>
 <body>
@@ -1083,111 +1248,6 @@ header h1{font-weight:300;letter-spacing:-.025em}
       <p>Wpisz markę, a RivalCore sprawdzi, ile reklam puszcza, do kogo trafia, co komunikuje, które kreacje działają najdłużej i ile mniej więcej na to wydaje. Konkurencję też prześwietli.</p>
       <div class="hero-meta"><span>Meta Ad Library API</span><span>eksport PDF · XLSX · MD</span><span>bez serwera</span></div>
     </div>
-    <figure class="hero-fig bd-orb" aria-hidden="false">
-    <svg class="detective" viewBox="0 0 270 230" role="img" aria-label="Uśmiechnięty analityk BeDigital w bluzie z logo i czapce z daszkiem, z kotem na ręce i telefonem">
-      <circle cx="132" cy="128" r="98" fill="var(--bg)" fill-opacity="0"/>
-      <!-- unoszące się karty: wykres, reklama, polubienie -->
-      <g class="float1">
-        <rect x="200" y="14" width="56" height="42" rx="6" fill="var(--card)" stroke="var(--line-2)" stroke-width="2"/>
-        <rect x="210" y="37" width="8" height="11" rx="1.5" fill="var(--c1)"/>
-        <rect x="222" y="29" width="8" height="19" rx="1.5" fill="var(--c2)"/>
-        <rect x="234" y="21" width="8" height="27" rx="1.5" fill="var(--accent)"/>
-      </g>
-      <g class="float2">
-        <rect x="12" y="96" width="44" height="26" rx="5" fill="var(--card)" stroke="var(--line-2)" stroke-width="2"/>
-        <text x="34" y="114" text-anchor="middle" font-family="Montserrat,system-ui,sans-serif" font-weight="800" font-size="13" fill="var(--c1)">AD</text>
-      </g>
-      <g class="float3">
-        <rect x="20" y="34" width="34" height="26" rx="5" fill="var(--card)" stroke="var(--line-2)" stroke-width="2"/>
-        <path d="M37 54 l-7.5 -7 a4.3 4.3 0 0 1 7.5 -4.6 a4.3 4.3 0 0 1 7.5 4.6 z" fill="var(--accent)"/>
-      </g>
-
-      <g class="dt-body">
-        <!-- bluza z kapturem -->
-        <path d="M62 230 L72 168 Q132 140 192 168 L202 230 Z" fill="#34343C" stroke="#4A4A54" stroke-width="1.5"/>
-        <path d="M60 230 L66 196" stroke="#40404A" stroke-width="2"/>
-        <rect x="123" y="128" width="18" height="20" rx="4" fill="#e9b788"/>
-        <path d="M94 156 Q132 122 170 156 Q162 166 151 162 Q132 146 113 162 Q102 166 94 156 Z" fill="#44444D"/>
-        <path d="M113 162 Q132 150 151 162" stroke="#26262C" stroke-width="2" fill="none"/>
-        <!-- ściągacze kaptura -->
-        <path d="M125 161 L123 188 M139 161 L141 188" stroke="#E8E8EA" stroke-width="2.2" stroke-linecap="round"/>
-        <rect x="120.5" y="187" width="5" height="7" rx="1.5" fill="#BDBDC2"/><rect x="138.5" y="187" width="5" height="7" rx="1.5" fill="#BDBDC2"/>
-        <!-- kieszeń kangurka -->
-        <path d="M104 230 L110 210 Q132 204 154 210 L160 230" fill="#3B3B44" stroke="#26262C" stroke-width="1.5"/>
-        <!-- logo BeDigital na piersi -->
-        <use href="#bdLogo" x="149" y="172" width="38" height="14" style="color:#F1F1F1"/>
-
-        <!-- ręka z kotem (lewa strona obrazka) -->
-        <path d="M88 162 Q58 178 64 208 L118 212 L118 198 L86 194 Q82 184 96 172 Z" fill="#34343C"/>
-        <path d="M112 198 L118 198 L118 212 L112 212 Z" fill="#44444D"/>
-        <g class="dt-cat">
-          <path class="dt-tail" d="M122 196 Q146 194 144 172 Q143 162 136 164" fill="none" stroke="#e39a3b" stroke-width="7" stroke-linecap="round"/>
-          <ellipse cx="100" cy="194" rx="27" ry="16" fill="#f0a94b"/>
-          <path d="M84 186 q4 8 0 16 M96 182 q4 10 0 22 M108 183 q4 9 0 20" stroke="#d9862c" stroke-width="3" fill="none" stroke-linecap="round"/>
-          <g class="dt-cathead">
-            <path d="M66 158 L70 140 L82 152 Z M92 152 L102 140 L104 160 Z" fill="#f0a94b"/>
-            <path d="M70 147 L72 143 L78 150 Z M97 149 L101 144 L101 154 Z" fill="#f7c9a0"/>
-            <circle cx="86" cy="166" r="18" fill="#f0a94b"/>
-            <path d="M80 151 q3 5 0 9 M88 150 q2 5 0 9" stroke="#d9862c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-            <g class="dt-cateye"><ellipse cx="79" cy="165" rx="3.6" ry="4.4" fill="#2f9e44"/><ellipse cx="79" cy="165" rx="1.3" ry="3.6" fill="#1b1f27"/></g>
-            <g class="dt-cateye"><ellipse cx="94" cy="165" rx="3.6" ry="4.4" fill="#2f9e44"/><ellipse cx="94" cy="165" rx="1.3" ry="3.6" fill="#1b1f27"/></g>
-            <path d="M84 171 L88 171 L86 174 Z" fill="#e8708a"/>
-            <path d="M86 174 q-3 4 -6 2 M86 174 q3 4 6 2" stroke="#7a3e1d" stroke-width="1.4" fill="none" stroke-linecap="round"/>
-            <path d="M74 171 L60 168 M74 174 L61 177 M98 171 L112 168 M98 174 L111 177" stroke="#7a3e1d" stroke-width="1" stroke-linecap="round" opacity=".7"/>
-          </g>
-          <ellipse cx="116" cy="204" rx="8" ry="6" fill="#f2c79d"/>
-        </g>
-
-        <!-- głowa -->
-        <g class="dt-head">
-          <circle cx="132" cy="104" r="31" fill="#f2c79d"/>
-          <circle cx="101" cy="107" r="6" fill="#e9b788"/><circle cx="163" cy="107" r="6" fill="#e9b788"/>
-          <!-- włosy spod czapki -->
-          <path d="M103 86 Q101 96 104 103 L108 101 Q106 94 108 87 Z M161 86 Q163 96 160 103 L156 101 Q158 94 156 87 Z" fill="#6b4b2a"/>
-          <!-- oko mrugające i oko otwarte -->
-          <path d="M113 101 Q119 106 125 101" stroke="#2b2f38" stroke-width="3" fill="none" stroke-linecap="round"/>
-          <ellipse cx="144" cy="100" rx="6" ry="6.6" fill="#fff"/><circle cx="145" cy="101" r="3.2" fill="#2b2f38"/><circle cx="146.3" cy="99.6" r="1.1" fill="#fff"/>
-          <path d="M111 93 L126 92" stroke="#6b4b2a" stroke-width="3.2" stroke-linecap="round"/>
-          <path class="dt-brow" d="M136 90 Q144 85 153 89" stroke="#6b4b2a" stroke-width="3.2" fill="none" stroke-linecap="round"/>
-          <circle cx="133" cy="110" r="4.6" fill="#e6a979"/>
-          <circle cx="112" cy="116" r="4" fill="#f0a3a0" opacity=".45"/><circle cx="155" cy="116" r="4" fill="#f0a3a0" opacity=".45"/>
-          <!-- szeroki uśmiech -->
-          <path d="M117 119 Q133 138 150 118 Q133 125 117 119 Z" fill="#7a2e2e"/>
-          <path d="M119 120 Q133 126 148 119 L147 123 Q133 129 120 124 Z" fill="#fff"/>
-          <g class="dt-spark">
-            <path d="M141 115 L142.6 120.4 L148 122 L142.6 123.6 L141 129 L139.4 123.6 L134 122 L139.4 120.4 Z" fill="#fff"/>
-            <path d="M141 117.5 L142 121 L145.5 122 L142 123 L141 126.5 L140 123 L136.5 122 L140 121 Z" fill="#ffe066"/>
-          </g>
-          <!-- czapka z daszkiem z sygnetem BeDigital -->
-          <g class="dt-hat">
-            <path d="M100 87 Q99 52 132 49 Q166 52 165 87 Z" fill="#1B1B1F"/>
-            <path d="M132 50 L132 86 M116 54 Q111 70 112 86 M148 54 Q153 70 152 86" stroke="#2C2C32" stroke-width="1.6" fill="none"/>
-            <circle cx="132" cy="50" r="3.2" fill="#2C2C32"/>
-            <path d="M139 61 H125 V78 H139 M139 61 V64.5 M139 78 V74.5" stroke="#F1F1F1" stroke-width="2.4" fill="none" stroke-linecap="square"/>
-            <path d="M100 84 Q132 92 165 84 L165 88 Q132 96 100 88 Z" fill="#111114"/>
-            <path d="M146 86 Q178 80 198 90 Q188 98 150 95 Z" fill="#141417"/>
-            <path d="M150 95 Q188 98 198 90" stroke="var(--accent)" stroke-width="1.6" fill="none"/>
-          </g>
-        </g>
-
-        <!-- ręka z telefonem (prawa strona obrazka) -->
-        <path d="M176 160 Q204 166 212 136 L200 130 Q194 150 172 150 Z" fill="#34343C"/>
-        <g class="dt-lens">
-          <g transform="rotate(14 222 100)">
-            <rect x="207" y="66" width="32" height="56" rx="6" fill="#141417" stroke="#3A3A42" stroke-width="2"/>
-            <rect x="211" y="72" width="24" height="44" rx="2.5" fill="var(--bd-deep,#0B1E3D)"/>
-            <rect x="215" y="98" width="4" height="12" rx="1" fill="var(--c1)"/>
-            <rect x="221" y="91" width="4" height="19" rx="1" fill="var(--c2)"/>
-            <rect x="227" y="82" width="4" height="28" rx="1" fill="var(--accent)"/>
-          </g>
-          <circle cx="206" cy="132" r="8.5" fill="#f2c79d"/>
-        </g>
-      </g>
-      <!-- iskierki dookoła -->
-      <g class="dt-twinkle"><path d="M40 146 l2 6 l6 2 l-6 2 l-2 6 l-2 -6 l-6 -2 l6 -2 z" fill="var(--c5)"/></g>
-      <g class="dt-twinkle dt-tw2"><path d="M196 196 l1.6 4.4 l4.4 1.6 l-4.4 1.6 l-1.6 4.4 l-1.6 -4.4 l-4.4 -1.6 l4.4 -1.6 z" fill="var(--c2)"/></g>
-    </svg>
-    </figure>
   </header>
   <div class="card marksbar" id="marksBar">
     <div class="mbt"><b><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Lupa detektywa</b><span>oznacz na wynikach (na ekranie i w PDF), skąd pochodzi każda informacja:</span></div>
@@ -1384,7 +1444,7 @@ header h1{font-weight:300;letter-spacing:-.025em}
   </div>
 
   <div id="filtersCard" class="card hidden">
-    <h2><span class="sn">03</span>Filtry wyników <span class="sub">— przeliczają się od razu, bez ponownego pobierania</span></h2>
+    <h2><span class="sn">04</span>Filtry wyników Meta <span class="sub">— przeliczają się od razu, bez ponownego pobierania</span></h2>
     <div class="toolbar">
       <div><label for="fDays">Okres emisji</label>
         <select id="fDays"><option value="0">cała biblioteka</option><option value="30">ostatnie 30 dni</option><option value="90">ostatnie 90 dni</option><option value="180">ostatnie 180 dni</option><option value="365">ostatnie 365 dni</option></select></div>
@@ -1454,7 +1514,7 @@ header h1{font-weight:300;letter-spacing:-.025em}
           <div class="row" style="margin-top:10px"><button type="button" class="mini" id="gConnect">Połącz z Google</button><button type="button" class="ghost mini" id="gHowBtn">Skąd to wziąć?</button><span class="hint" style="margin:0">albo <a href="#" id="gUseFile">pracuj na pliku z BigQuery bez logowania</a></span></div>
           <ol class="gsteps mini-steps" id="gHowSteps" hidden>
             <li><span>Utwórz projekt na <a href="https://console.cloud.google.com/projectcreate" target="_blank" rel="noopener">console.cloud.google.com</a> i skopiuj jego <b>ID</b>.</span></li>
-            <li><span>Włącz <a href="https://console.cloud.google.com/apis/library/bigquery.googleapis.com" target="_blank" rel="noopener">BigQuery API</a> i <a href="https://console.cloud.google.com/apis/library/sheets.googleapis.com" target="_blank" rel="noopener">Sheets API</a>.</span></li>
+            <li><span>Włącz <a href="https://console.cloud.google.com/apis/library/bigquery.googleapis.com" target="_blank" rel="noopener">BigQuery API</a>.</span></li>
             <li><span>Ekran zgody: <a href="https://console.cloud.google.com/auth/branding" target="_blank" rel="noopener">Branding</a> (Zewnętrzny), w <a href="https://console.cloud.google.com/auth/audience" target="_blank" rel="noopener">Odbiorcy</a> dodaj swój e-mail jako użytkownika testowego.</span></li>
             <li><span><a href="https://console.cloud.google.com/auth/clients" target="_blank" rel="noopener">Klienci → Utwórz klienta</a> → „Aplikacja internetowa”, źródło JavaScript: <code id="gOriginHint">https://biedronm.github.io</code>. Skopiuj ID klienta.</span></li>
           </ol>
@@ -1492,31 +1552,12 @@ header h1{font-weight:300;letter-spacing:-.025em}
     <div class="gstatus" id="gStatus"></div>
   </div>
   <div id="gResWrap" class="card" hidden>
-    <div class="title-row"><h2 style="margin:0"><span class="sn">03</span>Wyniki według kanału</h2></div>
+    <div class="title-row"><h2 style="margin:0"><span class="sn">03</span>Wyniki</h2></div>
+    <div class="hint" style="margin-top:4px">Wybierz kanał: każdy ma własne zakładki marek i porównania. „Meta + Google” zestawia budżet i udział w głosie w obu kanałach.</div>
     <div class="tabs1" id="chTabs" style="margin-top:14px"></div>
     <div id="gResults"></div>
     <div id="rzOut" hidden></div>
   </div>
-</div>
-
-<!-- ================================================================ Google Ads: wyniki kont -->
-<div class="wrap rcmod" id="modWyniki" hidden>
-  <header class="ghero">
-    <div class="kicker">Wyniki · Google Ads · konta klientów</div>
-    <h1>Wyniki kont <b>Google Ads</b></h1>
-    <p>Dane z naszych kont przez skrypt Google Ads (bez developer tokena i bez serwera): skrypt co dzień zapisuje wyniki do arkusza Google, a RivalCore je czyta i liczy KPI, porównania, alerty oraz frazy do wykluczenia.</p>
-  </header>
-  <div class="card">
-    <div class="title-row"><h2 style="margin:0"><span class="sn">01</span>Źródło danych</h2><div class="row"><button class="ghost mini" id="wScript" type="button">Skrypt Google Ads</button></div></div>
-    <div class="grid" style="margin-top:16px">
-      <div><label for="wSheet">Arkusz Google ze skryptu (link albo ID)</label><input id="wSheet" placeholder="https://docs.google.com/spreadsheets/d/…"><div class="hint">Wymaga połączenia z Google (zakładka Połączenia).</div></div>
-      <div><label>albo plik</label><div class="row"><button class="ghost" id="wPick" type="button">Wczytaj CSV / XLSX</button><input type="file" id="wFile" accept=".csv,.xlsx,.xls" multiple class="hidden"><button class="ghost" id="wDemo" type="button">Dane przykładowe</button></div><div class="hint">CSV z zakładek <code>RC_dane</code> i (opcjonalnie) <code>RC_frazy</code> albo cały arkusz jako XLSX.</div></div>
-    </div>
-    <div class="row" style="margin-top:14px"><button id="wLoad" type="button">Wczytaj z arkusza</button></div>
-    <pre class="gcode" id="wScriptCode" hidden></pre>
-    <div class="gstatus" id="wStatus"></div>
-  </div>
-  <div id="wOut"></div>
 </div>
 
 <!-- ================================================================ Połączenia i instrukcja -->
@@ -1524,7 +1565,7 @@ header h1{font-weight:300;letter-spacing:-.025em}
   <header class="ghero">
     <div class="kicker">Połączenia · klucze zostają w tej przeglądarce</div>
     <h1>Połączenia i <b>instrukcja</b></h1>
-    <p>Meta działa na tokenie z Biblioteki Reklam. Google działa na logowaniu przez Google (OAuth) do Twojego projektu Google Cloud: BigQuery dla konkurencji i Arkusze Google dla wyników kont.</p>
+    <p>Meta działa na tokenie z Biblioteki Reklam. Google działa na logowaniu przez Google (OAuth) do Twojego projektu Google Cloud i publicznym zbiorze reklam Google w BigQuery.</p>
   </header>
   <div class="card">
     <h2><span class="sn">01</span>Google</h2>
@@ -1532,7 +1573,7 @@ header h1{font-weight:300;letter-spacing:-.025em}
       <div><label for="cProject">ID projektu Google Cloud</label><input id="cProject" placeholder="np. rivalcore-472118" autocomplete="off"><div class="hint">Projekt, w którym liczą się zapytania BigQuery (tryb piaskownicy wystarczy).</div></div>
       <div><label for="cClient">ID klienta OAuth (aplikacja internetowa)</label><input id="cClient" placeholder="123456789-abc….apps.googleusercontent.com" autocomplete="off"><div class="hint">To nie jest hasło. Sekretu klienta nie wpisuj nigdzie.</div></div>
     </div>
-    <div class="row" style="margin-top:14px"><button id="cConnect" type="button">Połącz z Google</button><button class="ghost" id="cTestBq" type="button">Test BigQuery</button><button class="ghost" id="cTestSheet" type="button">Test arkusza</button><button class="ghost" id="cLogout" type="button">Rozłącz</button><span class="st" id="cState">niepołączono</span></div>
+    <div class="row" style="margin-top:14px"><button id="cConnect" type="button">Połącz z Google</button><button class="ghost" id="cTestBq" type="button">Test BigQuery</button><button class="ghost" id="cLogout" type="button">Rozłącz</button><span class="st" id="cState">niepołączono</span></div>
     <div class="gstatus" id="cStatus"></div>
     <div class="hint">Adres, pod którym otwierasz RivalCore (teraz: <code id="cOrigin"></code>), musi być dodany w kliencie OAuth jako „Autoryzowane źródło JavaScript”. Plik otwarty z dysku (<code>file://</code>) nie zaloguje się do Google; użyj GitHub Pages albo lokalnego serwera.</div>
   </div>
@@ -1542,26 +1583,16 @@ header h1{font-weight:300;letter-spacing:-.025em}
   </div>
   <div class="card" id="cGuide">
     <h2><span class="sn">03</span>Instrukcja: Google krok po kroku</h2>
-    <h3>A. Projekt i BigQuery (konkurencja w Google) · ok. 15 minut</h3>
+    <h3>Projekt i BigQuery · ok. 15 minut</h3>
     <ol class="gsteps">
       <li><span>Wejdź na <a href="https://console.cloud.google.com/projectcreate" target="_blank" rel="noopener">console.cloud.google.com/projectcreate</a> i utwórz projekt (albo użyj istniejącego). Skopiuj jego <b>ID projektu</b> (nie nazwę) i wpisz wyżej.</span></li>
-      <li><span>Włącz API: <a href="https://console.cloud.google.com/apis/library/bigquery.googleapis.com" target="_blank" rel="noopener">BigQuery API</a> oraz <a href="https://console.cloud.google.com/apis/library/sheets.googleapis.com" target="_blank" rel="noopener">Google Sheets API</a>.</span></li>
+      <li><span>Włącz API: <a href="https://console.cloud.google.com/apis/library/bigquery.googleapis.com" target="_blank" rel="noopener">BigQuery API</a>.</span></li>
       <li><span>Bez karty działa <b>tryb piaskownicy BigQuery</b>: 1 TB zapytań miesięcznie za darmo, czyli ok. 25 analiz Google. Więcej po podpięciu płatności (ok. 6,25 USD za każdy kolejny TB).</span></li>
       <li><span>Ekran zgody: <a href="https://console.cloud.google.com/auth/branding" target="_blank" rel="noopener">Google Auth Platform → Branding</a>. Nazwa „RivalCore”, e-mail pomocy, odbiorcy <b>Zewnętrzny</b>. W „Odbiorcy” dodaj konta zespołu jako <b>użytkowników testowych</b>.</span></li>
       <li><span>Klient OAuth: <a href="https://console.cloud.google.com/auth/clients" target="_blank" rel="noopener">Klienci → Utwórz klienta</a>, typ <b>Aplikacja internetowa</b>. „Autoryzowane źródła JavaScript”: <code>https://biedronm.github.io</code> i <code>http://localhost:8000</code>. Skopiuj <b>ID klienta</b> i wpisz wyżej.</span></li>
       <li><span>Kliknij <b>Połącz z Google</b> i zaakceptuj uprawnienia. Przy ekranie „aplikacja niezweryfikowana” kliknij „Kontynuuj”. Potem <b>Test BigQuery</b>.</span></li>
     </ol>
-    <h3>B. Skrypt Google Ads (wyniki kont klientów) · ok. 10 minut</h3>
-    <ol class="gsteps">
-      <li><span>Utwórz pusty arkusz Google i skopiuj jego link.</span></li>
-      <li><span>W Google Ads zaloguj się na <b>konto menedżera (MCC)</b> → Narzędzia → Działania zbiorcze → <b>Skrypty</b> → „+”.</span></li>
-      <li><span>Wklej skrypt z przycisku „Skrypt Google Ads” (zakładka Wyniki kont) i podmień <code>SHEET_URL</code>. Opcjonalnie <code>ACCOUNT_LABEL</code>: tylko konta z tą etykietą.</span></li>
-      <li><span><b>Autoryzuj</b> i <b>Uruchom</b>. Powstaną zakładki <code>RC_dane</code>, <code>RC_frazy</code> i <code>RC_info</code>.</span></li>
-      <li><span>Ustaw harmonogram „Codziennie”, np. o 6:00.</span></li>
-      <li><span>W RivalCore → Wyniki kont wklej link do arkusza i kliknij „Wczytaj z arkusza”.</span></li>
-    </ol>
-    <h3>C. Dlaczego nie bezpośrednio Google Ads API?</h3>
-    <div class="gbox">Google Ads API wymaga zatwierdzonego <b>developer tokena</b> i nie obsługuje zapytań prosto z przeglądarki (brak CORS), więc potrzebny byłby serwer. Skrypt Google Ads daje te same dane bez tokena i bez serwera.</div>
+
   </div>
 </div>
 
@@ -5432,7 +5463,7 @@ regionChanged();
 // ================================================================ RivalCore 20 · moduły Meta + Google
 (() => {
 "use strict";
-const RCV = "20.0";
+const RCV = "21.0";
 const E = id => document.getElementById(id);
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const NF = new Intl.NumberFormat("pl-PL", {maximumFractionDigits: 0});
@@ -5521,7 +5552,7 @@ document.addEventListener("click", ev => {
   const th = ev.target.closest(".gt th[data-sort]"); if (!th) return;
   const id = th.closest("table").dataset.tid; const st = sortableTable.st[id] || (sortableTable.st[id] = {k: null, d: -1});
   if (st.k === th.dataset.sort) st.d = -st.d; else { st.k = th.dataset.sort; st.d = -1; }
-  if (id.startsWith("g")) G.render(); else if (id.startsWith("w")) W.render(); else if (id.startsWith("r")) RZ.render();
+  if (id.startsWith("g")) G.render(); else if (id.startsWith("r")) RZ.render();
 });
 
 // ---------------------------------------------------------------- CSV
@@ -5550,7 +5581,7 @@ const toObjs = rows => { if (!rows.length) return []; const h = rows[0].map(x =>
 // ---------------------------------------------------------------- Google: logowanie (OAuth w przeglądarce)
 const GA = {
   token: null, exp: 0, client: null, pending: [],
-  SCOPES: "https://www.googleapis.com/auth/bigquery https://www.googleapis.com/auth/spreadsheets.readonly",
+  SCOPES: "https://www.googleapis.com/auth/bigquery",
   cfg(){ return {project: (E("cProject").value || "").trim(), client: (E("cClient").value || "").trim()}; },
   valid(){ return this.token && Date.now() < this.exp - 60e3; },
   loadGis(){ return new Promise((res, rej) => {
@@ -5586,10 +5617,10 @@ const GA = {
 };
 function explainGoogle(code, m){
   const low = String(m).toLowerCase();
-  if (low.includes("has not been used") || low.includes("is disabled")) return `Google: API nie jest włączone w projekcie. Włącz BigQuery API i Google Sheets API (instrukcja, krok A2). Szczegóły: ${m}`;
+  if (low.includes("has not been used") || low.includes("is disabled")) return `Google: API nie jest włączone w projekcie. Włącz BigQuery API (instrukcja, krok 2). Szczegóły: ${m}`;
   if (code === 403 && low.includes("bigquery.jobs.create")) return `Google: brak uprawnienia do uruchamiania zapytań w projekcie. Sprawdź ID projektu albo nadaj sobie rolę „Użytkownik zadań BigQuery”. Szczegóły: ${m}`;
   if (low.includes("quota") || low.includes("exceeded")) return `Google: przekroczony limit BigQuery (w trybie piaskownicy 1 TB miesięcznie). Szczegóły: ${m}`;
-  if (code === 404 && low.includes("requested entity")) return `Google: nie znaleziono arkusza albo projektu. Sprawdź link/ID i czy masz do niego dostęp. Szczegóły: ${m}`;
+  if (code === 404 && low.includes("requested entity")) return `Google: nie znaleziono projektu. Sprawdź ID projektu i czy masz do niego dostęp. Szczegóły: ${m}`;
   if (code === 403) return `Google: brak dostępu (403). ${m}`;
   return `Google (${code}): ${m}`;
 }
@@ -5731,9 +5762,9 @@ GROUP BY id ORDER BY n DESC LIMIT 12`, {region, re: reEsc(q.toLowerCase())}, m =
     catch(e){ status("gStatus", e.message, true); }
   },
   sqlText(){
-    this.sync(); const ids = this.brands.flatMap(b => this.ids(b)); const {since, until} = this.period(); const region = this.region();
+    this.sync(); const ids = this.brands.flatMap(b => this.ids(b)); const per = this.period(), since = gFetchSince(per), until = per.until; const region = this.region();
     return `-- RivalCore ${RCV} · reklamy Google dla wybranych reklamodawców (${region}, od ${since})
--- Wszystkie kraje EOG (RivalCore wybiera kraj sam). Uruchom w konsoli BigQuery, potem: Zapisz wyniki → CSV (plik lokalny) i wczytaj w RivalCore.
+-- Wszystkie kraje EOG (RivalCore wybiera kraj sam). Zakres obejmuje też okres porównawczy (tyle samo dni przed wybranym okresem). Uruchom w konsoli BigQuery, potem: Zapisz wyniki → CSV (plik lokalny) i wczytaj w RivalCore.
 SELECT c.advertiser_id, c.advertiser_disclosed_name, c.advertiser_legal_name, c.advertiser_location,
   c.advertiser_verification_status, c.ad_funded_by, c.creative_id, c.creative_page_url, c.ad_format_type, c.topic,
   rs.region_code, rs.first_shown, rs.last_shown, rs.times_shown_lower_bound, rs.times_shown_upper_bound,
@@ -5773,7 +5804,7 @@ GROUP BY id ORDER BY n DESC LIMIT 300`, {region, re}, m => status("gStatus", `Sz
     this.sync();
     if (!this.brands.length) throw new Error("Google: wpisz co najmniej jedną markę.");
     if (E("gSource").value === "file") throw new Error("Google jest w trybie pliku: wczytaj plik z wynikami w „Google: ustawienia” (pozostałe źródła analizuję normalnie).");
-    const region = this.region(), per = this.period();
+    const region = this.region(), per = this.period(), fetchSince = gFetchSince(per);
     const notes = await this.autoMatch(region, false);
     this.sync();
     const ids = [...new Set(this.brands.flatMap(b => this.ids(b)))];
@@ -5786,15 +5817,15 @@ GROUP BY id ORDER BY n DESC LIMIT 300`, {region, re}, m => status("gStatus", `Sz
   IF(rs.region_code = @region, TO_JSON_STRING(c.audience_selection_approach_info), NULL) AS audience_json
 FROM ${TABLE} c, UNNEST(c.region_stats) rs
 WHERE rs.last_shown >= @since AND rs.first_shown <= @until AND c.advertiser_id IN UNNEST(@ids)`,
-      {region, since: per.since, until: per.until || "2100-01-01", ids}, m => status("gStatus", `Google: ${m}`));
+      {region, since: fetchSince, until: per.until || "2100-01-01", ids}, m => status("gStatus", `Google: ${m}`));
     const bytes1 = BQ.bytes; let removed = [];
     try { status("gStatus", "Sprawdzam reklamy usunięte przez Google…");
       const rr = await BQ.query(`SELECT TO_JSON_STRING(t) AS j FROM \`bigquery-public-data.google_ads_transparency_center.removed_creative_stats\` t WHERE t.advertiser_id IN UNNEST(@ids)`, {ids});
       removed = rr.map(x => remParse(x.j)).filter(Boolean); } catch(e){ removed = []; }
-    this.data = {v: 3, type: "rivalcore-google", at: new Date().toISOString(), region, days: per.days, since: per.since, until: per.until, rows: rows.map(normRow), removed, bytes: bytes1 + BQ.bytes,
+    this.data = {v: 4, type: "rivalcore-google", at: new Date().toISOString(), region, days: per.days, since: per.since, until: per.until, fetchSince, rows: rows.map(normRow), removed, bytes: bytes1 + BQ.bytes,
       brands: JSON.parse(JSON.stringify(this.brands)), src: "BigQuery"};
     this.analyze(); this.view = this.res.length > 1 ? "cmp" : 0; this.render();
-    status("gStatus", `Google: ${n0(this.data.rows.filter(r => r.reg === region).length)} reklam w ${region} (${n0(rows.length)} wierszy we wszystkich krajach), przetworzono ${n1(this.data.bytes / 1e9)} GB.` + (notes.length ? `\nDobór kont po nazwie: ${notes.join("; ")}. Sprawdź w widoku marki, czy to właściwe firmy.` : ""));
+    status("gStatus", `Google: ${n0(this.data.rows.filter(r => r.reg === region).length)} reklam w ${region} (${n0(rows.length)} wierszy we wszystkich krajach, z okresem porównawczym), przetworzono ${n1(this.data.bytes / 1e9)} GB.` + (notes.length ? `\nDobór kont po nazwie: ${notes.join("; ")}. Sprawdź w widoku marki, czy to właściwe firmy.` : ""));
   },
   async loadFile(f){
     try {
@@ -5803,8 +5834,9 @@ WHERE rs.last_shown >= @since AND rs.first_shown <= @until AND c.advertiser_id I
         objs = Array.isArray(j) ? j : (j.rows || []); }
       else objs = toObjs(parseCSV(t).rows);
       if (!objs.length || !("creative_id" in objs[0])) throw new Error("Plik nie wygląda na wynik zapytania RivalCore (brak kolumny creative_id). Użyj zapytania z przycisku „Pokaż zapytanie SQL”.");
-      this.sync(); const per = this.period();
-      this.data = {v: 2, type: "rivalcore-google", at: new Date().toISOString(), region: this.region(), days: per.days, since: per.since, until: per.until, rows: objs.map(normRow), bytes: 0,
+      this.sync(); const per = this.period(); const rows = objs.map(normRow);
+      const fetchSince = per.since && rows.some(r => r.last && r.last < per.since) ? gFetchSince(per) : per.since;
+      this.data = {v: 4, type: "rivalcore-google", at: new Date().toISOString(), region: this.region(), days: per.days, since: per.since, until: per.until, fetchSince, rows, bytes: 0,
         brands: JSON.parse(JSON.stringify(this.brands)), src: "plik " + f.name};
       this.analyze(); this.view = this.res.length > 1 ? "cmp" : 0; this.render(); CH.show("google");
       status("gStatus", `Wczytano ${n0(objs.length)} reklam z pliku ${f.name}.`);
@@ -5825,20 +5857,30 @@ WHERE rs.last_shown >= @since AND rs.first_shown <= @until AND c.advertiser_id I
     const asof = D.until && D.until < maxLast ? D.until : maxLast;
     const start = D.days ? (D.since && D.since > "2023-01-01" ? D.since : addD(asof, -(D.days - 1))) : rows.reduce((m, r) => r.first < m ? r.first : m, asof);
     const pDays = daysBetween(start, asof) + 1;
+    // okres porównawczy: tyle samo dni bezpośrednio przed okresem, jeśli dane go obejmują (Google raportuje wyświetlenia od 1.03.2023)
+    const fs = D.fetchSince || D.since || start; let prevW = null;
+    if (D.days && pDays >= 7){ const pe = addD(start, -1), ps = addD(pe, -(pDays - 1)); if (ps >= fs && ps >= "2023-03-01") prevW = {s: ps, e: pe}; }
     const brands = (D.brands || this.brands).filter(b => (b.name || "").trim() || this.ids(b).length);
     const used = new Set();
     this.res = brands.map((b, bi) => {
       const ids = this.ids(b).filter(id => !used.has(id)); ids.forEach(id => used.add(id));
       const rs = rows.filter(r => ids.includes(r.aid) && r.last >= start && r.first <= asof);
-      return brandStats(b, bi, ids, rs, {asof, start, pDays, cpm, allRows: all.filter(r => ids.includes(r.aid)), removed: (D.removed || []).filter(x => ids.includes(x.aid))});
+      const prs = prevW ? rows.filter(r => ids.includes(r.aid) && r.last >= prevW.s && r.first <= prevW.e) : [];
+      return brandStats(b, bi, ids, rs, {asof, start, pDays, cpm, prevW, prevRows: prs, allRows: all.filter(r => ids.includes(r.aid)), removed: (D.removed || []).filter(x => ids.includes(x.aid))});
     });
-    const tot = sum(this.res, r => r.imprMid) || 0, totA = sum(this.res, r => r.active) || 0, totC = sum(this.res, r => r.costMid) || 0;
-    this.res.forEach(r => { r.sovImpr = tot ? r.imprMid / tot : null; r.sovActive = totA ? r.active / totA : null; r.sovCost = totC ? r.costMid / totC : null; });
-    this.meta = {asof, start, pDays};
+    const R = this.res;
+    const tot = sum(R, r => r.imprMid) || 0, totA = sum(R, r => r.active) || 0, totC = sum(R, r => r.costMid) || 0, totN = sum(R, r => r.newP) || 0;
+    R.forEach(r => { r.sovImpr = tot ? r.imprMid / tot : null; r.sovActive = totA ? r.active / totA : null; r.sovCost = totC ? r.costMid / totC : null; r.sovNew = totN ? r.newP / totN : null; });
+    FMTS.forEach(k => { const t = sum(R, r => r.fmtImpr[k]); R.forEach(r => { r.sovFmt = r.sovFmt || {}; r.sovFmt[k] = t ? r.fmtImpr[k] / t : null; }); });
+    const sk = [...new Set(R.flatMap(r => r.surfImpr.map(x => x[0])))];
+    sk.forEach(k => { const t = sum(R, r => (r.surfImpr.find(x => x[0] === k) || [0, 0])[1]); R.forEach(r => { r.sovSurf = r.sovSurf || {}; r.sovSurf[k] = t ? (r.surfImpr.find(x => x[0] === k) || [0, 0])[1] / t : null; }); });
+    if (prevW){ const pt = sum(R, r => r.prev ? r.prev.impr : 0); R.forEach(r => { r.prevSov = pt && r.prev ? r.prev.impr / pt : null; }); }
+    this.meta = {asof, start, pDays, prevW};
     RZ.render(); CH.draw();
   },
   render(){
-    const out = E("gResults"); if (!this.data){ out.innerHTML = ""; return; }
+    const out = E("gResults"); if (!out) return;
+    if (!this.data){ out.innerHTML = `<div class="gempty">Brak analizy Google w tej sesji. Włącz źródło <b>Google Ads</b> w „Źródłach danych” i kliknij „Analizuj”, albo wczytaj zapisaną analizę Google.</div>`; return; }
     const R = this.res, M = this.meta, D = this.data;
     const isCmp = this.view === "cmp" && R.length > 1; const r = isCmp ? null : R[this.view === "cmp" ? 0 : this.view] || R[0];
     const tabs = isCmp ? G_CMP_TABS : G_BRAND_TABS;
@@ -5846,20 +5888,52 @@ WHERE rs.last_shown >= @since AND rs.first_shown <= @until AND c.advertiser_id I
     const regLbl = D.region === "EEA" ? "cały EOG" : (COUNTRY_PL[D.region] || D.region);
     const head = `<div class="gres-head"><div><div class="kicker-s">Google Ads · Centrum przejrzystości</div><h2>${isCmp ? "Porównanie marek" : esc(r.name)}<span class="sub"> · ${esc(regLbl)}</span></h2></div>
       <div class="row"><button class="ghost mini" data-gx="xlsx" type="button">Excel</button><button class="ghost mini" data-gx="md" type="button">Plik dla AI</button><button class="ghost mini" data-gx="json" type="button">Zapisz analizę</button></div></div>
-      <div class="gmeta"><span>stan danych ${dPL(M.asof)}</span><span>okres ${dPL(M.start)} – ${dPL(M.asof)} · ${M.pDays} dni</span><span>${esc(D.src)}</span>${D.bytes ? `<span>${n1(D.bytes / 1e9)} GB z limitu BigQuery</span>` : ""}</div>
-      <div class="tabs1" style="margin-top:14px">${R.length > 1 ? `<button type="button" class="t1${isCmp ? " on" : ""}" data-gv="cmp">Porównanie</button>` : ""}${R.map((x, i) => `<button type="button" class="t1${!isCmp && r === x ? " on" : ""}" data-gv="${i}"><i class="sw" style="background:${x.color}"></i>${esc(x.name)}<span class="t1i">${n0(x.active)}</span></button>`).join("")}</div>
+      <div class="gmeta"><span>stan danych ${dPL(M.asof)}</span><span>okres ${dPL(M.start)} – ${dPL(M.asof)} · ${M.pDays} dni</span>${M.prevW ? `<span>porównanie: ${dPL(M.prevW.s)} – ${dPL(M.prevW.e)}</span>` : `<span>bez okresu porównawczego</span>`}<span>${esc(D.src)}</span>${D.bytes ? `<span>${n1(D.bytes / 1e9)} GB z limitu BigQuery</span>` : ""}</div>
+      <div class="tabs1" style="margin-top:14px">${R.length > 1 ? `<button type="button" class="t1${isCmp ? " on" : ""}" data-gv="cmp">Porównanie</button>` : ""}${R.map((x, i) => `<button type="button" class="t1${!isCmp && r === x ? " on" : ""}" data-gv="${i}"><i class="sw" style="background:${x.color}"></i>${esc(x.name)}<span class="t1i">${x.index}</span></button>`).join("")}</div>
       <div class="tabs2">${tabs.map(([k, l]) => `<button type="button" class="t2${this[key] === k ? " on" : ""}" data-gtab="${k}">${l}</button>`).join("")}</div>`;
     const body = isCmp ? this.cmpTab(this.tabC) : this.brandTab(r, this.tabB);
     out.innerHTML = `<div class="gres">${head}<div class="panel">${body}</div></div>`;
   },
+  // ---------------- wspólne klocki widoku
+  swName(x){ return `<i class="sw" style="background:${x.color}"></i>${esc(x.name)}`; },
+  heroCards(r){
+    const p = r.prev, has = !!p;
+    const card = (lbl, val, sub, cur, prev, inv, kind) => `<div class="bk"${kind ? ` data-k="${kind}"` : ""}><span class="bl">${lbl}</span><span class="bv">${val}</span><span class="bs">${has && prev != null ? deltaHtml(cur, prev, inv) + " vs poprz. okres · " : ""}${sub}</span></div>`;
+    return `<div class="bigk">
+      ${card("Wyświetlenia w okresie", "~" + kk(r.imprMid), `${kk(r.imprLo)}–${kk(r.imprHi)} (zakres Google)`, r.imprMid, p && p.impr, 0, "d")}
+      ${card("Szac. koszt / mies.", "~" + kk(r.costMoMid) + " zł", `${kk(r.costMoLo)}–${kk(r.costMoHi)} zł`, r.costMoMid, p && p.costMo, 0, "p")}
+      ${card("Udział w wyświetleniach", pc(r.sovImpr, 0), r.prevSov != null ? `poprz. okres ${pc(r.prevSov, 0)}` : "wśród analizowanych marek", null, null, 0, "c")}
+      ${card("Aktywne kreacje", n0(r.active), `maks. ${n0(r.concMax)} tygodniowo · emisja w ost. 7 dniach`, r.active, p && p.active, 0, "d")}
+      ${card("Nowe kreacje w okresie", n0(r.newP), `${n1(r.newPerMo)} / mies.`, r.newP, p && p.nNew, 0, "c")}
+      ${card("Indeks aktywności", r.index + "<small>/100</small>", gIdxLabel(r.index), null, null, 0, "p")}
+    </div>`;
+  },
+  vsTable(r){
+    const others = this.res.filter(x => x !== r && x.n); if (!others.length) return "";
+    const avg = f => { const v = others.map(f).filter(x => x != null && isFinite(x)); return v.length ? sum(v) / v.length : null; };
+    const M = [["Wyświetlenia / mies.", x => x.imprMo, kk], ["Szac. koszt / mies.", x => x.costMoMid, v => kk(v) + " zł"], ["Aktywne kreacje", x => x.active, n0], ["Nowe kreacje / mies.", x => x.newPerMo, n1],
+      ["Udział tekstu (Search)", x => x.fmtShare.TEXT, v => pc(v, 0)], ["Udział grafiki", x => x.fmtShare.IMAGE, v => pc(v, 0)], ["Udział wideo", x => x.fmtShare.VIDEO, v => pc(v, 0)],
+      ["Wyłączane ≤7 dni", x => x.quickPct, v => pc(v, 0)], ["Mediana życia kreacji (dni)", x => x.lifeMed, n0], ["Wyświetlenia na kreację", x => x.perCreative, kk],
+      ["Kraje EOG", x => x.countries.length, n0], ["Listy klientów (remarketing)", x => x.audUse.customer_lists || 0, v => pc(v, 0)], ["Indeks aktywności", x => x.index, n0]];
+    return `<div class="vst"><div class="vst-h"><span>Wskaźnik</span><span>${esc(r.name)}</span><span>Średnia konkurencji</span><span>Różnica</span></div>${M.map(([l, f, fm]) => { const a = f(r), b = avg(f);
+      const d = a != null && b ? (a - b) / Math.abs(b) : null;
+      return `<div class="vst-r"><span>${l}</span><b>${a == null ? "—" : fm(a)}</b><span>${b == null ? "—" : fm(b)}</span><span>${d == null ? "—" : `<span class="dl ${Math.abs(d) < 0.05 ? "flat" : d > 0 ? "up" : "down"}">${d > 0 ? "+" : ""}${NF.format(d * 100)}%</span>`}</span></div>`; }).join("")}</div>`;
+  },
   // ---------------- porównanie
   cmpTab(t){
-    const R = this.res, D = this.data; const main = R.find(x => x.main) || R[0]; const W = R.filter(x => x.n);
+    const R = this.res, D = this.data, Mt = this.meta; const main = R.find(x => x.main) || R[0]; const W = R.filter(x => x.n);
     const lead = W.slice().sort((a, b) => b.imprMid - a.imprMid)[0];
+    const sw = x => this.swName(x);
     if (t === "ins"){
       const ins = [], recs = [];
-      if (lead) ins.push(`<b>${esc(lead.name)}</b> ma największy udział w wyświetleniach reklam Google: ${pc(lead.sovImpr)} (ok. ${kk(lead.imprMid)} wyświetleń w okresie).`);
+      if (lead) ins.push(`<b>${esc(lead.name)}</b> ma największy udział w wyświetleniach reklam Google: ${pc(lead.sovImpr)} (ok. ${kk(lead.imprMid)} wyświetleń w okresie, ~${kk(lead.costMoMid)} zł / mies.).`);
       if (main && main.n && lead && main !== lead) ins.push(`Twoja marka: ${pc(main.sovImpr)} udziału w wyświetleniach, ${lead.imprMid && main.imprMid ? n1(lead.imprMid / main.imprMid) + "× mniej niż lider" : "mniej niż lider"}.`);
+      if (Mt.prevW){
+        W.filter(x => x.dImpr != null && Math.abs(x.dImpr) >= 0.3).sort((a, b) => b.dImpr - a.dImpr).forEach(x => ins.push(`<b>${esc(x.name)}</b> ${x.dImpr > 0 ? "zwiększył" : "zmniejszył"} wyświetlenia okres do okresu o ${pc(Math.abs(x.dImpr), 0)} (${kk(x.prev.impr)} → ${kk(x.imprMid)}).`));
+        const shift = W.filter(x => x.prevSov != null && Math.abs(x.sovImpr - x.prevSov) >= 0.05); if (shift.length) ins.push(`Zmiana udziału w wyświetleniach (okres do okresu): ${shift.map(x => `<b>${esc(x.name)}</b> ${pc(x.prevSov, 0)} → ${pc(x.sovImpr, 0)}`).join(", ")}.`);
+      }
+      const fmtLead = FMTS.map(k => [k, W.slice().sort((a, b) => (b.sovFmt[k] || 0) - (a.sovFmt[k] || 0))[0]]).filter(([k, x]) => x && x.sovFmt[k]);
+      if (fmtLead.length) ins.push(`Liderzy formatów: ${fmtLead.map(([k, x]) => `${FMT_PL[k]} — <b>${esc(x.name)}</b> (${pc(x.sovFmt[k], 0)})`).join("; ")}.`);
       const fresh = W.slice().sort((a, b) => b.new30 - a.new30)[0]; if (fresh && fresh.new30) ins.push(`Najwięcej nowych kreacji w ostatnich 30 dniach: <b>${esc(fresh.name)}</b> (${n0(fresh.new30)}).`);
       const tester = W.slice().sort((a, b) => (b.quickPct || 0) - (a.quickPct || 0))[0]; if (tester && tester.quickPct >= 0.2) ins.push(`Najintensywniej testuje <b>${esc(tester.name)}</b>: ${pc(tester.quickPct, 0)} zakończonych kreacji działało maks. 7 dni.`);
       W.filter(x => x.payers.length).forEach(x => ins.push(`<b>${esc(x.name)}</b>: za reklamy płaci ${x.payers.slice(0, 2).map(p => esc(p[0])).join(", ")} (prawdopodobnie agencja).`));
@@ -5869,51 +5943,80 @@ WHERE rs.last_shown >= @since AND rs.first_shown <= @until AND c.advertiser_id I
         const others = W.filter(x => x !== main);
         const vid = others.filter(x => x.fmtShare.VIDEO >= 0.2); if (main.fmtShare.VIDEO < 0.05 && vid.length) recs.push(["Wysoki", "Wideo / YouTube", `Konkurencja ma dużo wideo (${vid.map(x => esc(x.name) + " " + pc(x.fmtShare.VIDEO, 0)).join(", ")}), Ty ${pc(main.fmtShare.VIDEO, 0)}. Rozważ kampanie Video / Demand Gen.`]);
         const txt = others.filter(x => x.fmtShare.TEXT >= 0.4); if (main.fmtShare.TEXT < 0.15 && txt.length) recs.push(["Wysoki", "Wyszukiwarka", `Konkurenci intensywnie reklamują się w wyszukiwarce (${txt.map(x => esc(x.name)).join(", ")}), a Ty prawie wcale. Sprawdź udział w wyświetleniach na frazy brandowe i kategorii.`]);
+        const ss = main.sovFmt.TEXT, sl = others.slice().sort((a, b) => (b.sovFmt.TEXT || 0) - (a.sovFmt.TEXT || 0))[0]; if (sl && ss != null && sl.sovFmt.TEXT >= 2 * Math.max(ss, 0.01) && sl.sovFmt.TEXT >= 0.3) recs.push(["Średni", "Udział w wyszukiwarce", `<b>${esc(sl.name)}</b> ma ${pc(sl.sovFmt.TEXT, 0)} wyświetleń reklam tekstowych w zestawie, Ty ${pc(ss, 0)}. Sprawdź udział w wyświetleniach (Auction Insights) na frazy kategorii.`]);
+        others.filter(x => x.dImpr != null && x.dImpr >= 0.3 && x.imprMid >= main.imprMid * 0.5).forEach(x => recs.push(["Wysoki", "Konkurent przyspiesza", `<b>${esc(x.name)}</b>: +${pc(x.dImpr, 0)} wyświetleń okres do okresu. Sprawdź jego nowe kreacje (podgląd w zakładce marki) i czy podbija stawki na Twoje frazy.`]));
+        if (main.dImpr != null && main.dImpr <= -0.3) recs.push(["Wysoki", "Spadek Twojej emisji", `Twoje wyświetlenia spadły o ${pc(-main.dImpr, 0)} okres do okresu (${kk(main.prev.impr)} → ${kk(main.imprMid)}). Sprawdź budżety, odrzucone reklamy i wyłączone kampanie.`]);
         const avgNew = others.length ? sum(others, x => x.new30) / others.length : 0; if (avgNew >= 5 && main.new30 < avgNew * 0.5) recs.push(["Średni", "Świeżość kreacji", `Konkurencja wprowadza średnio ${n0(avgNew)} nowych kreacji miesięcznie, Ty ${n0(main.new30)}. Zaplanuj stały rytm odświeżania.`]);
         const rm = others.filter(x => (x.audUse.customer_lists || 0) >= 0.2); if ((main.audUse.customer_lists || 0) < 0.05 && rm.length) recs.push(["Średni", "Remarketing i listy klientów", `${rm.map(x => esc(x.name)).join(", ")} używa list klientów w ${rm.map(x => pc(x.audUse.customer_lists, 0)).join(" / ")} kreacji. U Ciebie prawie brak: rozważ remarketing i Customer Match.`]);
         const cty = others.filter(x => x.countries.length > main.countries.length + 2); if (cty.length) recs.push(["Niski", "Rynki zagraniczne", `${cty.map(x => `${esc(x.name)} (${x.countries.length} krajów)`).join(", ")} reklamuje się w większej liczbie krajów EOG niż Ty (${main.countries.length}).`]);
       }
+      const order = {"Wysoki": 0, "Średni": 1, "Niski": 2}; recs.sort((a, b) => order[a[0]] - order[b[0]]);
       return `<div class="see" data-k="x"><span>${ICON_BULB}</span><div><b>Najważniejsze w skrócie</b><ul class="lines" style="margin-top:6px">${ins.map(x => `<li>${x}</li>`).join("")}</ul></div></div>
-        ${recs.length ? `<div class="blk"><h3>Rekomendacje (reguły RivalCore)</h3><div class="recs">${recs.map(([p, a, d]) => `<div class="rec" style="border-left-color:${p === "Wysoki" ? "var(--bad)" : p === "Średni" ? "var(--warn)" : "var(--accent)"}"><div class="rh"><span class="rprio" style="background:${p === "Wysoki" ? "var(--bad)" : p === "Średni" ? "var(--warn)" : "var(--accent)"}">${p}</span><span class="ra">${a}</span></div><div class="rd">${d}</div></div>`).join("")}</div></div>` : ""}
-        <div class="blk"><h3>Marki w skrócie</h3><div class="mcards">${R.map(x => `<div class="mcard${x.main ? " me" : ""}"><div class="mch"><i class="sw" style="background:${x.color}"></i><b>${esc(x.name)}</b>${x.main ? "<em>Ty</em>" : ""}</div>
-          <div class="mcg"><div><b>${n0(x.active)}</b><span>aktywne</span></div><div><b>${kk(x.imprMid)}</b><span>wyświetlenia</span></div><div><b>${pc(x.sovImpr, 0)}</b><span>udział</span></div><div><b>~${kk(x.costMoMid)} zł</b><span>koszt / mies.</span></div></div>
-          <div class="mixbar" title="tekst / grafika / wideo">${["TEXT","IMAGE","VIDEO"].map((k, i) => `<span style="width:${(x.fmtShare[k] * 100).toFixed(1)}%;background:${COLORS[i]}"></span>`).join("")}</div></div>`).join("")}</div></div>`;
+        ${main && main.n ? `<div class="blk" data-k="c"><h3>Twoja marka w Google: ${esc(main.name)}</h3>${this.heroCards(main)}</div>` : ""}
+        ${recs.length ? `<div class="blk" data-k="x"><h3>Rekomendacje (reguły RivalCore)</h3><div class="recs">${recs.map(([p, a, d]) => `<div class="rec" style="border-left-color:${p === "Wysoki" ? "var(--bad)" : p === "Średni" ? "var(--warn)" : "var(--accent)"}"><div class="rh"><span class="rprio" style="background:${p === "Wysoki" ? "var(--bad)" : p === "Średni" ? "var(--warn)" : "var(--accent)"}">${p}</span><span class="ra">${a}</span></div><div class="rd">${d}</div></div>`).join("")}</div></div>` : ""}
+        <div class="blk" data-k="c"><h3>Marki w skrócie</h3><div class="mcards">${R.map(x => `<div class="mcard${x.main ? " me" : ""}"><div class="mch"><i class="sw" style="background:${x.color}"></i><b>${esc(x.name)}</b>${x.main ? "<em>Ty</em>" : ""}<span class="idxchip" style="margin-left:auto">${x.index}<small>/100</small></span></div>
+          <div class="mcg"><div><b>${n0(x.active)}</b><span>aktywne</span></div><div><b>${kk(x.imprMo)}</b><span>wyświetlenia / mies.</span></div><div><b>${pc(x.sovImpr, 0)}</b><span>udział${x.prevSov != null ? " (" + pc(x.prevSov, 0) + ")" : ""}</span></div><div><b>~${kk(x.costMoMid)} zł</b><span>koszt / mies. ${x.prev ? deltaHtml(x.costMoMid, x.prev.costMo) : ""}</span></div></div>
+          <div class="mixbar" title="tekst / grafika / wideo">${FMTS.map((k, i) => `<span style="width:${(x.fmtShare[k] * 100).toFixed(1)}%;background:${COLORS[i]}"></span>`).join("")}</div></div>`).join("")}</div>
+          <div class="leg">${FMTS.map((k, i) => `<span><i style="background:${COLORS[i]}"></i>${FMT_PL[k]}</span>`).join("")}</div></div>`;
     }
     if (t === "sov"){
-      return `<div class="gsplit"><div class="blk"><h3>Udział w wyświetleniach</h3>${hbars(R.map(x => ({name: x.name, v: x.sovImpr || 0, color: x.color})), {fmt: v => pc(v)})}</div>
-        <div class="blk"><h3>Udział w aktywnych kreacjach</h3>${hbars(R.map(x => ({name: x.name, v: x.sovActive || 0, color: x.color})), {fmt: v => pc(v)})}</div></div>
-        <div class="blk"><h3>Wyświetlenia miesiąc po miesiącu (środek zakresu)</h3>${lineChart(R.map(x => ({name: x.name, color: x.color, values: x.monthImpr})), {labels: (R[0] ? R[0].monthLabels : []).map(monLbl), legend: true, h: 240})}</div>
-        <div class="blk"><h3>Udział w wyświetleniach miesiąc po miesiącu</h3>${(() => { const ml = R[0] ? R[0].monthLabels : []; const tot = ml.map((_, i) => sum(R, x => x.monthImpr[i])); return stackBars(ml.map((m, i) => ({name: monLbl(m), vals: Object.fromEntries(R.map(x => [x.name, tot[i] ? x.monthImpr[i] / tot[i] : 0]))})), R.map(x => x.name), {right: () => ""}); })()}</div>
-        <div class="blk"><h3>Szacowany budżet miesięczny</h3>${sortableTable("gcost", [{k: "name", t: "Marka", h: x => `<i class="sw" style="background:${x.color}"></i>${esc(x.name)}`}, {k: "costMoMid", t: "Najbardziej prawdop.", n: 1, f: v => kk(v) + " zł"}, {k: "costMoLo", t: "Od", n: 1, f: v => kk(v) + " zł"}, {k: "costMoHi", t: "Do", n: 1, f: v => kk(v) + " zł"}, {k: "sovCost", t: "Udział w wydatkach", n: 1, f: v => pc(v)}], R, {sort: "costMoMid", rowCls: x => x.main ? "me" : ""})}
-        <div class="hint">Wyświetlenia podaje Google (zakresy), koszt = wyświetlenia ÷ 1000 × CPM z założeń dla formatu. Porównuj marki między sobą; dokładna kwota zależy od CPM.</div></div>`;
+      return `<div class="gsplit"><div class="blk" data-k="c"><h3>Udział w wyświetleniach</h3>${hbars(R.map(x => ({name: x.name, v: x.sovImpr || 0, color: x.color})), {fmt: v => pc(v)})}</div>
+        <div class="blk" data-k="p"><h3>Udział w szacowanych wydatkach</h3>${hbars(R.map(x => ({name: x.name, v: x.sovCost || 0, color: x.color})), {fmt: v => pc(v)})}</div></div>
+        <div class="blk" data-k="c"><h3>Udział w wyświetleniach wg formatu</h3>${sortableTable("gsovf", [{k: "name", t: "Marka", h: sw}, ...FMTS.map(k => ({k: "s_" + k, t: FMT_PL[k], n: 1, v: x => x.sovFmt[k] || 0, h: x => `${pc(x.sovFmt[k], 0)} <small class="sub">${kk(x.fmtImpr[k])}</small>`}))], R, {rowCls: x => x.main ? "me" : ""})}
+          <div class="hint">Udział marki w wyświetleniach danego formatu wśród analizowanych marek. Tekst ≈ wyszukiwarka, wideo ≈ YouTube.</div></div>
+        <div class="blk" data-k="d"><h3>Wyświetlenia tydzień po tygodniu</h3>${lineChart(R.map(x => ({name: x.name, color: x.color, values: x.weekImpr})), {labels: R[0] ? R[0].weekLabels : [], legend: true, h: 240})}</div>
+        <div class="blk" data-k="c"><h3>Udział w wyświetleniach miesiąc po miesiącu</h3>${(() => { const ml = R[0] ? R[0].monthLabels : []; const tot = ml.map((_, i) => sum(R, x => x.monthImpr[i])); return stackBars(ml.map((m, i) => ({name: monLbl(m), vals: Object.fromEntries(R.map(x => [x.name, tot[i] ? x.monthImpr[i] / tot[i] : 0]))})), R.map(x => x.name), {right: (row) => kk(tot[ml.findIndex(m => monLbl(m) === row.name)])}); })()}</div>
+        <div class="blk" data-k="p"><h3>Szacowany budżet miesięczny i struktura</h3>${sortableTable("gcost", [{k: "name", t: "Marka", h: sw}, {k: "costMoMid", t: "Najbardziej prawdop.", n: 1, f: v => kk(v) + " zł"}, {k: "costMoLo", t: "Od", n: 1, f: v => kk(v) + " zł"}, {k: "costMoHi", t: "Do", n: 1, f: v => kk(v) + " zł"},
+          {k: "costDay", t: "Dziennie", n: 1, f: v => kk(v) + " zł"}, {k: "cost30", t: "Ost. 30 dni", n: 1, f: v => kk(v) + " zł"}, {k: "sovCost", t: "Udział", n: 1, f: v => pc(v)}], R, {sort: "costMoMid", rowCls: x => x.main ? "me" : ""})}
+          <h3 style="margin-top:16px">Koszt miesięczny wg formatu</h3>${stackBars(R.map(x => ({name: x.name, vals: x.fmtCostMo})), FMTS, {labels: FMT_PL, right: x => kk(sum(Object.values(x.vals))) + " zł"})}
+          <div class="hint">Wyświetlenia podaje Google (zakresy), koszt = wyświetlenia ÷ 1000 × CPM z założeń dla formatu (tekst ${this.cpm().TEXT.join("–")} zł, grafika ${this.cpm().IMAGE.join("–")} zł, wideo ${this.cpm().VIDEO.join("–")} zł). Porównuj marki między sobą; dokładna kwota zależy od CPM.</div></div>`;
+    }
+    if (t === "trend"){
+      if (!Mt.prevW) return `<div class="gempty">Brak okresu porównawczego. Wybierz w formularzu konkretny okres (np. ostatnie 3 miesiące) i uruchom analizę ponownie — RivalCore pobierze też tyle samo dni wcześniej. Google raportuje wyświetlenia od 1.03.2023, więc okres porównawczy nie może zaczynać się wcześniej.</div>`;
+      const dc = (a, b, inv) => b == null ? "—" : deltaHtml(a, b, inv);
+      return `<div class="see" data-k="c"><span>${ICON_BULB}</span><div>Okres ${dPL(Mt.start)} – ${dPL(Mt.asof)} porównany z ${dPL(Mt.prevW.s)} – ${dPL(Mt.prevW.e)} (${Mt.pDays} dni). Wyświetlenia każdej kreacji rozłożone równo na dni emisji.</div></div>
+        <div class="blk" data-k="c"><h3>Okres do okresu</h3>${sortableTable("gtr", [{k: "name", t: "Marka", h: sw},
+          {k: "imprMid", t: "Wyświetlenia", n: 1, h: x => `${kk(x.imprMid)} ${dc(x.imprMid, x.prev && x.prev.impr)}`}, {k: "pimpr", t: "Poprz.", n: 1, v: x => x.prev ? x.prev.impr : 0, h: x => x.prev ? kk(x.prev.impr) : "—"},
+          {k: "costMoMid", t: "Koszt / mies.", n: 1, h: x => `${kk(x.costMoMid)} zł ${dc(x.costMoMid, x.prev && x.prev.costMo)}`},
+          {k: "newP", t: "Nowe kreacje", n: 1, h: x => `${n0(x.newP)} ${dc(x.newP, x.prev && x.prev.nNew)}`},
+          {k: "n", t: "Emitowane", n: 1, h: x => `${n0(x.n)} ${dc(x.n, x.prev && x.prev.n)}`},
+          {k: "sovImpr", t: "Udział teraz", n: 1, f: v => pc(v, 0)}, {k: "prevSov", t: "Udział poprz.", n: 1, f: v => pc(v, 0)}], R, {sort: "imprMid", rowCls: x => x.main ? "me" : ""})}</div>
+        <div class="gsplit"><div class="blk" data-k="c"><h3>Zmiana wyświetleń</h3>${hbars(R.filter(x => x.dImpr != null).map(x => ({name: x.name, v: Math.abs(x.dImpr), color: x.dImpr >= 0 ? "var(--good)" : "var(--bad)"})), {fmt: (v, x) => { const r0 = R.find(y => y.name === x.name); return (r0.dImpr >= 0 ? "+" : "−") + pc(v, 0); }})}</div>
+        <div class="blk" data-k="c"><h3>Zmiana udziału w wyświetleniach (pp)</h3>${hbars(R.filter(x => x.prevSov != null).map(x => ({name: x.name, v: Math.abs(x.sovImpr - x.prevSov), color: x.sovImpr >= x.prevSov ? "var(--good)" : "var(--bad)"})), {fmt: (v, x) => { const r0 = R.find(y => y.name === x.name); return (r0.sovImpr >= r0.prevSov ? "+" : "−") + n1(v * 100) + " pp"; }})}</div></div>`;
     }
     if (t === "cre"){
-      const cols = [{k: "name", t: "Marka", h: x => `<i class="sw" style="background:${x.color}"></i>${esc(x.name)}`}, {k: "n", t: "Kreacje", n: 1, f: n0}, {k: "active", t: "Aktywne", n: 1, f: n0}, {k: "new30", t: "Nowe 30 dni", n: 1, f: n0},
-        {k: "quickPct", t: "Wyłączane ≤7 dni", n: 1, f: v => pc(v, 0)}, {k: "lifeMed", t: "Mediana życia", n: 1, f: v => v == null ? "—" : n0(v) + " dni"}, {k: "concAvg", t: "Aktywne naraz", n: 1, f: v => n1(v)}, {k: "ever", t: "Aktywne ≥30 dni", n: 1, f: n0}];
-      return `<div class="blk"><h3>Testowanie i rotacja kreacji</h3>${sortableTable("gcre", cols, R, {sort: "active", rowCls: x => x.main ? "me" : ""})}</div>
-        <div class="gsplit"><div class="blk"><h3>Formaty kreacji</h3>${stackBars(R.map(x => ({name: x.name, vals: x.fmt})), ["TEXT","IMAGE","VIDEO"], {labels: FMT_PL, right: x => n0(sum(Object.values(x.vals))) + " kr."})}</div>
-        <div class="blk"><h3>Wyświetlenia wg formatu</h3>${stackBars(R.map(x => ({name: x.name, vals: x.fmtImpr})), ["TEXT","IMAGE","VIDEO"], {labels: FMT_PL, right: x => kk(sum(Object.values(x.vals)))})}</div></div>
-        <div class="blk"><h3>Długość życia zakończonych kreacji</h3>${stackBars(R.map(x => ({name: x.name, vals: x.lifeB})), LIFE_KEYS, {labels: LIFE_PL, right: x => n0(sum(Object.values(x.vals)))})}</div>`;
+      const cols = [{k: "name", t: "Marka", h: sw}, {k: "n", t: "Kreacje", n: 1, f: n0}, {k: "active", t: "Aktywne", n: 1, f: n0}, {k: "new30", t: "Nowe 30 dni", n: 1, f: n0},
+        {k: "quickPct", t: "Wyłączane ≤7 dni", n: 1, f: v => pc(v, 0)}, {k: "lifeMed", t: "Mediana życia", n: 1, f: v => v == null ? "—" : n0(v) + " dni"}, {k: "concAvg", t: "Aktywne / tydz.", n: 1, f: v => n1(v)}, {k: "ever", t: "Aktywne ≥30 dni", n: 1, f: n0}, {k: "perCreative", t: "Wyśw. / kreację", n: 1, f: kk}];
+      return `<div class="blk" data-k="c"><h3>Testowanie i rotacja kreacji</h3>${sortableTable("gcre", cols, R, {sort: "active", rowCls: x => x.main ? "me" : ""})}</div>
+        <div class="gsplit"><div class="blk" data-k="d"><h3>Formaty kreacji</h3>${stackBars(R.map(x => ({name: x.name, vals: x.fmt})), FMTS, {labels: FMT_PL, right: x => n0(sum(Object.values(x.vals))) + " kr."})}</div>
+        <div class="blk" data-k="d"><h3>Wyświetlenia wg formatu</h3>${stackBars(R.map(x => ({name: x.name, vals: x.fmtImpr})), FMTS, {labels: FMT_PL, right: x => kk(sum(Object.values(x.vals)))})}</div></div>
+        <div class="blk" data-k="c"><h3>Długość życia zakończonych kreacji</h3>${stackBars(R.map(x => ({name: x.name, vals: x.lifeB})), LIFE_KEYS, {labels: LIFE_PL, right: x => n0(sum(Object.values(x.vals)))})}</div>`;
     }
     if (t === "pla"){
       const sk = [...new Set(R.flatMap(x => x.surfaces.map(s => s[0])))];
       const ak = [...new Set(R.flatMap(x => Object.keys(x.audUse)))];
-      return `${sk.length ? `<div class="blk"><h3>Gdzie emitują (platformy Google, liczba kreacji)</h3>${stackBars(R.map(x => ({name: x.name, vals: Object.fromEntries(sk.map(k => [k, (x.surfaces.find(s => s[0] === k) || [0, 0])[1]]))})), sk, {labels: Object.fromEntries(sk.map(k => [k, SURF_PL[k] || k])), right: x => ""})}</div>` : ""}
-        ${ak.length ? `<div class="blk"><h3>Kryteria doboru odbiorców (odsetek kreacji)</h3>${sortableTable("gaud", [{k: "name", t: "Marka", h: x => `<i class="sw" style="background:${x.color}"></i>${esc(x.name)}`}, ...ak.map(k => ({k: "a_" + k, t: AUD_PL[k] || k.replace(/_/g, " "), n: 1, v: x => x.audUse[k] || 0, h: x => pc(x.audUse[k] || 0, 0)}))], R, {rowCls: x => x.main ? "me" : ""})}<div class="hint">Google deklaruje dla każdej kreacji, czy użyto danej kategorii kryteriów (włączenie lub wykluczenie). Listy klientów to remarketing i Customer Match.</div></div>` : ""}
-        <div class="blk"><h3>Kraje EOG, w których się reklamują</h3>${sortableTable("gcty", [{k: "name", t: "Marka", h: x => `<i class="sw" style="background:${x.color}"></i>${esc(x.name)}`}, {k: "nC", t: "Liczba krajów", n: 1, v: x => x.countries.length, h: x => n0(x.countries.length)}, {k: "top", t: "Najwięcej kreacji", h: x => x.countries.slice(0, 6).map(c => `<span class="pill">${esc(c[0])} ${n0(c[1])}</span>`).join("") || "—"}], R, {rowCls: x => x.main ? "me" : ""})}</div>
-        <div class="blk"><h3>Tematy reklam (wg Google)</h3>${sortableTable("gtop", [{k: "name", t: "Marka", h: x => `<i class="sw" style="background:${x.color}"></i>${esc(x.name)}`}, {k: "t", t: "Tematy", h: x => x.topics.slice(0, 5).map(c => `<span class="pill">${esc(c[0])} ${n0(c[1])}</span>`).join("") || "—"}], R, {})}</div>`;
+      const sik = [...new Set(R.flatMap(x => Object.keys(x.sovSurf || {})))];
+      return `${sk.length ? `<div class="blk" data-k="d"><h3>Gdzie emitują (platformy Google, liczba kreacji)</h3>${stackBars(R.map(x => ({name: x.name, vals: Object.fromEntries(sk.map(k => [k, (x.surfaces.find(s => s[0] === k) || [0, 0])[1]]))})), sk, {labels: Object.fromEntries(sk.map(k => [k, SURF_PL[k] || k])), right: x => ""})}</div>` : ""}
+        ${sik.length ? `<div class="blk" data-k="c"><h3>Udział w wyświetleniach wg platformy</h3>${sortableTable("gsovs", [{k: "name", t: "Marka", h: sw}, ...sik.map(k => ({k: "p_" + k, t: SURF_PL[k] || k, n: 1, v: x => (x.sovSurf || {})[k] || 0, h: x => pc((x.sovSurf || {})[k], 0)}))], R, {rowCls: x => x.main ? "me" : ""})}<div class="hint">Na podstawie dolnych granic wyświetleń, które Google podaje osobno dla każdej platformy.</div></div>` : ""}
+        ${ak.length ? `<div class="blk" data-k="d"><h3>Kryteria doboru odbiorców (odsetek kreacji)</h3>${sortableTable("gaud", [{k: "name", t: "Marka", h: sw}, ...ak.map(k => ({k: "a_" + k, t: AUD_PL[k] || k.replace(/_/g, " "), n: 1, v: x => x.audUse[k] || 0, h: x => pc(x.audUse[k] || 0, 0)}))], R, {rowCls: x => x.main ? "me" : ""})}<div class="hint">Google deklaruje dla każdej kreacji, czy użyto danej kategorii kryteriów (włączenie lub wykluczenie). Listy klientów to remarketing i Customer Match.</div></div>` : ""}
+        <div class="blk" data-k="d"><h3>Kraje EOG: kreacje i wyświetlenia</h3>${sortableTable("gcty", [{k: "name", t: "Marka", h: sw}, {k: "nC", t: "Liczba krajów", n: 1, v: x => x.countries.length, h: x => n0(x.countries.length)}, {k: "top", t: "Najwięcej wyświetleń w okresie", h: x => x.ctyImpr.slice(0, 6).map(c => `<span class="pill">${esc(c[0])} ${kk(c[1])}</span>`).join("") || x.countries.slice(0, 6).map(c => `<span class="pill">${esc(c[0])} ${n0(c[1])} kr.</span>`).join("") || "—"}], R, {rowCls: x => x.main ? "me" : ""})}</div>
+        <div class="blk" data-k="d"><h3>Tematy reklam (wg Google)</h3>${sortableTable("gtop", [{k: "name", t: "Marka", h: sw}, {k: "t", t: "Tematy", h: x => x.topics.slice(0, 5).map(c => `<span class="pill">${esc(c[0])} ${n0(c[1])}</span>`).join("") || "—"}], R, {})}</div>`;
     }
     if (t === "cal"){
       const weeks = R[0] ? R[0].weekLabels : [];
-      return `<div class="blk"><h3>Nowe kreacje tydzień po tygodniu</h3>${lineChart(R.map(x => ({name: x.name, color: x.color, values: x.weekStarts})), {labels: weeks, legend: true, h: 240})}</div>
-        <div class="blk"><h3>Aktywne kreacje w kolejnych tygodniach</h3>${lineChart(R.map(x => ({name: x.name, color: x.color, values: x.weekActive})), {labels: weeks, legend: true, h: 240})}</div>
-        <div class="gsplit"><div class="blk"><h3>Ulubiony dzień startu</h3>${sortableTable("gwd", [{k: "name", t: "Marka", h: x => `<i class="sw" style="background:${x.color}"></i>${esc(x.name)}`}, {k: "wd", t: "Dzień", v: x => x.favDay, h: x => x.favDay == null ? "—" : WD_PL[x.favDay]}, {k: "wdp", t: "Udział", n: 1, v: x => x.favDayPct, h: x => pc(x.favDayPct, 0)}], R, {})}</div>
-        <div class="blk"><h3>Fale startów (≥3 nowe kreacje w dniu)</h3>${sortableTable("gwav", [{k: "name", t: "Marka", h: x => `<i class="sw" style="background:${x.color}"></i>${esc(x.name)}`}, {k: "wv", t: "Liczba fal", n: 1, v: x => x.waves.length, h: x => n0(x.waves.length)}, {k: "last", t: "Ostatnia fala", h: x => x.waves[0] ? `${dPL(x.waves[0][0])} · ${x.waves[0][1]} kr.` : "—"}], R, {})}</div></div>`;
+      return `<div class="blk" data-k="d"><h3>Nowe kreacje tydzień po tygodniu</h3>${lineChart(R.map(x => ({name: x.name, color: x.color, values: x.weekStarts})), {labels: weeks, legend: true, h: 240})}</div>
+        <div class="blk" data-k="d"><h3>Aktywne kreacje w kolejnych tygodniach</h3>${lineChart(R.map(x => ({name: x.name, color: x.color, values: x.weekActive})), {labels: weeks, legend: true, h: 240})}</div>
+        <div class="gsplit"><div class="blk" data-k="c"><h3>Ulubiony dzień startu</h3>${sortableTable("gwd", [{k: "name", t: "Marka", h: sw}, {k: "wd", t: "Dzień", v: x => x.favDay, h: x => x.favDay == null ? "—" : WD_PL[x.favDay]}, {k: "wdp", t: "Udział", n: 1, v: x => x.favDayPct, h: x => pc(x.favDayPct, 0)}], R, {})}</div>
+        <div class="blk" data-k="p"><h3>Fale startów (≥3 nowe kreacje w dniu)</h3>${sortableTable("gwav", [{k: "name", t: "Marka", h: sw}, {k: "wv", t: "Liczba fal", n: 1, v: x => x.waves.length, h: x => n0(x.waves.length)}, {k: "last", t: "Ostatnia fala", h: x => x.waves[0] ? `${dPL(x.waves[0][0])} · ${x.waves[0][1]} kr.` : "—"}], R, {})}</div></div>
+        <div class="blk" data-k="c"><h3>Regularność emisji</h3>${hbars(R.map(x => ({name: x.name, v: x.regularity, color: x.color})), {fmt: v => pc(v, 0) + " tygodni"})}<div class="hint">Odsetek tygodni okresu, w których marka miała choć jedną aktywną kreację.</div></div>`;
     }
     if (t === "rank"){
-      const me = main; const met = [["Aktywne kreacje", x => x.active, n0], ["Wyświetlenia w okresie", x => x.imprMid, kk], ["Udział w wyświetleniach", x => x.sovImpr, v => pc(v)], ["Nowe w 30 dniach", x => x.new30, n0], ["Szac. koszt / mies.", x => x.costMoMid, v => kk(v) + " zł"], ["Wyłączane ≤7 dni", x => x.quickPct, v => pc(v, 0)], ["Mediana życia (dni)", x => x.lifeMed, n0], ["Kraje EOG", x => x.countries.length, n0]];
-      return `<div class="rank">${met.map(([l, f, fm]) => { const s = R.slice().sort((a, b) => (f(b) || 0) - (f(a) || 0));
-        return `<div><h3 style="margin-top:6px">${l}</h3><ol>${s.map(x => `<li>${x.main ? "<b>" : ""}${esc(x.name)}${x.main ? "</b>" : ""} <span class="d">${fm(f(x))}${me && x !== me && f(me) != null && f(x) != null ? ` · vs Ty ${f(x) - f(me) >= 0 ? "+" : ""}${fm(f(x) - f(me))}` : ""}</span></li>`).join("")}</ol></div>`; }).join("")}</div>`;
+      const me = main; const met = [["Indeks aktywności", x => x.index, n0], ["Aktywne kreacje", x => x.active, n0], ["Wyświetlenia / mies.", x => x.imprMo, kk], ["Udział w wyświetleniach", x => x.sovImpr, v => pc(v)],
+        ["Zmiana wyświetleń okres do okresu", x => x.dImpr, v => pc(v, 0)], ["Udział w wyszukiwarce (tekst)", x => x.sovFmt.TEXT, v => pc(v, 0)], ["Udział w wideo (YouTube)", x => x.sovFmt.VIDEO, v => pc(v, 0)],
+        ["Nowe w 30 dniach", x => x.new30, n0], ["Szac. koszt / mies.", x => x.costMoMid, v => kk(v) + " zł"], ["Wyłączane ≤7 dni", x => x.quickPct, v => pc(v, 0)], ["Mediana życia (dni)", x => x.lifeMed, n0], ["Kraje EOG", x => x.countries.length, n0]];
+      return `<div class="blk" data-k="p"><h3>Indeks aktywności Google</h3>${hbars(R.map(x => ({name: x.name, v: x.index, color: x.color})), {fmt: v => v + "/100"})}<div class="hint">Skala (aktywne kreacje) 25%, zasięg (wyświetlenia/mies.) 25%, świeżość (nowe w 30 dniach) 15%, testowanie (nowe kreacje/mies.) 15%, regularność (tygodnie z emisją) 10%, różnorodność (formaty i platformy) 10%. Skale logarytmiczne. Do porównań między markami.</div></div>
+        <div class="rank">${met.map(([l, f, fm]) => { const s = R.slice().sort((a, b) => (f(b) == null ? -1e18 : f(b)) - (f(a) == null ? -1e18 : f(a)));
+        return `<div><h3 style="margin-top:6px">${l}</h3><ol>${s.map(x => `<li>${x.main ? "<b>" : ""}${esc(x.name)}${x.main ? "</b>" : ""} <span class="d">${f(x) == null ? "—" : fm(f(x))}${me && x !== me && f(me) != null && f(x) != null && l.indexOf("Zmiana") < 0 ? ` · vs Ty ${f(x) - f(me) >= 0 ? "+" : ""}${fm(f(x) - f(me))}` : ""}</span></li>`).join("")}</ol></div>`; }).join("")}</div>`;
     }
     return "";
   },
@@ -5927,88 +6030,112 @@ WHERE rs.last_shown >= @since AND rs.first_shown <= @until AND c.advertiser_id I
     const crCols = [{k: "fmt", t: "Format", f: v => FMT_PL[v] || v || "—"}, {k: "first", t: "Od", f: dPL}, {k: "last", t: "Do", f: dPL}, {k: "dur", t: "Dni", n: 1, f: n0},
       {k: "pImprMid", t: "Wyśw. w okresie", n: 1, h: x => x.lo == null ? "b.d." : `${kk(x.pImprLo)} – ${kk(x.pImprHi)}`}, {k: "surf", t: "Platformy", h: x => (x.surfList || []).map(s => `<span class="pill">${esc(SURF_PL[s] || s)}</span>`).join("") || "—"},
       {k: "url", t: "Podgląd", h: x => x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">otwórz ↗</a>` : "—"}];
-    const kpis = `<div class="mkpis">
-      <div class="mk" data-k="d"><b>${n0(r.active)}</b><span>aktywne kreacje (ost. 7 dni)</span></div>
-      <div class="mk" data-k="d"><b>${n0(r.n)}</b><span>kreacje emitowane w okresie</span></div>
-      <div class="mk" data-k="c"><b>${n0(r.new30)}</b><span>nowe w ostatnich 30 dniach</span></div>
-      <div class="mk" data-k="d"><b>~${kk(r.imprMid)}</b><span>wyświetlenia w okresie · ${kk(r.imprLo)}–${kk(r.imprHi)}</span></div>
-      <div class="mk" data-k="p"><b>~${kk(r.costMoMid)} zł</b><span>szac. koszt / mies. · ${kk(r.costMoLo)}–${kk(r.costMoHi)} zł</span></div>
-      <div class="mk" data-k="c"><b>${pc(r.sovImpr, 0)}</b><span>udział w wyświetleniach marek</span></div></div>`;
+    const kpis = this.heroCards(r);
     if (t === "ov"){
       const lines = [];
-      lines.push(`Najczęstszy format: <b>${FMT_PL[Object.entries(r.fmt).sort((x, y) => y[1] - x[1])[0][0]]}</b> (${pc(Math.max(...Object.values(r.fmtShare)), 0)} kreacji).`);
+      if (r.prev && r.dImpr != null) lines.push(`Okres do okresu: wyświetlenia <b>${r.dImpr >= 0 ? "+" : "−"}${pc(Math.abs(r.dImpr), 0)}</b> (${kk(r.prev.impr)} → ${kk(r.imprMid)}), nowe kreacje ${n0(r.prev.nNew)} → ${n0(r.newP)}.`);
+      lines.push(`Najczęstszy format: <b>${FMT_PL[Object.entries(r.fmt).sort((x, y) => y[1] - x[1])[0][0]]}</b> (${pc(Math.max(...Object.values(r.fmtShare)), 0)} kreacji); najwięcej wyświetleń daje <b>${FMT_PL[Object.entries(r.fmtImpr).sort((x, y) => y[1] - x[1])[0][0]]}</b>.`);
       if (r.surfaces.length) lines.push(`Najwięcej kreacji emituje w: <b>${r.surfaces.slice(0, 3).map(s => SURF_PL[s[0]] || s[0]).join(", ")}</b>.`);
       if (r.quickPct != null) lines.push(`${pc(r.quickPct, 0)} zakończonych kreacji działało maks. 7 dni${r.quickPct >= 0.3 ? ": intensywnie testuje" : ""}.`);
-      if (r.trend) lines.push(`Tendencja: ${r.trend.lbl} (nowe kreacje: ost. 30 dni ${n0(r.trend.a)} vs poprzednie 30 dni ${n0(r.trend.b)}).`);
+      if (!r.prev && r.trend) lines.push(`Tendencja: ${r.trend.lbl} (nowe kreacje: ost. 30 dni ${n0(r.trend.a)} vs poprzednie 30 dni ${n0(r.trend.b)}).`);
       if (r.payers.length) lines.push(`Płatnik inny niż reklamodawca: <b>${r.payers.map(p => esc(p[0])).join(", ")}</b>, prawdopodobnie agencja.`);
       if (r.removed) lines.push(`Google usunął ${n0(r.removed)} kreacji tej marki za naruszenia zasad${r.removedReasons.length ? ` (najczęściej: ${r.removedReasons.slice(0, 2).map(x => esc(x[0])).join(", ")})` : ""}.`);
       if (r.countries.length > 1) lines.push(`Reklamuje się w ${r.countries.length} krajach EOG: ${r.countries.slice(0, 6).map(c => esc(c[0])).join(", ")}${r.countries.length > 6 ? "…" : ""}.`);
-      return note + kpis + `<div class="see" data-k="x"><span>${ICON_BULB}</span><div><b>W skrócie</b><ul class="lines" style="margin-top:6px">${lines.map(x => `<li>${x}</li>`).join("")}</ul></div></div>
-        <div class="gsplit"><div class="blk"><h3>Wyświetlenia miesiąc po miesiącu</h3>${lineChart([{name: r.name, color: r.color, values: r.monthImpr, area: true}], {labels: r.monthLabels.map(monLbl)})}</div>
-        <div class="blk"><h3>Aktywne kreacje tydzień po tygodniu</h3>${lineChart([{name: "aktywne", color: r.color, values: r.weekActive, area: true}, {name: "nowe", color: "var(--c7)", values: r.weekStarts, dash: true}], {labels: r.weekLabels})}</div></div>
-        <div class="blk"><h3>Największe kreacje w okresie (wg wyświetleń)</h3>${sortableTable("gbt" + r.idx, crCols, r.rows.slice().sort((x, y) => (y.pImprMid || 0) - (x.pImprMid || 0)).slice(0, 10), {sort: "pImprMid"})}</div>`;
+      const vs = this.vsTable(r);
+      return note + `<div class="see" data-k="x"><span>${ICON_BULB}</span><div><b>W skrócie</b><ul class="lines" style="margin-top:6px">${lines.map(x => `<li>${x}</li>`).join("")}</ul></div></div>
+        <div class="blk" data-k="c"><h3>Kluczowe liczby</h3>${kpis}</div>
+        ${vs ? `<div class="blk" data-k="c"><h3>${esc(r.name)} na tle konkurencji</h3>${vs}</div>` : ""}
+        <div class="gsplit"><div class="blk" data-k="d"><h3>Wyświetlenia tydzień po tygodniu</h3>${lineChart([{name: r.name, color: r.color, values: r.weekImpr, area: true}], {labels: r.weekLabels})}</div>
+        <div class="blk" data-k="d"><h3>Aktywne i nowe kreacje tydzień po tygodniu</h3>${lineChart([{name: "aktywne", color: r.color, values: r.weekActive, area: true}, {name: "nowe", color: "var(--c7)", values: r.weekStarts, dash: true}], {labels: r.weekLabels})}</div></div>
+        <div class="blk" data-k="d"><h3>Największe kreacje w okresie (wg wyświetleń)</h3>${sortableTable("gbt" + r.idx, crCols, r.rows.slice().sort((x, y) => (y.pImprMid || 0) - (x.pImprMid || 0)).slice(0, 10), {sort: "pImprMid"})}</div>`;
+    }
+    if (t === "bud"){
+      const c = this.cpm();
+      return `<div class="blk" data-k="p"><h3>Szacowany budżet</h3><div class="bigk">
+          <div class="bk"><span class="bl">Dziennie</span><span class="bv">~${kk(r.costDay)} zł</span><span class="bs">${kk(r.imprDay)} wyświetleń dziennie</span></div>
+          <div class="bk"><span class="bl">Miesięcznie</span><span class="bv">~${kk(r.costMoMid)} zł</span><span class="bs">${kk(r.costMoLo)}–${kk(r.costMoHi)} zł</span></div>
+          <div class="bk"><span class="bl">Ostatnie 30 dni</span><span class="bv">~${kk(r.cost30)} zł</span><span class="bs">${kk(r.impr30)} wyświetleń</span></div>
+          <div class="bk"><span class="bl">W całym okresie</span><span class="bv">~${kk(r.costMid)} zł</span><span class="bs">${kk(r.costLo)}–${kk(r.costHi)} zł · ${this.meta.pDays} dni</span></div>
+          ${r.prev ? `<div class="bk"><span class="bl">Poprzedni okres / mies.</span><span class="bv">~${kk(r.prev.costMo)} zł</span><span class="bs">${deltaHtml(r.costMoMid, r.prev.costMo)} zmiana</span></div>` : ""}
+          <div class="bk"><span class="bl">Efektywny CPM</span><span class="bv">${n1(r.imprMid ? r.costMid / r.imprMid * 1000 : null)} zł</span><span class="bs">średnia ważona formatami</span></div></div></div>
+        <div class="gsplit"><div class="blk" data-k="p"><h3>Koszt miesięczny wg formatu</h3>${hbars(FMTS.map((k, i) => ({name: FMT_PL[k], v: r.fmtCostMo[k], color: COLORS[i]})), {fmt: v => kk(v) + " zł"})}</div>
+        <div class="blk" data-k="c"><h3>Udział w wyświetleniach formatu (na tle konkurencji)</h3>${hbars(FMTS.map((k, i) => ({name: FMT_PL[k], v: r.sovFmt[k] || 0, color: COLORS[i]})), {fmt: v => pc(v, 0)})}</div></div>
+        <div class="blk" data-k="d"><h3>Wyświetlenia miesiąc po miesiącu</h3>${lineChart([{name: r.name, color: r.color, values: r.monthImpr, area: true}], {labels: r.monthLabels.map(monLbl)})}</div>
+        <div class="hint">Koszt = wyświetlenia (zakresy Google) ÷ 1000 × CPM: tekst ${c.TEXT.join("–")} zł, grafika ${c.IMAGE.join("–")} zł, wideo ${c.VIDEO.join("–")} zł. „Od–do” to dolna granica wyświetleń × niższy CPM i górna × wyższy. Google nie publikuje wydatków — to szacunek do porównań.${r.openHi ? ` ${n0(r.openHi)} kreacji ma otwarty górny zakres wyświetleń (liczone dolną wartością).` : ""}</div>`;
     }
     if (t === "cre"){
       const ever = r.rows.filter(x => x.active && x.dur >= 30).sort((x, y) => y.dur - x.dur).slice(0, 15);
-      return kpis + `<div class="gsplit"><div class="blk"><h3>Formaty (liczba kreacji)</h3>${hbars(["TEXT","IMAGE","VIDEO"].map((k, i) => ({name: FMT_PL[k], v: r.fmt[k], color: COLORS[i]})), {fmt: v => n0(v) + " · " + pc(v / (r.n || 1), 0)})}</div>
-        <div class="blk"><h3>Wyświetlenia wg formatu</h3>${hbars(["TEXT","IMAGE","VIDEO"].map((k, i) => ({name: FMT_PL[k], v: r.fmtImpr[k], color: COLORS[i]})))}</div></div>
-        <div class="gsplit"><div class="blk"><h3>Długość życia zakończonych kreacji</h3>${hbars(LIFE_KEYS.map((k, i) => ({name: LIFE_PL[k], v: r.lifeB[k], color: COLORS[(i + 4) % 8]})), {fmt: v => n0(v)})}<div class="hint">Mediana: ${r.lifeMed == null ? "—" : n0(r.lifeMed) + " dni"} · wyłączane w ≤7 dni: ${pc(r.quickPct, 0)} · średnio aktywnych naraz: ${n1(r.concAvg)}</div></div>
-        <div class="blk"><h3>Aktywne kreacje wg formatu</h3>${hbars(["TEXT","IMAGE","VIDEO"].map((k, i) => ({name: FMT_PL[k], v: r.rows.filter(x => x.active && (x.fmt === k || (k === "IMAGE" && !FMT_PL[x.fmt]))).length, color: COLORS[i]})), {fmt: v => n0(v)})}</div></div>
-        ${ever.length ? `<div class="blk"><h3>Długo działające kreacje (aktywne, ≥ 30 dni)</h3>${sortableTable("gev" + r.idx, crCols, ever, {sort: "dur"})}<div class="hint">Długa emisja to poszlaka, że kreacja się sprawdza, nie dowód.</div></div>` : ""}
-        <div class="blk"><h3>Wszystkie kreacje w okresie (${n0(r.n)})</h3>${sortableTable("gall" + r.idx, crCols, r.rows.slice().sort((x, y) => y.last.localeCompare(x.last)).slice(0, 300), {sort: null})}${r.n > 300 ? `<div class="hint">Pokazano 300 najnowszych; pełna lista w Excelu.</div>` : ""}</div>`;
+      return `<div class="gsplit"><div class="blk" data-k="d"><h3>Formaty (liczba kreacji)</h3>${hbars(FMTS.map((k, i) => ({name: FMT_PL[k], v: r.fmt[k], color: COLORS[i]})), {fmt: v => n0(v) + " · " + pc(v / (r.n || 1), 0)})}</div>
+        <div class="blk" data-k="d"><h3>Wyświetlenia wg formatu</h3>${hbars(FMTS.map((k, i) => ({name: FMT_PL[k], v: r.fmtImpr[k], color: COLORS[i]})))}</div></div>
+        <div class="gsplit"><div class="blk" data-k="c"><h3>Długość życia zakończonych kreacji</h3>${hbars(LIFE_KEYS.map((k, i) => ({name: LIFE_PL[k], v: r.lifeB[k], color: COLORS[(i + 4) % 8]})), {fmt: v => n0(v)})}<div class="hint">Mediana: ${r.lifeMed == null ? "—" : n0(r.lifeMed) + " dni"} · wyłączane w ≤7 dni: ${pc(r.quickPct, 0)} · średnio aktywnych w tygodniu: ${n1(r.concAvg)} · wyświetleń na kreację: ${kk(r.perCreative)}</div></div>
+        <div class="blk" data-k="d"><h3>Aktywne kreacje wg formatu</h3>${hbars(FMTS.map((k, i) => ({name: FMT_PL[k], v: r.rows.filter(x => x.active && (x.fmt === k || (k === "IMAGE" && !FMT_PL[x.fmt]))).length, color: COLORS[i]})), {fmt: v => n0(v)})}</div></div>
+        ${ever.length ? `<div class="blk" data-k="p"><h3>Długo działające kreacje (aktywne, ≥ 30 dni)</h3>${sortableTable("gev" + r.idx, crCols, ever, {sort: "dur"})}<div class="hint">Długa emisja to poszlaka, że kreacja się sprawdza, nie dowód.</div></div>` : ""}
+        <div class="blk" data-k="d"><h3>Wszystkie kreacje w okresie (${n0(r.n)})</h3>${sortableTable("gall" + r.idx, crCols, r.rows.slice().sort((x, y) => y.last.localeCompare(x.last)).slice(0, 300), {sort: null})}${r.n > 300 ? `<div class="hint">Pokazano 300 najnowszych; pełna lista w Excelu.</div>` : ""}</div>`;
     }
     if (t === "pla"){
-      return kpis + `<div class="gsplit">
-        ${r.surfaces.length ? `<div class="blk"><h3>Platformy Google (liczba kreacji)</h3>${hbars(r.surfaces.slice(0, 8).map(([k, v], i) => ({name: SURF_PL[k] || k, v, color: COLORS[i % 8]})), {fmt: v => n0(v)})}</div>` : ""}
-        ${r.surfImpr.length ? `<div class="blk"><h3>Wyświetlenia wg platformy (dolna granica)</h3>${hbars(r.surfImpr.slice(0, 8).map(([k, v], i) => ({name: SURF_PL[k] || k, v, color: COLORS[i % 8]})))}</div>` : ""}
+      return `<div class="gsplit">
+        ${r.surfaces.length ? `<div class="blk" data-k="d"><h3>Platformy Google (liczba kreacji)</h3>${hbars(r.surfaces.slice(0, 8).map(([k, v], i) => ({name: SURF_PL[k] || k, v, color: COLORS[i % 8]})), {fmt: v => n0(v)})}</div>` : ""}
+        ${r.surfImpr.length ? `<div class="blk" data-k="d"><h3>Wyświetlenia wg platformy (dolna granica)</h3>${hbars(r.surfImpr.slice(0, 8).map(([k, v], i) => ({name: SURF_PL[k] || k, v, color: COLORS[i % 8]})), {fmt: (v, x) => kk(v) + (r.sovSurf && r.sovSurf[r.surfImpr.find(s => (SURF_PL[s[0]] || s[0]) === x.name)[0]] != null ? " · " + pc(r.sovSurf[r.surfImpr.find(s => (SURF_PL[s[0]] || s[0]) === x.name)[0]], 0) : "")})}</div>` : ""}
         </div>
-        ${r.audDetail.length ? `<div class="blk"><h3>Kryteria doboru odbiorców</h3>${sortableTable("gad" + r.idx, [{k: "k", t: "Kategoria", f: v => AUD_PL[v] || v.replace(/_/g, " ")}, {k: "inc", t: "Włączone", n: 1, f: v => pc(v, 0)}, {k: "exc", t: "Wykluczone", n: 1, f: v => pc(v, 0)}, {k: "both", t: "Oba", n: 1, f: v => pc(v, 0)}, {k: "any", t: "Razem użyte", n: 1, f: v => pc(v, 0)}], r.audDetail, {sort: "any"})}<div class="hint">Odsetek kreacji marki, w których Google deklaruje użycie danej kategorii kryteriów.</div></div>` : ""}
-        <div class="gsplit"><div class="blk"><h3>Kraje EOG (liczba kreacji)</h3>${r.countries.length ? hbars(r.countries.slice(0, 10).map(([k, v], i) => ({name: COUNTRY_PL[k] || k, v, color: COLORS[i % 8]})), {fmt: v => n0(v)}) : `<div class="hint">Brak danych o innych krajach (tryb pliku albo tylko jeden kraj).</div>`}</div>
-        <div class="blk"><h3>Tematy reklam (wg Google)</h3>${r.topics.length ? hbars(r.topics.slice(0, 10).map(([k, v], i) => ({name: k, v, color: COLORS[(i + 3) % 8]})), {fmt: v => n0(v)}) : `<div class="hint">Google nie przypisał tematów.</div>`}</div></div>`;
+        ${r.audDetail.length ? `<div class="blk" data-k="d"><h3>Kryteria doboru odbiorców</h3>${sortableTable("gad" + r.idx, [{k: "k", t: "Kategoria", f: v => AUD_PL[v] || v.replace(/_/g, " ")}, {k: "inc", t: "Włączone", n: 1, f: v => pc(v, 0)}, {k: "exc", t: "Wykluczone", n: 1, f: v => pc(v, 0)}, {k: "both", t: "Oba", n: 1, f: v => pc(v, 0)}, {k: "any", t: "Razem użyte", n: 1, f: v => pc(v, 0)}], r.audDetail, {sort: "any"})}<div class="hint">Odsetek kreacji marki, w których Google deklaruje użycie danej kategorii kryteriów.</div></div>` : ""}
+        <div class="gsplit"><div class="blk" data-k="d"><h3>Kraje EOG (wyświetlenia w okresie)</h3>${r.ctyImpr.length ? hbars(r.ctyImpr.slice(0, 10).map(([k, v], i) => ({name: COUNTRY_PL[k] || k, v, color: COLORS[i % 8]}))) : r.countries.length ? hbars(r.countries.slice(0, 10).map(([k, v], i) => ({name: COUNTRY_PL[k] || k, v, color: COLORS[i % 8]})), {fmt: v => n0(v) + " kr."}) : `<div class="hint">Brak danych o innych krajach (tryb pliku albo tylko jeden kraj).</div>`}</div>
+        <div class="blk" data-k="d"><h3>Tematy reklam (wg Google)</h3>${r.topics.length ? hbars(r.topics.slice(0, 10).map(([k, v], i) => ({name: k, v, color: COLORS[(i + 3) % 8]})), {fmt: v => n0(v)}) : `<div class="hint">Google nie przypisał tematów.</div>`}</div></div>`;
     }
     if (t === "cal"){
-      return kpis + `<div class="blk"><h3>Nowe i aktywne kreacje tydzień po tygodniu</h3>${lineChart([{name: "aktywne", color: r.color, values: r.weekActive, area: true}, {name: "nowe", color: "var(--c1)", values: r.weekStarts}], {labels: r.weekLabels, h: 240})}</div>
-        <div class="gsplit"><div class="blk"><h3>Dzień tygodnia startu</h3>${hbars(WD_PL.map((d, i) => ({name: d, v: r.wdays[i], color: i === r.favDay ? r.color : "var(--c7)"})), {fmt: v => n0(v)})}</div>
-        <div class="blk"><h3>Fale startów (≥3 nowe kreacje w dniu)</h3>${r.waves.length ? `<ul class="lines">${r.waves.slice(0, 12).map(w => `<li>${dPL(w[0])} · <b>${w[1]}</b> nowych kreacji</li>`).join("")}</ul>` : `<div class="hint">Brak dni z co najmniej 3 nowymi kreacjami.</div>`}</div></div>`;
+      return `<div class="blk" data-k="d"><h3>Nowe i aktywne kreacje tydzień po tygodniu</h3>${lineChart([{name: "aktywne", color: r.color, values: r.weekActive, area: true}, {name: "nowe", color: "var(--c1)", values: r.weekStarts}], {labels: r.weekLabels, h: 240})}</div>
+        <div class="gsplit"><div class="blk" data-k="c"><h3>Dzień tygodnia startu</h3>${hbars(WD_PL.map((d, i) => ({name: d, v: r.wdays[i], color: i === r.favDay ? r.color : "var(--c7)"})), {fmt: v => n0(v)})}</div>
+        <div class="blk" data-k="p"><h3>Fale startów (≥3 nowe kreacje w dniu)</h3>${r.waves.length ? `<ul class="lines">${r.waves.slice(0, 12).map(w => `<li>${dPL(w[0])} · <b>${w[1]}</b> nowych kreacji</li>`).join("")}</ul>` : `<div class="hint">Brak dni z co najmniej 3 nowymi kreacjami.</div>`}</div></div>
+        <div class="hint">Emisja w ${pc(r.regularity, 0)} tygodni okresu.</div>`;
     }
     if (t === "acc"){
-      return kpis + `<div class="blk"><h3>Konta reklamowe w tej marce</h3>${sortableTable("gacc" + r.idx, [{k: "name", t: "Reklamodawca"}, {k: "legal", t: "Nazwa prawna"}, {k: "id", t: "ID", h: x => `<a href="https://adstransparency.google.com/advertiser/${esc(x.id)}?region=${esc(this.data.region === "EEA" ? "anywhere" : this.data.region)}" target="_blank" rel="noopener">${esc(x.id)} ↗</a>`}, {k: "loc", t: "Kraj"}, {k: "ver", t: "Weryfikacja", f: v => v === "VERIFIED" ? "zweryfikowany" : v || "—"}, {k: "payer", t: "Płatnik", f: v => v || "ten sam"}, {k: "n", t: "Kreacje", n: 1, f: n0}], r.accounts, {sort: "n"})}</div>
-        ${r.removed ? `<div class="blk"><h3>Kreacje usunięte przez Google (${n0(r.removed)})</h3>${r.removedReasons.length ? hbars(r.removedReasons.slice(0, 8).map(([k, v], i) => ({name: k, v, color: "var(--bad)"})), {fmt: v => n0(v)}) : ""}<div class="hint">Z tabeli removed_creative_stats: reklamy zdjęte za naruszenie zasad reklamowych Google.</div></div>` : ""}`;
+      return `<div class="blk" data-k="d"><h3>Konta reklamowe w tej marce</h3>${sortableTable("gacc" + r.idx, [{k: "name", t: "Reklamodawca"}, {k: "legal", t: "Nazwa prawna"}, {k: "id", t: "ID", h: x => `<a href="https://adstransparency.google.com/advertiser/${esc(x.id)}?region=${esc(this.data.region === "EEA" ? "anywhere" : this.data.region)}" target="_blank" rel="noopener">${esc(x.id)} ↗</a>`}, {k: "loc", t: "Kraj"}, {k: "ver", t: "Weryfikacja", f: v => v === "VERIFIED" ? "zweryfikowany" : v || "—"}, {k: "payer", t: "Płatnik", f: v => v || "ten sam"}, {k: "n", t: "Kreacje", n: 1, f: n0}], r.accounts, {sort: "n"})}</div>
+        ${r.removed ? `<div class="blk" data-k="d"><h3>Kreacje usunięte przez Google (${n0(r.removed)})</h3>${r.removedReasons.length ? hbars(r.removedReasons.slice(0, 8).map(([k, v], i) => ({name: k, v, color: "var(--bad)"})), {fmt: v => n0(v)}) : ""}<div class="hint">Z tabeli removed_creative_stats: reklamy zdjęte za naruszenie zasad reklamowych Google.</div></div>` : ""}`;
     }
     return "";
   },
   xlsx(){
     if (typeof XLSX === "undefined"){ status("gStatus", "Biblioteka Excel się nie wczytała (cdnjs).", true); return; }
-    const wb = XLSX.utils.book_new(); const M = this.meta;
-    const cmp = [["Marka","Twoja marka","Kreacje w okresie","Aktywne (7 dni)","Nowe 30 dni","Wyświetlenia min","Wyświetlenia max","Udział w wyświetleniach %","Koszt/mies. min zł","Koszt/mies. max zł","Koszt/mies. środek zł","Tekst","Grafika","Wideo","Mediana życia (dni)","ID kont"]]
-      .concat(this.res.map(r => [r.name, r.main ? "tak" : "", r.n, r.active, r.new30, Math.round(r.imprLo), Math.round(r.imprHi), r.sovImpr == null ? "" : +(r.sovImpr * 100).toFixed(1), Math.round(r.costMoLo), Math.round(r.costMoHi), Math.round(r.costMoMid), r.fmt.TEXT, r.fmt.IMAGE, r.fmt.VIDEO, r.lifeMed == null ? "" : r.lifeMed, r.ids.join(", ")]));
+    const wb = XLSX.utils.book_new(); const M = this.meta; const r2 = v => v == null || !isFinite(v) ? "" : Math.round(v * 100) / 100; const p1 = v => v == null || !isFinite(v) ? "" : +(v * 100).toFixed(1);
+    const cmp = [["Marka","Twoja marka","Indeks aktywności","Kreacje w okresie","Aktywne (7 dni)","Nowe w okresie","Nowe 30 dni","Wyświetlenia min","Wyświetlenia max","Wyświetlenia środek","Wyświetlenia / mies.","Wyświetlenia ost. 30 dni","Udział w wyświetleniach %","Udział tekst %","Udział grafika %","Udział wideo %","Koszt/mies. min zł","Koszt/mies. max zł","Koszt/mies. środek zł","Koszt dziennie zł","Koszt ost. 30 dni zł","Udział w wydatkach %","Tekst (kreacje)","Grafika (kreacje)","Wideo (kreacje)","Wyłączane ≤7 dni %","Mediana życia (dni)","Wyświetlenia na kreację","Kraje EOG","ID kont"]]
+      .concat(this.res.map(r => [r.name, r.main ? "tak" : "", r.index, r.n, r.active, r.newP, r.new30, Math.round(r.imprLo), Math.round(r.imprHi), Math.round(r.imprMid), Math.round(r.imprMo), Math.round(r.impr30), p1(r.sovImpr), p1(r.sovFmt.TEXT), p1(r.sovFmt.IMAGE), p1(r.sovFmt.VIDEO),
+        Math.round(r.costMoLo), Math.round(r.costMoHi), Math.round(r.costMoMid), Math.round(r.costDay), Math.round(r.cost30), p1(r.sovCost), r.fmt.TEXT, r.fmt.IMAGE, r.fmt.VIDEO, p1(r.quickPct), r.lifeMed == null ? "" : r.lifeMed, Math.round(r.perCreative || 0), r.countries.length, r.ids.join(", ")]));
     XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(cmp), "Porównanie");
-    const cr = [["Marka","ID reklamodawcy","Reklamodawca","ID kreacji","Format","Temat","Od","Do","Dni emisji","Wyśw. min (cała emisja)","Wyśw. max (cała emisja)","Wyśw. w okresie min","Wyśw. w okresie max","Link"]];
-    this.res.forEach(r => r.rows.forEach(x => cr.push([r.name, x.aid, x.aname, x.cid, FMT_PL[x.fmt] || x.fmt, x.topic, x.first, x.last, x.dur, x.lo == null ? "" : x.lo, x.hi == null ? "" : x.hi, Math.round(x.pImprLo || 0), Math.round(x.pImprHi || 0), x.url])));
+    if (M.prevW) XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["Marka","Wyświetlenia","Wyświetlenia poprz.","Zmiana %","Koszt/mies. zł","Koszt/mies. poprz. zł","Zmiana %","Nowe kreacje","Nowe poprz.","Emitowane","Emitowane poprz.","Udział %","Udział poprz. %"]]
+      .concat(this.res.map(r => { const p = r.prev || {}; const d = (a, b) => b ? +((a - b) / b * 100).toFixed(1) : ""; return [r.name, Math.round(r.imprMid), Math.round(p.impr || 0), d(r.imprMid, p.impr), Math.round(r.costMoMid), Math.round(p.costMo || 0), d(r.costMoMid, p.costMo), r.newP, p.nNew || 0, r.n, p.n || 0, p1(r.sovImpr), p1(r.prevSov)]; }))), "Okres do okresu");
+    const wk = [["Tydzień od"].concat(this.res.map(r => r.name + " · wyświetlenia"), this.res.map(r => r.name + " · aktywne"), this.res.map(r => r.name + " · nowe"))];
+    (this.res[0] ? this.res[0].weekLabels : []).forEach((l, i) => wk.push([l].concat(this.res.map(r => Math.round(r.weekImpr[i])), this.res.map(r => r.weekActive[i]), this.res.map(r => r.weekStarts[i]))));
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(wk), "Tygodnie");
+    const ct = [["Marka","Kraj","Kreacje","Wyświetlenia w okresie (środek)"]]; this.res.forEach(r => { const m = Object.fromEntries(r.ctyImpr); r.countries.forEach(([k, v]) => ct.push([r.name, COUNTRY_PL[k] || k, v, Math.round(m[k] || 0)])); });
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(ct), "Kraje");
+    const cr = [["Marka","ID reklamodawcy","Reklamodawca","ID kreacji","Format","Temat","Od","Do","Dni emisji","Aktywna","Wyśw. min (cała emisja)","Wyśw. max (cała emisja)","Wyśw. w okresie min","Wyśw. w okresie max","Platformy","Link"]];
+    this.res.forEach(r => r.rows.forEach(x => cr.push([r.name, x.aid, x.aname, x.cid, FMT_PL[x.fmt] || x.fmt, x.topic, x.first, x.last, x.dur, x.active ? "tak" : "nie", x.lo == null ? "" : x.lo, x.hi == null || x.hi === Infinity ? "" : x.hi, Math.round(x.pImprLo || 0), Math.round(x.pImprHi || 0), (x.surfList || []).map(s => SURF_PL[s] || s).join(", "), x.url])));
     XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(cr), "Kreacje");
     const c = this.cpm();
-    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["Zakres danych",""],["Źródło","Google Ads Transparency Center (BigQuery: bigquery-public-data.google_ads_transparency_center)"],["Kraj", this.data.region],["Okres", `${M.start} – ${M.asof} (${M.pDays} dni)`],["Stan danych", M.asof],["CPM tekst zł", c.TEXT.join("–")],["CPM grafika zł", c.IMAGE.join("–")],["CPM wideo zł", c.VIDEO.join("–")],["Uwaga","Koszt to szacunek: wyświetlenia × CPM z założeń. Google nie publikuje wydatków reklam komercyjnych."]]), "Zakres danych");
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["Zakres danych",""],["Źródło","Google Ads Transparency Center (BigQuery: bigquery-public-data.google_ads_transparency_center)"],["Kraj", this.data.region],["Okres", `${M.start} – ${M.asof} (${M.pDays} dni)`],["Okres porównawczy", M.prevW ? `${M.prevW.s} – ${M.prevW.e}` : "brak"],["Stan danych", M.asof],["CPM tekst zł", c.TEXT.join("–")],["CPM grafika zł", c.IMAGE.join("–")],["CPM wideo zł", c.VIDEO.join("–")],["Uwaga","Koszt to szacunek: wyświetlenia × CPM z założeń. Google nie publikuje wydatków reklam komercyjnych."]]), "Zakres danych");
     XLSX.writeFile(wb, `rivalcore_google_${this.data.region}_${isoD(Date.now())}.xlsx`);
   },
   md(){
     const M = this.meta; const L = [];
-    L.push(`# RivalCore · reklamy konkurencji w Google (${this.data.region})`, "", `Okres: ${M.start} – ${M.asof}. Źródło: Google Ads Transparency Center (oficjalny zbiór Google w BigQuery). Koszt to szacunek (wyświetlenia × CPM z założeń), a nie wydatki.`, "",
-      "## Polecenie dla AI", "Przeanalizuj obecność marek w reklamach Google na podstawie wyłącznie poniższych danych. Odróżniaj dane Google (liczby kreacji, daty, zakresy wyświetleń, formaty) od szacunków (koszt). Ułóż odpowiedź: analiza → hipotezy → problemy i szanse → rekomendacje dla Twojej marki. Hipotezy oznacz jako hipotezy.", "",
-      "## Marki", "| Marka | Kreacje | Aktywne 7 dni | Nowe 30 dni | Wyświetlenia (zakres) | Udział w wyśw. | Koszt/mies. (szac.) | Tekst/Grafika/Wideo |", "|---|---|---|---|---|---|---|---|");
-    this.res.forEach(r => L.push(`| ${r.name}${r.main ? " (Twoja marka)" : ""} | ${r.n} | ${r.active} | ${r.new30} | ${Math.round(r.imprLo)}–${Math.round(r.imprHi)} | ${r.sovImpr == null ? "—" : (r.sovImpr * 100).toFixed(1) + "%"} | ${Math.round(r.costMoLo)}–${Math.round(r.costMoHi)} zł | ${r.fmt.TEXT}/${r.fmt.IMAGE}/${r.fmt.VIDEO} |`));
-    this.res.forEach(r => { if (!r.n) return; L.push("", `### ${r.name}`, `- Tematy: ${r.topics.slice(0, 5).map(([k, v]) => `${k} (${v})`).join(", ") || "—"}`, `- Platformy: ${r.surfaces.slice(0, 6).map(([k, v]) => `${SURF_PL[k] || k} (${v})`).join(", ") || "—"}`, `- Mediana długości życia kreacji: ${r.lifeMed == null ? "—" : r.lifeMed + " dni"}`, `- Aktywne ≥30 dni: ${r.ever}`); });
+    L.push(`# RivalCore · reklamy konkurencji w Google (${this.data.region})`, "", `Okres: ${M.start} – ${M.asof}${M.prevW ? `; porównanie z ${M.prevW.s} – ${M.prevW.e}` : ""}. Źródło: Google Ads Transparency Center (oficjalny zbiór Google w BigQuery). Koszt to szacunek (wyświetlenia × CPM z założeń), a nie wydatki.`, "",
+      "## Polecenie dla AI", "Przeanalizuj obecność marek w reklamach Google na podstawie wyłącznie poniższych danych. Odróżniaj dane Google (liczby kreacji, daty, zakresy wyświetleń, formaty) od szacunków (koszt, indeks). Ułóż odpowiedź: analiza → hipotezy → problemy i szanse → rekomendacje dla Twojej marki. Hipotezy oznacz jako hipotezy.", "",
+      "## Marki", "| Marka | Indeks | Kreacje | Aktywne 7 dni | Nowe w okresie | Wyświetlenia (zakres) | Zmiana okres do okresu | Udział w wyśw. | Udział tekst / grafika / wideo | Koszt/mies. (szac.) |", "|---|---|---|---|---|---|---|---|---|---|");
+    this.res.forEach(r => L.push(`| ${r.name}${r.main ? " (Twoja marka)" : ""} | ${r.index} | ${r.n} | ${r.active} | ${r.newP} | ${Math.round(r.imprLo)}–${Math.round(r.imprHi)} | ${r.dImpr == null ? "—" : (r.dImpr * 100).toFixed(0) + "%"} | ${r.sovImpr == null ? "—" : (r.sovImpr * 100).toFixed(1) + "%"} | ${FMTS.map(k => r.sovFmt[k] == null ? "—" : (r.sovFmt[k] * 100).toFixed(0) + "%").join(" / ")} | ${Math.round(r.costMoLo)}–${Math.round(r.costMoHi)} zł |`));
+    this.res.forEach(r => { if (!r.n) return; L.push("", `### ${r.name}`, `- Tematy: ${r.topics.slice(0, 5).map(([k, v]) => `${k} (${v})`).join(", ") || "—"}`, `- Platformy: ${r.surfaces.slice(0, 6).map(([k, v]) => `${SURF_PL[k] || k} (${v})`).join(", ") || "—"}`, `- Kraje (wyświetlenia): ${r.ctyImpr.slice(0, 6).map(([k, v]) => `${k} ${Math.round(v)}`).join(", ") || "—"}`, `- Mediana długości życia kreacji: ${r.lifeMed == null ? "—" : r.lifeMed + " dni"}; wyłączane ≤7 dni: ${r.quickPct == null ? "—" : Math.round(r.quickPct * 100) + "%"}`, `- Aktywne ≥30 dni: ${r.ever}; regularność: ${Math.round(r.regularity * 100)}% tygodni`); });
     const t = L.join("\n");
     download(`rivalcore_google_dla_AI_${isoD(Date.now())}.md`, t, "text/markdown");
   }
 };
+const FMTS = ["TEXT", "IMAGE", "VIDEO"];
+function gFetchSince(per){ if (!per || !per.days || !per.since) return per ? per.since : "2023-01-01"; const ps = addD(per.since, -per.days); return ps < "2023-03-01" ? (per.since < "2023-03-01" ? per.since : "2023-03-01") : ps; }
+const gIdxLabel = v => v >= 81 ? "bardzo wysoka aktywność" : v >= 61 ? "wysoka aktywność" : v >= 31 ? "średnia aktywność" : "niska aktywność";
 const FMT_PL = {TEXT: "tekst (Search)", IMAGE: "grafika", VIDEO: "wideo"};
 const SURF_PL = {SEARCH: "wyszukiwarka", YOUTUBE: "YouTube", SHOPPING: "Zakupy", MAPS: "Mapy", PLAY: "Google Play", DISPLAY: "sieć reklamowa", GMAIL: "Gmail", DISCOVER: "Discover"};
 const AUD_PL = {demographic_info: "demografia", geo_location: "lokalizacja", contextual_signals: "sygnały kontekstowe", customer_lists: "listy klientów (remarketing)", topics_of_interest: "zainteresowania"};
 const COUNTRY_PL = {PL: "Polska", DE: "Niemcy", CZ: "Czechy", SK: "Słowacja", LT: "Litwa", LV: "Łotwa", EE: "Estonia", RO: "Rumunia", HU: "Węgry", AT: "Austria", FR: "Francja", IT: "Włochy", ES: "Hiszpania", NL: "Holandia", BE: "Belgia", PT: "Portugalia", SE: "Szwecja", DK: "Dania", FI: "Finlandia", IE: "Irlandia", GR: "Grecja", BG: "Bułgaria", HR: "Chorwacja", SI: "Słowenia", LU: "Luksemburg", CY: "Cypr", MT: "Malta", NO: "Norwegia", IS: "Islandia", LI: "Liechtenstein", TR: "Turcja", EEA: "EOG łącznie"};
 const LIFE_KEYS = ["d7", "d30", "d90", "d90p"], LIFE_PL = {d7: "do 7 dni", d30: "8–30 dni", d90: "31–90 dni", d90p: "ponad 90 dni"};
 const WD_PL = ["pon.", "wt.", "śr.", "czw.", "pt.", "sob.", "niedz."];
-const G_CMP_TABS = [["ins", "Wnioski i rekomendacje"], ["sov", "Udział w głosie i budżet"], ["cre", "Kreacje i testy"], ["pla", "Platformy, odbiorcy, kraje"], ["cal", "Kalendarz"], ["rank", "Rankingi"]];
-const G_BRAND_TABS = [["ov", "Przegląd"], ["cre", "Kreacje i testy"], ["pla", "Platformy i odbiorcy"], ["cal", "Kalendarz"], ["acc", "Konta i płatnicy"]];
+const G_CMP_TABS = [["ins", "Wnioski i rekomendacje"], ["sov", "Udział w głosie i budżet"], ["trend", "Okres do okresu"], ["cre", "Kreacje i testy"], ["pla", "Platformy, odbiorcy, kraje"], ["cal", "Kalendarz"], ["rank", "Rankingi i indeks"]];
+const G_BRAND_TABS = [["ov", "Przegląd"], ["bud", "Budżet i wyświetlenia"], ["cre", "Kreacje i testy"], ["pla", "Platformy i odbiorcy"], ["cal", "Kalendarz"], ["acc", "Konta i płatnicy"]];
 const ICON_BULB = `<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg>`;
 function normRow(o){
   const big = v => { if (v == null || v === "") return null; const n = +v; return isFinite(n) && n < 1e12 ? n : (isFinite(n) ? Infinity : null); };
@@ -6028,36 +6155,48 @@ function surfParse(v){ // → [{s, lo}]
   walkJ(j, o => { let s = null, lo = null; for (const [k, x] of Object.entries(o)){ if (/surface/i.test(k) && typeof x === "string" && !/^\d/.test(x)) s = x; if (/lower/i.test(k) && x != null && isFinite(+x)) lo = +x; } if (s) out.push({s, lo}); });
   return out;
 }
+// wyświetlenia kreacji przypadające na okno [s, e]: zakres Google rozłożony równo na dni, za które go podano
+function winImpr(r, s, e){
+  if (r.lo == null || !r.ts) return null;
+  const s0 = r.ts > r.first ? r.ts : r.first, e0 = r.te && r.te < r.last ? r.te : r.last; const span = Math.max(1, daysBetween(s0, e0) + 1);
+  const os = s0 > s ? s0 : s, oe = e0 < e ? e0 : e; const ov = Math.max(0, daysBetween(os, oe) + 1); const sh = Math.min(1, ov / span);
+  const hiV = r.hi === Infinity || r.hi == null ? r.lo : r.hi;
+  return {lo: r.lo * sh, hi: hiV * sh, mid: (r.lo + hiV) / 2 * sh, os, oe, ov, open: r.hi === Infinity || r.hi == null};
+}
+const glg = (v, ref) => Math.max(0, Math.min(100, Math.log10(1 + (v || 0)) / Math.log10(1 + ref) * 100));
 function brandStats(b, bi, ids, rows, ctx){
-  const {asof, start, pDays, cpm, allRows = [], removed = []} = ctx;
+  const {asof, start, pDays, cpm, allRows = [], removed = [], prevW = null, prevRows = []} = ctx;
   const aStart = addD(asof, -6), n30 = addD(asof, -29), p30 = addD(asof, -59);
-  const fmt = {TEXT: 0, IMAGE: 0, VIDEO: 0}, fmtImpr = {TEXT: 0, IMAGE: 0, VIDEO: 0};
+  const fmt = {TEXT: 0, IMAGE: 0, VIDEO: 0}, fmtImpr = {TEXT: 0, IMAGE: 0, VIDEO: 0}, fmtCost = {TEXT: 0, IMAGE: 0, VIDEO: 0};
+  const fkey = x => fmt[x] !== undefined ? x : "IMAGE";
+  const cMid = f => { const c = cpm[f] || cpm.IMAGE; return (c[0] + c[1]) / 2; };
   const months = []; { let m = start.slice(0, 7); const e = asof.slice(0, 7); while (m <= e){ months.push(m); const [y, mm] = m.split("-").map(Number); m = mm === 12 ? `${y + 1}-01` : `${y}-${String(mm + 1).padStart(2, "0")}`; if (months.length > 40) break; } }
   const mIdx = Object.fromEntries(months.map((m, i) => [m, i])); const monthImpr = months.map(() => 0);
   const nW = Math.min(52, Math.max(4, Math.ceil(pDays / 7))); const wStart = addD(asof, -(nW * 7 - 1));
-  const weekStarts = Array(nW).fill(0), weekActive = Array(nW).fill(0);
+  const weekStarts = Array(nW).fill(0), weekActive = Array(nW).fill(0), weekImpr = Array(nW).fill(0);
   const weekLabels = Array.from({length: nW}, (_, i) => { const d = addD(wStart, i * 7); return d.slice(8, 10) + "." + d.slice(5, 7); });
   const surfC = {}, surfI = {}, audC = {}, audD = {}, topC = {}, accs = {}, payC = {}, dayC = {}, wdays = Array(7).fill(0);
   const lifeB = {d7: 0, d30: 0, d90: 0, d90p: 0};
-  let imprLo = 0, imprHi = 0, costLo = 0, costHi = 0, costMid = 0, openHi = 0;
+  let imprLo = 0, imprHi = 0, costLo = 0, costHi = 0, costMid = 0, openHi = 0, impr30 = 0, cost30 = 0;
   const out = rows.map(r0 => {
     const r = {...r0}; r.dur = daysBetween(r.first, r.last) + 1; r.active = r.last >= aStart;
-    const f = fmt[r.fmt] !== undefined ? r.fmt : "IMAGE"; fmt[f]++;
+    const f = fkey(r.fmt); fmt[f]++;
     if (r.first >= wStart){ const wi = Math.floor(daysBetween(wStart, r.first) / 7); if (wi >= 0 && wi < nW) weekStarts[wi]++; }
     for (let w = 0; w < nW; w++){ const ws = addD(wStart, w * 7), we = addD(ws, 6); if (r.first <= we && r.last >= ws) weekActive[w]++; }
     if (r.first >= start){ dayC[r.first] = (dayC[r.first] || 0) + 1; wdays[(new Date(r.first + "T00:00:00Z").getUTCDay() + 6) % 7]++; }
     if (!r.active){ const d = r.dur; lifeB[d <= 7 ? "d7" : d <= 30 ? "d30" : d <= 90 ? "d90" : "d90p"]++; }
-    if (r.lo != null && r.ts){
-      const s0 = r.ts > r.first ? r.ts : r.first, e0 = r.te && r.te < r.last ? r.te : r.last; const span = Math.max(1, daysBetween(s0, e0) + 1);
-      const os = s0 > start ? s0 : start, oe = e0 < asof ? e0 : asof; const ov = Math.max(0, daysBetween(os, oe) + 1); const share = Math.min(1, ov / span);
-      const hiV = r.hi === Infinity || r.hi == null ? (openHi++, r.lo) : r.hi;
-      r.pImprLo = r.lo * share; r.pImprHi = hiV * share; r.pImprMid = (r.pImprLo + r.pImprHi) / 2;
-      imprLo += r.pImprLo; imprHi += r.pImprHi; fmtImpr[f] += r.pImprMid;
+    const wi = winImpr(r, start, asof);
+    if (wi){
+      if (wi.open) openHi++;
+      r.pImprLo = wi.lo; r.pImprHi = wi.hi; r.pImprMid = wi.mid;
+      imprLo += wi.lo; imprHi += wi.hi; fmtImpr[f] += wi.mid;
       const c = cpm[f] || cpm.IMAGE;
-      costLo += r.pImprLo / 1000 * c[0]; costHi += r.pImprHi / 1000 * c[1]; costMid += r.pImprMid / 1000 * (c[0] + c[1]) / 2;
-      if (ov > 0){ const perDay = r.pImprMid / ov; let d = os; let guard = 0;
+      costLo += wi.lo / 1000 * c[0]; costHi += wi.hi / 1000 * c[1]; costMid += wi.mid / 1000 * cMid(f); fmtCost[f] += wi.mid / 1000 * cMid(f);
+      const w30 = winImpr(r, n30, asof); if (w30){ impr30 += w30.mid; cost30 += w30.mid / 1000 * cMid(f); }
+      if (wi.ov > 0){ const perDay = wi.mid / wi.ov; const os = wi.os, oe = wi.oe; let d = os; let guard = 0;
         while (d <= oe && guard++ < 1200){ const m = d.slice(0, 7); const [y, mm] = m.split("-").map(Number); const nextM = mm === 12 ? `${y + 1}-01-01` : `${y}-${String(mm + 1).padStart(2, "0")}-01`;
-          const segEnd = addD(nextM, -1) < oe ? addD(nextM, -1) : oe; const k = daysBetween(d, segEnd) + 1; if (mIdx[m] !== undefined) monthImpr[mIdx[m]] += perDay * k; d = nextM; } }
+          const segEnd = addD(nextM, -1) < oe ? addD(nextM, -1) : oe; const k = daysBetween(d, segEnd) + 1; if (mIdx[m] !== undefined) monthImpr[mIdx[m]] += perDay * k; d = nextM; }
+        for (let w = 0; w < nW; w++){ const ws = addD(wStart, w * 7), we = addD(ws, 6); const a = ws > os ? ws : os, z = we < oe ? we : oe; if (a <= z) weekImpr[w] += perDay * (daysBetween(a, z) + 1); } }
     }
     const sl = surfParse(r.surf); r.surfList = [...new Set(sl.map(x => x.s))];
     r.surfList.forEach(s => { surfC[s] = (surfC[s] || 0) + 1; }); sl.forEach(x => { if (x.lo != null) surfI[x.s] = (surfI[x.s] || 0) + x.lo; });
@@ -6072,16 +6211,32 @@ function brandStats(b, bi, ids, rows, ctx){
   });
   const ended = out.filter(r => !r.active); const lifes = ended.map(r => r.dur).sort((x, y) => x - y);
   const nN = out.length || 1; const moF = 30 / pDays;
-  const cty = {}; allRows.forEach(r => { if (!r.reg || r.reg === "EEA" || r.last < start) return; cty[r.reg] = cty[r.reg] || new Set(); cty[r.reg].add(r.cid); });
+  const cty = {}, ctyI = {}; allRows.forEach(r => { if (!r.reg || r.reg === "EEA" || r.last < start || r.first > asof) return; cty[r.reg] = cty[r.reg] || new Set(); cty[r.reg].add(r.cid); const w = winImpr(r, start, asof); if (w) ctyI[r.reg] = (ctyI[r.reg] || 0) + w.mid; });
   const remR = {}; removed.forEach(x => { const k = x.reason || "inne / niepodane"; remR[k] = (remR[k] || 0) + 1; });
   const a30 = out.filter(r => r.first >= n30).length, b30 = out.filter(r => r.first >= p30 && r.first < n30).length;
   const trend = pDays >= 60 ? {a: a30, b: b30, lbl: !b30 ? (a30 ? "rośnie (wcześniej brak nowych)" : "brak nowych kreacji") : a30 / b30 >= 1.2 ? "rośnie" : a30 / b30 <= 0.8 ? "spada" : "stabilna"} : null;
   const favDay = wdays.some(Boolean) ? wdays.indexOf(Math.max(...wdays)) : null;
+  // okres porównawczy
+  let prev = null;
+  if (prevW){
+    prev = {n: prevRows.length, nNew: 0, impr: 0, cost: 0, active: 0};
+    const pa = addD(prevW.e, -6);
+    prevRows.forEach(r => { const f = fkey(r.fmt); if (r.first >= prevW.s) prev.nNew++; if (r.last >= pa) prev.active++;
+      const w = winImpr(r, prevW.s, prevW.e); if (w){ prev.impr += w.mid; prev.cost += w.mid / 1000 * cMid(f); } });
+    prev.costMo = prev.cost * moF;
+  }
+  const active = out.filter(r => r.active).length, newP = out.filter(r => r.first >= start).length, imprMid = (imprLo + imprHi) / 2;
+  const imprMo = imprMid * moF, newPerMo = newP * moF;
+  const regularity = nW ? weekActive.filter(Boolean).length / nW : 0;
+  const nf = Object.values(fmt).filter(v => v >= Math.max(1, out.length * 0.05)).length, ns = Object.values(surfC).filter(v => v >= Math.max(1, out.length * 0.05)).length;
+  const idxParts = {skala: glg(active, 100), zasieg: glg(imprMo, 5e6), swiezosc: active ? Math.min(100, a30 / Math.max(active, 1) * 140) : 0, testowanie: glg(newPerMo, 40), regularnosc: regularity * 100, roznorodnosc: Math.min(100, nf / 3 * 60 + Math.min(ns, 4) / 4 * 40)};
+  const index = out.length ? Math.round(idxParts.skala * .25 + idxParts.zasieg * .25 + idxParts.swiezosc * .15 + idxParts.testowanie * .15 + idxParts.regularnosc * .10 + idxParts.roznorodnosc * .10) : 0;
   return {idx: bi, label: b.label || "", name: (b.name || "").trim() || (out[0] && out[0].aname) || ids.join(", "), main: !!b.main, ids, auto: b.auto || null, color: COLORS[bi % 8],
-    rows: out, n: out.length, active: out.filter(r => r.active).length, new30: a30, ever: out.filter(r => r.active && r.dur >= 30).length,
-    fmt, fmtShare: Object.fromEntries(Object.entries(fmt).map(([k, v]) => [k, out.length ? v / out.length : 0])), fmtImpr,
-    imprLo, imprHi, imprMid: (imprLo + imprHi) / 2, costLo, costHi, costMid, costMoLo: costLo * moF, costMoHi: costHi * moF, costMoMid: costMid * moF, openHi,
-    monthImpr, monthLabels: months, weekStarts, weekActive, weekLabels, concAvg: weekActive.length ? sum(weekActive) / weekActive.length : 0,
+    rows: out, n: out.length, active, new30: a30, newP, newPerMo, ever: out.filter(r => r.active && r.dur >= 30).length,
+    fmt, fmtShare: Object.fromEntries(Object.entries(fmt).map(([k, v]) => [k, out.length ? v / out.length : 0])), fmtImpr, fmtCost, fmtCostMo: Object.fromEntries(Object.entries(fmtCost).map(([k, v]) => [k, v * moF])),
+    imprLo, imprHi, imprMid, imprMo, imprDay: imprMid / pDays, impr30, cost30, costLo, costHi, costMid, costDay: costMid / pDays, costMoLo: costLo * moF, costMoHi: costHi * moF, costMoMid: costMid * moF, openHi,
+    perCreative: out.length ? imprMid / out.length : null,
+    monthImpr, monthLabels: months, weekStarts, weekActive, weekImpr, weekLabels, concAvg: weekActive.length ? sum(weekActive) / weekActive.length : 0, concMax: Math.max(0, ...weekActive), regularity,
     surfaces: Object.entries(surfC).sort((x, y) => y[1] - x[1]), surfImpr: Object.entries(surfI).sort((x, y) => y[1] - x[1]),
     audUse: Object.fromEntries(Object.entries(audC).map(([k, v]) => [k, v / nN])),
     audDetail: Object.values(audD).map(d => ({k: d.k, inc: d.inc / nN, exc: d.exc / nN, both: d.both / nN, any: d.any / nN})),
@@ -6090,15 +6245,21 @@ function brandStats(b, bi, ids, rows, ctx){
     lifeMed: lifes.length ? lifes[Math.floor(lifes.length / 2)] : null, lifeB, quickPct: ended.length ? lifeB.d7 / ended.length : null,
     wdays, favDay, favDayPct: favDay == null ? null : wdays[favDay] / (sum(wdays) || 1),
     waves: Object.entries(dayC).filter(([, v]) => v >= 3).sort((x, y) => y[0].localeCompare(x[0])),
-    countries: Object.entries(cty).map(([k, s]) => [k, s.size]).sort((x, y) => y[1] - x[1]),
-    removed: removed.length, removedReasons: Object.entries(remR).sort((x, y) => y[1] - x[1]), trend};
+    countries: Object.entries(cty).map(([k, s]) => [k, s.size]).sort((x, y) => y[1] - x[1]), ctyImpr: Object.entries(ctyI).sort((x, y) => y[1] - x[1]),
+    removed: removed.length, removedReasons: Object.entries(remR).sort((x, y) => y[1] - x[1]), trend,
+    prev, dImpr: prev && prev.impr ? (imprMid - prev.impr) / prev.impr : null, dCost: prev && prev.costMo ? (costMid * moF - prev.costMo) / prev.costMo : null,
+    index, idxParts};
 }
 
 // ---------------------------------------------------------------- Meta (istniejący moduł RivalCore)
 function metaResults(){
   let arr = []; try { arr = typeof results !== "undefined" && Array.isArray(results) ? results : []; } catch(e){ arr = []; }
-  return arr.filter(r => r && r.s).map(r => { const s = r.s; const mo = s.okres && s.okres.days ? s.okres.koszt / s.okres.days * 30 : s.miesSr;
-    return {brand: r.brand || r.pageName, isMain: !!r.isMain, active: s.aktywne, total: s.lacznie, costMo: +mo || 0, imprMo: s.okres && s.okres.days ? s.okres.wysw / s.okres.days * 30 : s.wyswMiesSr}; });
+  return arr.filter(r => r && r.s).map(r => { const s = r.s; const per = s.okres && s.okres.days;
+    const mo = per ? s.okres.koszt / s.okres.days * 30 : s.miesSr;
+    const pp = s.okresPrev && !s.prevStale && s.okresPrev.days ? s.okresPrev : null;
+    return {brand: r.brand || r.pageName, name: r.pageName || r.brand, isMain: !!r.isMain, active: s.aktywne, total: s.lacznie, costMo: +mo || 0, imprMo: (per ? s.okres.wysw / s.okres.days * 30 : s.wyswMiesSr) || 0,
+      prevCostMo: pp ? pp.koszt / pp.days * 30 : null, prevImprMo: pp ? pp.wysw / pp.days * 30 : null, dir: r.dir, trend: r.trend, index: r.idx ? r.idx.index : null,
+      video: s.wideo, offer: s.zOfertaProc, n30: s.n30, lo: s.miesMin, hi: s.miesMax}; });
 }
 
 // ---------------------------------------------------------------- Meta + Google
@@ -6107,308 +6268,90 @@ const RZ = {
   render(){
     const out = E("rzOut"); if (!out) return;
     const m = metaResults(), g = G.res || [];
-    if (!m.length && !g.length){ out.innerHTML = `<div class="gempty">Włącz oba źródła w „Źródłach danych” i kliknij „Analizuj · Meta + Google”, a tu pojawi się porównanie kanałów.</div>`; return; }
-    const names = [...new Set([...m.map(x => x.brand), ...g.map(x => x.name)])];
-    // dopasowanie: klucz = marka Google → marka Meta
-    const auto = gname => { const k = normName(gname); const hit = m.find(x => normName(x.brand) === k) || m.find(x => normName(x.brand).includes(k) || k.includes(normName(x.brand))); return hit ? hit.brand : ""; };
+    if (!m.length || !g.length){ out.innerHTML = `<div class="gempty">${!m.length && !g.length ? "Włącz oba źródła w „Źródłach danych” i kliknij „Analizuj · Meta + Google”, a tu pojawi się porównanie kanałów." : `Masz tylko analizę ${m.length ? "Meta" : "Google"}. Włącz też źródło ${m.length ? "Google Ads" : "Meta"} i uruchom analizę, żeby porównać kanały.`}</div>`; return; }
+    const auto = gname => { const k = normName(gname); const hit = m.find(x => normName(x.brand) === k) || m.find(x => normName(x.name) === k) || m.find(x => normName(x.brand).includes(k) || k.includes(normName(x.brand))); return hit ? hit.brand : ""; };
     const rows = [];
     const usedMeta = new Set();
     g.forEach(gr => { const mk = this.map[gr.name] !== undefined ? this.map[gr.name] : auto(gr.name); const mr = m.find(x => x.brand === mk); if (mr) usedMeta.add(mr.brand);
       rows.push({name: gr.name, main: gr.main || (mr && mr.isMain), g: gr, m: mr || null, mk}); });
     m.filter(x => !usedMeta.has(x.brand)).forEach(mr => rows.push({name: mr.brand, main: mr.isMain, g: null, m: mr, mk: mr.brand}));
-    rows.forEach(r => { r.mc = r.m ? r.m.costMo : 0; r.gc = r.g ? r.g.costMoMid : 0; r.tot = r.mc + r.gc; r.ma = r.m ? r.m.active : null; r.ga = r.g ? r.g.active : null; r.gShare = r.tot ? r.gc / r.tot : null; });
-    const T = sum(rows, r => r.tot) || 0; rows.forEach(r => r.sov = T ? r.tot / T : null);
-    const ins = [];
+    rows.forEach((r, i) => { r.color = COLORS[i % 8];
+      r.mc = r.m ? r.m.costMo : 0; r.gc = r.g ? r.g.costMoMid : 0; r.tot = r.mc + r.gc;
+      r.mi = r.m ? r.m.imprMo : 0; r.gi = r.g ? r.g.imprMo : 0; r.totI = r.mi + r.gi;
+      r.ma = r.m ? r.m.active : null; r.ga = r.g ? r.g.active : null; r.totA = (r.ma || 0) + (r.ga || 0);
+      r.gShare = r.tot ? r.gc / r.tot : null; r.ecpm = r.totI ? r.tot / r.totI * 1000 : null;
+      r.pm = r.m ? r.m.prevCostMo : null; r.pg = r.g && r.g.prev ? r.g.prev.costMo : null;
+      r.ptot = r.pm != null && r.pg != null ? r.pm + r.pg : null;
+      r.mDir = r.m ? (r.m.prevCostMo ? (r.mc - r.m.prevCostMo) / r.m.prevCostMo : null) : null; r.gDir = r.g ? r.g.dCost : null; });
+    const T = sum(rows, r => r.tot) || 0, TI = sum(rows, r => r.totI) || 0, TM = sum(rows, r => r.mc) || 0, TG = sum(rows, r => r.gc) || 0;
+    rows.forEach(r => { r.sov = T ? r.tot / T : null; r.sovI = TI ? r.totI / TI : null; r.sovM = TM ? r.mc / TM : null; r.sovG = TG ? r.gc / TG : null; });
+    const rank = rows.slice().sort((a, b) => b.tot - a.tot);
+    const me = rows.find(r => r.main); const comps = rows.filter(r => r !== me && r.tot);
+    const avg = f => { const v = comps.map(f).filter(x => x != null && isFinite(x)); return v.length ? sum(v) / v.length : null; };
+    const ins = [], recs = [];
+    const lead = rank[0]; if (lead && lead.tot) ins.push(`Największy łączny szacowany budżet: <b>${esc(lead.name)}</b>, ok. ${kk(lead.tot)} zł miesięcznie (${pc(lead.sov)} udziału w obu kanałach; Meta ${pc(1 - lead.gShare, 0)} / Google ${pc(lead.gShare, 0)}).`);
+    if (me && me.tot) ins.push(`Twoja marka: ${rank.indexOf(me) + 1}. miejsce z ${rows.length}, ${pc(me.sov)} łącznego udziału w głosie (Meta ${pc(me.sovM, 0)}, Google ${pc(me.sovG, 0)} udziału w kanale).`);
     rows.filter(r => r.m && r.g && r.tot).forEach(r => { if (r.gShare >= 0.7) ins.push(`<b>${esc(r.name)}</b> inwestuje głównie w Google: ok. ${pc(r.gShare, 0)} szacowanego budżetu.`); else if (r.gShare <= 0.3) ins.push(`<b>${esc(r.name)}</b> stawia głównie na Metę: ok. ${pc(1 - r.gShare, 0)} szacowanego budżetu.`); });
-    const lead = rows.slice().sort((a, b) => b.tot - a.tot)[0]; if (lead && lead.tot) ins.unshift(`Największy łączny szacowany budżet: <b>${esc(lead.name)}</b>, ok. ${kk(lead.tot)} zł miesięcznie (${pc(lead.sov)} udziału w obu kanałach).`);
-    const me = rows.find(r => r.main); if (me && lead && me !== lead && me.tot) ins.push(`Twoja marka: ${pc(me.sov)} łącznego udziału w głosie (Meta ${kk(me.mc)} zł, Google ${kk(me.gc)} zł miesięcznie).`);
-    rows.filter(r => !r.m || !r.g).forEach(r => ins.push(`<b>${esc(r.name)}</b>: brak danych z ${!r.m ? "Meta" : "Google"} w tej sesji${!r.m && m.length ? " albo nie dopasowano marki (popraw dopasowanie niżej)" : ""}.`));
+    rows.filter(r => r.ptot && r.tot && Math.abs((r.tot - r.ptot) / r.ptot) >= 0.25).forEach(r => ins.push(`<b>${esc(r.name)}</b>: łączny szacowany budżet okres do okresu ${r.tot > r.ptot ? "+" : "−"}${pc(Math.abs((r.tot - r.ptot) / r.ptot), 0)} (${kk(r.ptot)} → ${kk(r.tot)} zł/mies.).`));
+    rows.filter(r => !r.m || !r.g).forEach(r => ins.push(`<b>${esc(r.name)}</b>: brak danych z ${!r.m ? "Meta" : "Google"} w tej sesji${!r.m ? " albo nie dopasowano marki (popraw dopasowanie niżej)" : ""}.`));
+    if (me){
+      const avgG = avg(r => r.gShare);
+      if (me.gc === 0 && comps.some(r => r.gShare >= 0.2)) recs.push(["Wysoki", "Brak w Google", `Nie widać Twoich reklam w Google, a ${comps.filter(r => r.gShare >= 0.2).map(r => `${esc(r.name)} (${pc(r.gShare, 0)} budżetu)`).join(", ")} inwestuje tam znaczącą część budżetu. Sprawdź choćby kampanię brandową w wyszukiwarce.`]);
+      else if (me.mc === 0 && comps.some(r => r.gShare != null && r.gShare <= 0.8)) recs.push(["Wysoki", "Brak w Meta", `Nie widać Twoich reklam w Meta, a konkurencja jest tam aktywna (${comps.filter(r => r.mc).map(r => esc(r.name)).join(", ")}).`]);
+      else if (avgG != null && me.gShare != null && Math.abs(me.gShare - avgG) >= 0.25) recs.push(["Średni", "Mix kanałów", `Twój budżet to ${pc(me.gShare, 0)} Google / ${pc(1 - me.gShare, 0)} Meta, a u konkurencji średnio ${pc(avgG, 0)} / ${pc(1 - avgG, 0)}. ${me.gShare < avgG ? "Konkurencja mocniej inwestuje w Google — sprawdź wyszukiwarkę i YouTube." : "Konkurencja mocniej inwestuje w Metę — sprawdź zasięg w social."}`]);
+      if (me.sovM != null && me.sovG != null && me.sovM > 0 && me.sovG > 0){
+        if (me.sovM / me.sovG >= 1.8) recs.push(["Średni", "Słabszy głos w Google", `W Meta masz ${pc(me.sovM, 0)} udziału w wydatkach kanału, w Google tylko ${pc(me.sovG, 0)}.`]);
+        if (me.sovG / me.sovM >= 1.8) recs.push(["Średni", "Słabszy głos w Meta", `W Google masz ${pc(me.sovG, 0)} udziału w wydatkach kanału, w Meta tylko ${pc(me.sovM, 0)}.`]);
+      }
+      comps.filter(r => r.mDir != null && r.gDir != null && r.mDir >= 0.2 && r.gDir >= 0.2).forEach(r => recs.push(["Wysoki", "Ofensywa w obu kanałach", `<b>${esc(r.name)}</b> zwiększa szacowany budżet jednocześnie w Meta (+${pc(r.mDir, 0)}) i w Google (+${pc(r.gDir, 0)}) — wygląda na start większej kampanii.`]));
+      const vM = avg(r => r.m && r.m.video != null ? r.m.video / 100 : null), vG = avg(r => r.g ? r.g.fmtShare.VIDEO : null);
+      const myV = [me.m && me.m.video != null ? me.m.video / 100 : null, me.g ? me.g.fmtShare.VIDEO : null].filter(x => x != null), compV = [vM, vG].filter(x => x != null);
+      if (myV.length && compV.length && sum(compV) / compV.length - sum(myV) / myV.length >= 0.15) recs.push(["Średni", "Wideo w obu kanałach", `Konkurencja ma średnio ${pc(sum(compV) / compV.length, 0)} reklam wideo (Meta + Google), Ty ${pc(sum(myV) / myV.length, 0)}.`]);
+    }
+    const order = {"Wysoki": 0, "Średni": 1, "Niski": 2}; recs.sort((a, b) => order[a[0]] - order[b[0]]);
+    const swn = r => `<i class="sw" style="background:${r.color}"></i>${esc(r.name)}`;
     const cols = [
-      {k: "name", t: "Marka", h: r => esc(r.name)},
-      {k: "ma", t: "Meta: aktywne reklamy", n: 1, f: n0}, {k: "mc", t: "Meta: koszt / mies.", n: 1, f: v => v ? kk(v) + " zł" : "—"},
-      {k: "ga", t: "Google: aktywne kreacje", n: 1, f: n0}, {k: "gc", t: "Google: koszt / mies.", n: 1, f: v => v ? kk(v) + " zł" : "—"},
-      {k: "tot", t: "Razem / mies.", n: 1, f: v => v ? kk(v) + " zł" : "—"}, {k: "sov", t: "Udział w głosie", n: 1, f: v => pc(v)},
-      {k: "gShare", t: "Podział Meta | Google", h: r => r.gShare == null ? "—" : `<span class="mixbar" title="Meta ${pc(1 - r.gShare, 0)} · Google ${pc(r.gShare, 0)}"><span style="width:${((1 - r.gShare) * 100).toFixed(1)}%;background:var(--c0)"></span><span style="width:${(r.gShare * 100).toFixed(1)}%;background:var(--c1)"></span></span>`}];
-    const mapUi = g.length && m.length ? `<h3>Dopasowanie marek Google → Meta</h3><div class="grid">${g.map(gr => `<div><label>${esc(gr.name)} (Google)</label><select data-rzmap="${esc(gr.name)}"><option value="">— brak w Meta —</option>${m.map(x => `<option${(this.map[gr.name] !== undefined ? this.map[gr.name] : auto(gr.name)) === x.brand ? " selected" : ""}>${esc(x.brand)}</option>`).join("")}</select></div>`).join("")}</div>` : "";
-    out.innerHTML = `<div style="margin-top:16px"><div class="title-row"><h2 style="margin:0">Meta + Google · szacowany budżet miesięczny</h2><button class="ghost mini" id="rzX" type="button">Pobierz Excel</button></div>
-      <div class="gmeta"><span>Meta: ${m.length ? m.length + " marek" : "brak analizy"}</span><span>Google: ${g.length ? g.length + " marek · " + esc(G.data.region) + " · stan " + dPL(G.meta.asof) : "brak analizy"}</span></div>
-      <div class="gbox" style="margin-top:14px"><b>Najważniejsze w skrócie</b><ul>${ins.map(x => `<li>${x}</li>`).join("") || "<li>Za mało danych do wniosków.</li>"}</ul></div>
-      <h3>Marki w obu kanałach</h3>${sortableTable("rzt", cols, rows, {sort: "tot", rowCls: r => r.main ? "me" : ""})}
-      <div class="leg"><span><i style="background:var(--c0)"></i>Meta</span><span><i style="background:var(--c1)"></i>Google</span></div>
-      <div class="hint">Oba koszty to szacunki: Meta z zasięgu × częstotliwość × CPM, Google z zakresów wyświetleń × CPM. Porównuj proporcje i rząd wielkości, nie dokładne kwoty. Okresy obu analiz powinny być podobne.</div>
-      <div class="gsplit"><div><h3>Łączny udział w głosie</h3>${hbars(rows.map((r, i) => ({name: r.name, v: r.sov || 0, color: COLORS[i % 8]})), {fmt: v => pc(v)})}</div>
-      <div><h3>Szacowany budżet: Meta i Google</h3>${stackBars(rows.map(r => ({name: r.name, vals: {meta: r.mc, google: r.gc}})), ["meta","google"], {labels: {meta: "Meta", google: "Google"}, right: r => kk(r.vals.meta + r.vals.google) + " zł"})}</div></div>
+      {k: "name", t: "Marka", h: swn},
+      {k: "mc", t: "Meta / mies.", n: 1, f: v => v ? kk(v) + " zł" : "—"}, {k: "gc", t: "Google / mies.", n: 1, f: v => v ? kk(v) + " zł" : "—"},
+      {k: "tot", t: "Razem", n: 1, h: r => `${r.tot ? kk(r.tot) + " zł" : "—"}${r.ptot ? " " + deltaHtml(r.tot, r.ptot) : ""}`}, {k: "sov", t: "Udział w głosie", n: 1, f: v => pc(v)},
+      {k: "sovM", t: "Udział w Meta", n: 1, f: v => pc(v, 0)}, {k: "sovG", t: "Udział w Google", n: 1, f: v => pc(v, 0)},
+      {k: "totI", t: "Wyświetlenia / mies.", n: 1, f: kk}, {k: "totA", t: "Aktywne reklamy", n: 1, h: r => `${n0(r.totA)} <small class="sub">${r.ma == null ? "—" : n0(r.ma)} + ${r.ga == null ? "—" : n0(r.ga)}</small>`},
+      {k: "ecpm", t: "Efektywny CPM", n: 1, f: v => v == null ? "—" : n1(v) + " zł"},
+      {k: "gShare", t: "Meta | Google", h: r => r.gShare == null ? "—" : `<span class="mixbar" title="Meta ${pc(1 - r.gShare, 0)} · Google ${pc(r.gShare, 0)}"><span style="width:${((1 - r.gShare) * 100).toFixed(1)}%;background:var(--c0)"></span><span style="width:${(r.gShare * 100).toFixed(1)}%;background:var(--c1)"></span></span>`}];
+    const mapUi = `<details class="adv" style="margin-top:14px"><summary><span class="adv-t">Dopasowanie marek Google → Meta</span><span class="adv-sum"><span>${rows.filter(r => r.m && r.g).length} z ${g.length} dopasowane</span></span></summary><div class="adv-body"><div class="grid" style="margin-top:12px">${g.map(gr => `<div><label>${esc(gr.name)} (Google)</label><select data-rzmap="${esc(gr.name)}"><option value="">— brak w Meta —</option>${m.map(x => `<option${(this.map[gr.name] !== undefined ? this.map[gr.name] : auto(gr.name)) === x.brand ? " selected" : ""}>${esc(x.brand)}</option>`).join("")}</select></div>`).join("")}</div></div></details>`;
+    const hero = me ? `<div class="blk" data-k="p"><h3>Twoja marka w obu kanałach: ${esc(me.name)}</h3><div class="bigk">
+        <div class="bk"><span class="bl">Szac. budżet / mies.</span><span class="bv">~${kk(me.tot)} zł</span><span class="bs">${me.ptot ? deltaHtml(me.tot, me.ptot) + " · " : ""}Meta ${kk(me.mc)} + Google ${kk(me.gc)} zł</span></div>
+        <div class="bk"><span class="bl">Udział w głosie</span><span class="bv">${pc(me.sov, 0)}</span><span class="bs">${rank.indexOf(me) + 1}. miejsce z ${rows.length} marek</span></div>
+        <div class="bk"><span class="bl">Wyświetlenia / mies.</span><span class="bv">~${kk(me.totI)}</span><span class="bs">${pc(me.sovI, 0)} wszystkich wyświetleń zestawu</span></div>
+        <div class="bk"><span class="bl">Aktywne reklamy</span><span class="bv">${n0(me.totA)}</span><span class="bs">Meta ${me.ma == null ? "—" : n0(me.ma)} · Google ${me.ga == null ? "—" : n0(me.ga)}</span></div>
+        <div class="bk"><span class="bl">Udział Google w budżecie</span><span class="bv">${pc(me.gShare, 0)}</span><span class="bs">konkurencja średnio ${pc(avg(r => r.gShare), 0)}</span></div>
+      </div></div>` : "";
+    out.innerHTML = `<div class="rz">
+      <div class="gres-head"><div><div class="kicker-s">Meta + Google · wszystkie kanały</div><h2>Udział w głosie i budżet w kanałach</h2></div><button class="ghost mini" id="rzX" type="button">Pobierz Excel</button></div>
+      <div class="gmeta"><span>Meta: ${m.length} marek</span><span>Google: ${g.length} marek · ${esc(G.data.region)} · stan ${dPL(G.meta.asof)}</span><span>budżet: szacunek miesięczny</span></div>
+      <div class="see" data-k="x" style="margin-top:14px"><span>${ICON_BULB}</span><div><b>Najważniejsze w skrócie</b><ul class="lines" style="margin-top:6px">${ins.map(x => `<li>${x}</li>`).join("") || "<li>Za mało danych do wniosków.</li>"}</ul></div></div>
+      ${hero}
+      ${recs.length ? `<div class="blk" data-k="x"><h3>Rekomendacje (reguły RivalCore)</h3><div class="recs">${recs.map(([p, a, d]) => `<div class="rec" style="border-left-color:${p === "Wysoki" ? "var(--bad)" : p === "Średni" ? "var(--warn)" : "var(--accent)"}"><div class="rh"><span class="rprio" style="background:${p === "Wysoki" ? "var(--bad)" : p === "Średni" ? "var(--warn)" : "var(--accent)"}">${p}</span><span class="ra">${a}</span></div><div class="rd">${d}</div></div>`).join("")}</div></div>` : ""}
+      <div class="blk" data-k="p"><h3>Marki w obu kanałach</h3>${sortableTable("rzt", cols, rows, {sort: "tot", rowCls: r => r.main ? "me" : ""})}
+        <div class="leg"><span><i style="background:var(--c0)"></i>Meta</span><span><i style="background:var(--c1)"></i>Google</span></div></div>
+      <div class="three">
+        <div class="blk" data-k="p"><h3>Łączny udział w głosie</h3>${hbars(rows.map(r => ({name: r.name, v: r.sov || 0, color: r.color})), {fmt: v => pc(v)})}</div>
+        <div class="blk" data-k="p"><h3>Udział w wydatkach Meta</h3>${hbars(rows.map(r => ({name: r.name, v: r.sovM || 0, color: r.color})), {fmt: v => pc(v)})}</div>
+        <div class="blk" data-k="p"><h3>Udział w wydatkach Google</h3>${hbars(rows.map(r => ({name: r.name, v: r.sovG || 0, color: r.color})), {fmt: v => pc(v)})}</div>
+      </div>
+      <div class="gsplit"><div class="blk" data-k="p"><h3>Szacowany budżet: Meta i Google</h3>${stackBars(rows.map(r => ({name: r.name, vals: {meta: r.mc, google: r.gc}})), ["meta","google"], {labels: {meta: "Meta", google: "Google"}, right: r => kk(r.vals.meta + r.vals.google) + " zł"})}</div>
+      <div class="blk" data-k="p"><h3>Wyświetlenia / mies.: Meta i Google</h3>${stackBars(rows.map(r => ({name: r.name, vals: {meta: r.mi, google: r.gi}})), ["meta","google"], {labels: {meta: "Meta", google: "Google"}, right: r => kk(r.vals.meta + r.vals.google)})}</div></div>
+      <div class="hint">Oba koszty to szacunki: Meta z zasięgu × częstotliwość × CPM, Google z zakresów wyświetleń × CPM formatu. Porównuj proporcje i rząd wielkości, nie dokładne kwoty. Udział w Meta / Google = udział marki w wydatkach danego kanału wśród analizowanych marek. Efektywny CPM = łączny koszt ÷ łączne wyświetlenia × 1000. Okresy obu analiz powinny być podobne.</div>
       ${mapUi}</div>`;
     this.rows = rows;
     out.querySelectorAll("[data-rzmap]").forEach(s => s.onchange = () => { this.map[s.dataset.rzmap] = s.value; store.set("rzMap", this.map); this.render(); });
-    const x = E("rzX"); if (x) x.onclick = () => { if (typeof XLSX === "undefined") return; const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["Marka","Meta: aktywne reklamy","Meta: koszt/mies. zł","Google: aktywne kreacje","Google: koszt/mies. zł","Razem zł","Udział w głosie %","Udział Google %"]]
-        .concat(rows.map(r => [r.name, r.ma, Math.round(r.mc), r.ga, Math.round(r.gc), Math.round(r.tot), r.sov == null ? "" : +(r.sov * 100).toFixed(1), r.gShare == null ? "" : +(r.gShare * 100).toFixed(1)]))), "Meta + Google");
+    const x = E("rzX"); if (x) x.onclick = () => { if (typeof XLSX === "undefined") return; const wb = XLSX.utils.book_new(); const p1 = v => v == null || !isFinite(v) ? "" : +(v * 100).toFixed(1);
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["Marka","Twoja marka","Meta: aktywne reklamy","Meta: koszt/mies. zł","Meta: wyświetlenia/mies.","Google: aktywne kreacje","Google: koszt/mies. zł","Google: wyświetlenia/mies.","Razem koszt zł","Razem koszt poprz. okres zł","Razem wyświetlenia/mies.","Udział w głosie %","Udział w Meta %","Udział w Google %","Udział Google w budżecie %","Efektywny CPM zł"]]
+        .concat(rows.map(r => [r.name, r.main ? "tak" : "", r.ma == null ? "" : r.ma, Math.round(r.mc), Math.round(r.mi), r.ga == null ? "" : r.ga, Math.round(r.gc), Math.round(r.gi), Math.round(r.tot), r.ptot == null ? "" : Math.round(r.ptot), Math.round(r.totI), p1(r.sov), p1(r.sovM), p1(r.sovG), p1(r.gShare), r.ecpm == null ? "" : Math.round(r.ecpm * 100) / 100]))), "Meta + Google");
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["Priorytet","Obszar","Rekomendacja"]].concat(recs.map(([p, a, d]) => [p, a, d.replace(/<[^>]+>/g, "")]))), "Rekomendacje");
       XLSX.writeFile(wb, `rivalcore_meta_google_${isoD(Date.now())}.xlsx`); };
   }
 };
-
-// ---------------------------------------------------------------- Google Ads: wyniki kont (skrypt → arkusz)
-const ADS_SCRIPT = [
-"/**",
-" * RivalCore " + RCV + " · eksport wyników Google Ads do arkusza (konto MCC albo pojedyncze konto).",
-" * 1) Podmień SHEET_URL. 2) Autoryzuj i uruchom. 3) Ustaw harmonogram: codziennie.",
-" */",
-"var SHEET_URL = 'WKLEJ_TUTAJ_LINK_DO_ARKUSZA';",
-"var ACCOUNT_LABEL = '';      // np. 'RivalCore' – tylko konta z tą etykietą (puste = wszystkie)",
-"var DAYS = 90;               // ile dni kampanii",
-"var TERMS_DAYS = 30;         // ile dni wyszukiwanych haseł",
-"var TERMS_LIMIT = 300;       // ile haseł na konto (wg kosztu)",
-"",
-"function main() {",
-"  var ss = SpreadsheetApp.openByUrl(SHEET_URL);",
-"  var data = [['data','konto_id','konto','waluta','kampania_id','kampania','typ','status','koszt','wyswietlenia','klikniecia','konwersje','wartosc_konw']];",
-"  var terms = [['konto_id','konto','kampania','fraza','wyswietlenia','klikniecia','koszt','konwersje','wartosc_konw']];",
-"  var done = 0, errors = [];",
-"  var isMcc = false;",
-"  try { isMcc = typeof AdsManagerApp !== 'undefined' && !!AdsManagerApp.accounts; } catch (e) { isMcc = false; }",
-"  if (isMcc) {",
-"    var sel = AdsManagerApp.accounts();",
-"    if (ACCOUNT_LABEL) sel = sel.withCondition(\"LabelNames CONTAINS '\" + ACCOUNT_LABEL + \"'\");",
-"    var it = sel.get();",
-"    while (it.hasNext()) {",
-"      var acc = it.next();",
-"      try { AdsManagerApp.select(acc); collect(data, terms); done++; }",
-"      catch (e) { errors.push(acc.getCustomerId() + ': ' + e); }",
-"    }",
-"  } else { collect(data, terms); done = 1; }",
-"  write(ss, 'RC_dane', data, 1);",
-"  write(ss, 'RC_frazy', terms, 0);",
-"  write(ss, 'RC_info', [['zaktualizowano', Utilities.formatDate(new Date(), 'Europe/Warsaw', 'yyyy-MM-dd HH:mm')], ['konta', done], ['dni', DAYS], ['wersja', '" + RCV + "'], ['bledy', errors.join(' | ')]], 0);",
-"  Logger.log('RivalCore: zapisano ' + (data.length - 1) + ' wierszy z ' + done + ' kont.');",
-"}",
-"",
-"function collect(data, terms) {",
-"  var acc = AdsApp.currentAccount();",
-"  var tz = acc.getTimeZone(), id = acc.getCustomerId(), name = acc.getName(), cur = acc.getCurrencyCode();",
-"  var to = Utilities.formatDate(new Date(Date.now() - 864e5), tz, 'yyyy-MM-dd');",
-"  var from = Utilities.formatDate(new Date(Date.now() - DAYS * 864e5), tz, 'yyyy-MM-dd');",
-"  var q = 'SELECT segments.date, campaign.id, campaign.name, campaign.advertising_channel_type, campaign.status, ' +",
-"          'metrics.cost_micros, metrics.impressions, metrics.clicks, metrics.conversions, metrics.conversions_value ' +",
-"          \"FROM campaign WHERE segments.date BETWEEN '\" + from + \"' AND '\" + to + \"' AND metrics.impressions > 0\";",
-"  var rows = AdsApp.search(q);",
-"  while (rows.hasNext()) {",
-"    var r = rows.next(), m = r.metrics || {};",
-"    data.push([r.segments.date, id, name, cur, r.campaign.id, r.campaign.name, r.campaign.advertisingChannelType, r.campaign.status,",
-"      Number(m.costMicros || 0) / 1e6, Number(m.impressions || 0), Number(m.clicks || 0), Number(m.conversions || 0), Number(m.conversionsValue || 0)]);",
-"  }",
-"  try {",
-"    var tq = 'SELECT campaign.name, search_term_view.search_term, metrics.impressions, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.conversions_value ' +",
-"             'FROM search_term_view WHERE segments.date DURING LAST_30_DAYS AND metrics.cost_micros > 0 ORDER BY metrics.cost_micros DESC LIMIT ' + TERMS_LIMIT;",
-"    if (TERMS_DAYS !== 30) tq = tq.replace('DURING LAST_30_DAYS', \"BETWEEN '\" + Utilities.formatDate(new Date(Date.now() - TERMS_DAYS * 864e5), tz, 'yyyy-MM-dd') + \"' AND '\" + to + \"'\");",
-"    var tr = AdsApp.search(tq);",
-"    while (tr.hasNext()) {",
-"      var t = tr.next(), tm = t.metrics || {};",
-"      terms.push([id, name, t.campaign.name, t.searchTermView.searchTerm, Number(tm.impressions || 0), Number(tm.clicks || 0),",
-"        Number(tm.costMicros || 0) / 1e6, Number(tm.conversions || 0), Number(tm.conversionsValue || 0)]);",
-"    }",
-"  } catch (e) { Logger.log('Frazy pominięte dla ' + id + ': ' + e); }",
-"}",
-"",
-"function write(ss, name, rows, textCols) {",
-"  var sh = ss.getSheetByName(name) || ss.insertSheet(name);",
-"  sh.clearContents();",
-"  if (!rows.length) return;",
-"  var w = rows[0].length;",
-"  if (textCols) sh.getRange(1, 1, rows.length, textCols).setNumberFormat('@');",
-"  for (var i = 0; i < rows.length; i += 5000) {",
-"    var chunk = rows.slice(i, i + 5000).map(function (r) { while (r.length < w) r.push(''); return r; });",
-"    sh.getRange(i + 1, 1, chunk.length, w).setValues(chunk);",
-"  }",
-"}"].join("\n");
-
-const W = {
-  rows: [], terms: [], info: {}, src: "", acc: "__all__", per: "30", demo: false,
-  bind(){
-    E("wSheet").value = store.get("wSheet", "");
-    E("wSheet").onchange = () => store.set("wSheet", E("wSheet").value.trim());
-    E("wScript").onclick = () => { const p = E("wScriptCode"); p.hidden = !p.hidden; p.textContent = ADS_SCRIPT;
-      if (!p.hidden){ try { navigator.clipboard.writeText(ADS_SCRIPT).then(() => status("wStatus", "Skrypt skopiowany do schowka. Wklej go w Google Ads → Narzędzia → Skrypty i podmień SHEET_URL."), () => status("wStatus", "Zaznacz skrypt poniżej i skopiuj (Ctrl+C).")); } catch(e){} } };
-    E("wLoad").onclick = () => this.loadSheet();
-    E("wPick").onclick = () => E("wFile").click();
-    E("wFile").onchange = ev => { const fs = [...ev.target.files]; if (fs.length) this.loadFiles(fs); ev.target.value = ""; };
-    E("wDemo").onclick = () => { const dd = demoAds(); this.ingest(dd, W._demoTerms, {zaktualizowano: "dane przykładowe"}, "dane przykładowe (nie są prawdziwe)"); this.demo = true; };
-    E("wOut").addEventListener("change", ev => { if (ev.target.id === "wAcc"){ this.acc = ev.target.value; this.render(); } if (ev.target.id === "wPer"){ this.per = ev.target.value; this.render(); } });
-    E("wOut").addEventListener("click", ev => { const b = ev.target.closest("[data-wx]"); if (!b) return; if (b.dataset.wx === "xlsx") this.xlsx(); if (b.dataset.wx === "neg") this.negCsv(); });
-  },
-  sheetId(){ const v = E("wSheet").value.trim(); const m = v.match(/\/d\/([a-zA-Z0-9_-]{20,})/); return m ? m[1] : (/^[a-zA-Z0-9_-]{20,}$/.test(v) ? v : ""); },
-  async loadSheet(){
-    const id = this.sheetId(); if (!id){ status("wStatus", "Wklej link do arkusza Google, do którego zapisuje skrypt RivalCore.", true); return; }
-    store.set("wSheet", E("wSheet").value.trim());
-    status("wStatus", "Czytam arkusz…");
-    try {
-      const j = await GA.fetch(`https://sheets.googleapis.com/v4/spreadsheets/${id}/values:batchGet?ranges=RC_dane&ranges=RC_frazy&ranges=RC_info&valueRenderOption=UNFORMATTED_VALUE&dateTimeRenderOption=FORMATTED_STRING`);
-      const vr = j.valueRanges || []; const get = n => (vr.find(x => (x.range || "").replace(/'/g, "").startsWith(n)) || {}).values || [];
-      const d = get("RC_dane"); if (d.length < 2) throw new Error("W arkuszu nie ma danych w zakładce RC_dane. Uruchom najpierw skrypt w Google Ads.");
-      const info = Object.fromEntries(get("RC_info").map(r => [r[0], r[1]]));
-      this.ingest(toObjs(d), toObjs(get("RC_frazy")), info, "arkusz Google");
-    } catch(e){ status("wStatus", e.message.includes("Unable to parse range") ? "Arkusz nie ma zakładek RivalCore (RC_dane). Czy skrypt zapisuje do tego arkusza?" : e.message, true); }
-  },
-  async loadFiles(files){
-    try {
-      let d = [], t = [], info = {};
-      for (const f of files){
-        if (/\.xlsx?$/i.test(f.name)){
-          if (typeof XLSX === "undefined") throw new Error("Biblioteka Excel się nie wczytała.");
-          const wb = XLSX.read(await f.arrayBuffer(), {type: "array"});
-          const sh = n => wb.Sheets[n] ? XLSX.utils.sheet_to_json(wb.Sheets[n], {header: 1, raw: true, defval: ""}) : [];
-          if (wb.Sheets.RC_dane) d = d.concat(toObjs(sh("RC_dane"))); else d = d.concat(toObjs(sh(wb.SheetNames[0])));
-          if (wb.Sheets.RC_frazy) t = t.concat(toObjs(sh("RC_frazy")));
-          if (wb.Sheets.RC_info) info = Object.fromEntries(sh("RC_info").map(r => [r[0], r[1]]));
-        } else {
-          const objs = toObjs(parseCSV(await f.text()).rows);
-          if (objs[0] && "fraza" in objs[0]) t = t.concat(objs); else d = d.concat(objs);
-        }
-      }
-      if (!d.length || !("kampania" in d[0])) throw new Error("Nie znaleziono danych w formacie RivalCore (kolumny data, konto, kampania, koszt…). Wczytaj zakładkę RC_dane z arkusza skryptu.");
-      this.ingest(d, t, info, files.map(f => f.name).join(", "));
-    } catch(e){ status("wStatus", "Nie udało się wczytać: " + e.message, true); }
-  },
-  ingest(d, t, info, src){
-    const dt = v => { if (typeof v === "number") return isoD(Date.UTC(1899, 11, 30) + v * DAY); const s = String(v).trim(); const m = s.match(/^(\d{1,2})[./](\d{1,2})[./](\d{4})$/); return m ? `${m[3]}-${m[2].padStart(2, "0")}-${m[1].padStart(2, "0")}` : s.slice(0, 10); };
-    this.rows = d.map(o => ({d: dt(o.data), aid: String(o.konto_id || ""), acc: String(o.konto || o.konto_id || ""), cur: o.waluta || "PLN", cid: String(o.kampania_id || o.kampania), camp: String(o.kampania || ""),
-      type: String(o.typ || ""), status: String(o.status || ""), cost: pnum(o.koszt), impr: pnum(o.wyswietlenia), clk: pnum(o.klikniecia), conv: pnum(o.konwersje), val: pnum(o.wartosc_konw)})).filter(r => /^\d{4}-\d{2}-\d{2}$/.test(r.d));
-    this.terms = t.map(o => ({aid: String(o.konto_id || ""), acc: String(o.konto || ""), camp: String(o.kampania || ""), term: String(o.fraza || ""), impr: pnum(o.wyswietlenia), clk: pnum(o.klikniecia), cost: pnum(o.koszt), conv: pnum(o.konwersje), val: pnum(o.wartosc_konw)}));
-    this.info = info || {}; this.src = src; this.demo = false; this.acc = "__all__";
-    status("wStatus", `Wczytano ${n0(this.rows.length)} wierszy (${new Set(this.rows.map(r => r.aid)).size} kont), ${n0(this.terms.length)} fraz. Źródło: ${src}.` + (this.info.zaktualizowano ? ` Arkusz zaktualizowany: ${this.info.zaktualizowano}.` : ""));
-    this.render(); SRC.status();
-  },
-  range(){
-    const max = this.rows.reduce((m, r) => r.d > m ? r.d : m, "0000"); const p = this.per;
-    let s, e = max;
-    if (p === "tm"){ s = max.slice(0, 8) + "01"; }
-    else if (p === "pm"){ const d = new Date(dnum(max.slice(0, 8) + "01") - DAY); e = isoD(d); s = e.slice(0, 8) + "01"; }
-    else s = addD(max, -(+p - 1));
-    const len = daysBetween(s, e) + 1;
-    let ps, pe;
-    if (p === "pm" || p === "tm"){ const prevEnd = addD(s, -1); ps = prevEnd.slice(0, 8) + "01"; pe = p === "tm" ? addD(ps, len - 1) : prevEnd; if (pe > prevEnd) pe = prevEnd; }
-    else { pe = addD(s, -1); ps = addD(pe, -(len - 1)); }
-    return {s, e, ps, pe, len, max};
-  },
-  agg(rows){ const a = {cost: sum(rows, r => r.cost), impr: sum(rows, r => r.impr), clk: sum(rows, r => r.clk), conv: sum(rows, r => r.conv), val: sum(rows, r => r.val)};
-    a.ctr = a.impr ? a.clk / a.impr : null; a.cpc = a.clk ? a.cost / a.clk : null; a.cpa = a.conv ? a.cost / a.conv : null; a.roas = a.cost && a.val ? a.val / a.cost : null; a.cr = a.clk ? a.conv / a.clk : null; return a; },
-  render(){
-    const out = E("wOut"); if (!this.rows.length){ out.innerHTML = ""; return; }
-    const accs = [...new Map(this.rows.map(r => [r.aid, r.acc])).entries()].sort((a, b) => a[1].localeCompare(b[1], "pl"));
-    const R = this.range();
-    const base = this.acc === "__all__" ? this.rows : this.rows.filter(r => r.aid === this.acc);
-    const cur = base.filter(r => r.d >= R.s && r.d <= R.e), prev = base.filter(r => r.d >= R.ps && r.d <= R.pe);
-    const A = this.agg(cur), B = this.agg(prev);
-    const curCode = (base[0] && base[0].cur) || "PLN"; const mixedCur = new Set(cur.map(r => r.cur)).size > 1;
-    const zl = v => v == null ? "—" : kk(v) + " " + (curCode === "PLN" ? "zł" : curCode);
-    // dzienne
-    const days = []; for (let d = R.s; d <= R.e; d = addD(d, 1)) days.push(d);
-    const byDay = (rows, list) => { const m = {}; rows.forEach(r => { const o = m[r.d] || (m[r.d] = {cost: 0, conv: 0}); o.cost += r.cost; o.conv += r.conv; }); return list.map(d => m[d] || {cost: 0, conv: 0}); };
-    const pdays = days.map((_, i) => addD(R.ps, i));
-    const dc = byDay(cur, days), dp = byDay(prev, pdays);
-    // kampanie
-    const key = r => r.aid + "|" + r.cid;
-    const grp = (rows) => { const m = {}; rows.forEach(r => { (m[key(r)] = m[key(r)] || []).push(r); }); return m; };
-    const gc = grp(cur), gp = grp(prev);
-    const camps = Object.keys({...gc, ...gp}).map(k => { const c = gc[k] || [], p = gp[k] || []; const any = (c[0] || p[0]); const a = this.agg(c), b = this.agg(p);
-      const lastDay = c.filter(r => r.d === R.e); return {k, acc: any.acc, aid: any.aid, camp: any.camp, type: any.type, status: (c[c.length - 1] || p[p.length - 1]).status, ...a, pcost: b.cost, pcpa: b.cpa, pconv: b.conv, proas: b.roas, lastCost: sum(lastDay, r => r.cost), avgDay: a.cost / R.len}; })
-      .filter(c => c.cost > 0 || c.pcost > 0);
-    // alerty
-    const al = [];
-    camps.forEach(c => {
-      const accCpa = this.agg(cur.filter(r => r.aid === c.aid)).cpa;
-      const thr = Math.max(100, accCpa ? accCpa * 2 : 0);
-      if (c.cost >= thr && c.conv === 0 && c.type !== "VIDEO") al.push({lvl: "bad", c, t: `wydała ${zl(c.cost)} bez żadnej konwersji`});
-      if (c.cpa && c.pcpa && c.pconv >= 3 && c.cpa / c.pcpa >= 1.3) al.push({lvl: "warn", c, t: `CPA wzrósł o ${pc(c.cpa / c.pcpa - 1, 0)} (${zl(c.pcpa)} → ${zl(c.cpa)})`});
-      if (c.pcost >= 200 && c.cost <= c.pcost * 0.5) al.push({lvl: "warn", c, t: `wydatki spadły o ${pc(1 - c.cost / c.pcost, 0)}: sprawdź budżet, płatności i odrzucone reklamy`});
-      if (c.avgDay >= 50 && c.lastCost === 0 && R.e === R.max) al.push({lvl: "bad", c, t: `brak emisji w ostatnim dniu (${dPL(R.e)}), a średnio wydaje ${zl(c.avgDay)} dziennie`});
-      if (c.roas && c.proas && c.proas > 0 && c.roas / c.proas <= 0.75 && c.pcost >= 200) al.push({lvl: "warn", c, t: `ROAS spadł o ${pc(1 - c.roas / c.proas, 0)} (${n2(c.proas)} → ${n2(c.roas)})`});
-    });
-    al.sort((a, b) => (a.lvl === "bad" ? 0 : 1) - (b.lvl === "bad" ? 0 : 1) || b.c.cost - a.c.cost);
-    // typy kampanii
-    const types = {}; cur.forEach(r => { types[r.type] = (types[r.type] || 0) + r.cost; });
-    // konta (tylko widok wszystkich)
-    const accRows = this.acc === "__all__" ? accs.map(([id, nm]) => { const a = this.agg(cur.filter(r => r.aid === id)), b = this.agg(prev.filter(r => r.aid === id));
-      return {id, nm, ...a, dcost: b.cost ? a.cost / b.cost - 1 : null, dcpa: a.cpa && b.cpa ? a.cpa / b.cpa - 1 : null, pcost: b.cost, pcpa: b.cpa, alerts: al.filter(x => x.c.aid === id).length}; }).filter(a => a.cost || a.pcost) : [];
-    // frazy
-    const T = this.acc === "__all__" ? this.terms : this.terms.filter(t => t.aid === this.acc);
-    const waste = T.filter(t => t.conv === 0).sort((a, b) => b.cost - a.cost).slice(0, 25);
-    const winners = T.filter(t => t.conv > 0).sort((a, b) => b.conv - a.conv || a.cost - b.cost).slice(0, 15);
-    this.last = {A, B, R, camps, al, accRows, waste, winners, curCode};
-    const kpi = (v, l, dv, inv) => `<div class="kpi"><div class="v">${v}</div><div class="l">${l}</div><div class="s">${dv}</div></div>`;
-    const perOpt = [["7","ostatnie 7 dni"],["14","ostatnie 14 dni"],["30","ostatnie 30 dni"],["90","ostatnie 90 dni"],["tm","ten miesiąc"],["pm","poprzedni miesiąc"]];
-    out.innerHTML = `<div class="card">
-      <div class="title-row"><h2 style="margin:0"><span class="sn">02</span>Wyniki${this.demo ? ' <span class="st warn">dane przykładowe</span>' : ""}</h2>
-        <div class="row"><select id="wAcc" style="width:auto;min-width:200px"><option value="__all__">Wszystkie konta (${accs.length})</option>${accs.map(([id, nm]) => `<option value="${esc(id)}"${this.acc === id ? " selected" : ""}>${esc(nm)}</option>`).join("")}</select>
-        <select id="wPer" style="width:auto">${perOpt.map(([v, l]) => `<option value="${v}"${this.per === v ? " selected" : ""}>${l}</option>`).join("")}</select>
-        <button class="ghost mini" data-wx="xlsx" type="button">Pobierz Excel</button></div></div>
-      <div class="gmeta"><span>okres: ${dPL(R.s)} – ${dPL(R.e)} (${R.len} dni)</span><span>porównanie: ${dPL(R.ps)} – ${dPL(R.pe)}</span><span>źródło: ${esc(this.src)}</span>${this.info.zaktualizowano ? `<span>arkusz: ${esc(this.info.zaktualizowano)}</span>` : ""}</div>
-      ${mixedCur ? `<div class="gbox warn" style="margin-top:12px">Konta mają różne waluty. Sumy kosztu w widoku „Wszystkie konta” mieszają waluty; wybierz konto, żeby zobaczyć poprawne kwoty.</div>` : ""}
-      <div class="kpis" style="margin-top:16px">
-        ${kpi(zl(A.cost), "koszt", deltaHtml(A.cost, B.cost))}
-        ${kpi(n1(A.conv), "konwersje", deltaHtml(A.conv, B.conv))}
-        ${kpi(zl(A.cpa), "CPA (koszt konwersji)", deltaHtml(A.cpa, B.cpa, true))}
-        ${kpi(A.roas == null ? "—" : n2(A.roas), "ROAS (wartość ÷ koszt)", deltaHtml(A.roas, B.roas))}
-        ${kpi(kk(A.clk), "kliknięcia", deltaHtml(A.clk, B.clk))}
-        ${kpi(pc(A.ctr, 2), "CTR", deltaHtml(A.ctr, B.ctr))}
-        ${kpi(A.cpc == null ? "—" : n2(A.cpc) + (curCode === "PLN" ? " zł" : ""), "CPC", deltaHtml(A.cpc, B.cpc, true))}
-        ${kpi(pc(A.cr, 2), "współczynnik konwersji", deltaHtml(A.cr, B.cr))}
-        ${kpi(zl(A.val), "wartość konwersji", deltaHtml(A.val, B.val))}
-      </div>
-      <div class="gbox ${al.some(a => a.lvl === "bad") ? "bad" : al.length ? "warn" : ""}" style="margin-top:16px"><b>Do sprawdzenia (${al.length})</b>${al.length ? `<ul>${al.slice(0, 12).map(a => `<li><b>${esc(a.c.camp)}</b>${this.acc === "__all__" ? ` <span class="pill">${esc(a.c.acc)}</span>` : ""}: ${a.t}.</li>`).join("")}</ul>${al.length > 12 ? `<div class="hint">…i ${al.length - 12} więcej w Excelu (zakładka Alerty).</div>` : ""}` : `<div>Bez alarmów w tym okresie według reguł RivalCore.</div>`}</div>
-      <div class="gsplit">
-        <div><h3>Koszt dziennie</h3>${lineChart([{name: "ten okres", color: "var(--c0)", values: dc.map(x => x.cost), area: true}, {name: "poprzedni okres", color: "var(--c7)", values: dp.map(x => x.cost), dash: true}], {labels: days.map(d => d.slice(8, 10) + "." + d.slice(5, 7))})}</div>
-        <div><h3>Konwersje dziennie</h3>${lineChart([{name: "ten okres", color: "var(--c2)", values: dc.map(x => x.conv), area: true}, {name: "poprzedni okres", color: "var(--c7)", values: dp.map(x => x.conv), dash: true}], {labels: days.map(d => d.slice(8, 10) + "." + d.slice(5, 7)), yFmt: v => n1(v)})}</div>
-      </div>
-      ${accRows.length > 1 ? `<h3>Konta</h3>${sortableTable("wacc", [
-        {k: "nm", t: "Konto"}, {k: "cost", t: "Koszt", n: 1, h: a => `${kk(a.cost)}${deltaHtml(a.cost, a.pcost)}`}, {k: "conv", t: "Konwersje", n: 1, f: n1},
-        {k: "cpa", t: "CPA", n: 1, h: a => `${a.cpa == null ? "—" : kk(a.cpa)}${deltaHtml(a.cpa, a.pcpa, true)}`}, {k: "roas", t: "ROAS", n: 1, f: v => v == null ? "—" : n2(v)},
-        {k: "ctr", t: "CTR", n: 1, f: v => pc(v, 2)}, {k: "alerts", t: "Alerty", n: 1, h: a => a.alerts ? `<span class="st warn">${a.alerts}</span>` : "—"}], accRows, {sort: "cost"})}` : ""}
-      <h3>Kampanie</h3>${sortableTable("wcamp", [
-        ...(this.acc === "__all__" ? [{k: "acc", t: "Konto"}] : []), {k: "camp", t: "Kampania"}, {k: "type", t: "Typ", f: v => TYPE_PL[v] || v},
-        {k: "cost", t: "Koszt", n: 1, h: c => `${kk(c.cost)}${deltaHtml(c.cost, c.pcost)}`}, {k: "clk", t: "Kliknięcia", n: 1, f: kk}, {k: "ctr", t: "CTR", n: 1, f: v => pc(v, 2)},
-        {k: "conv", t: "Konw.", n: 1, f: n1}, {k: "cpa", t: "CPA", n: 1, h: c => `${c.cpa == null ? "—" : kk(c.cpa)}${deltaHtml(c.cpa, c.pcpa, true)}`}, {k: "roas", t: "ROAS", n: 1, f: v => v == null ? "—" : n2(v)}], camps, {sort: "cost"})}
-      <div class="gsplit">
-        <div><h3>Koszt wg typu kampanii</h3>${hbars(Object.entries(types).sort((a, b) => b[1] - a[1]).map(([k, v], i) => ({name: TYPE_PL[k] || k, v, color: COLORS[i % 8]})), {fmt: v => zl(v)})}</div>
-        <div><h3>Frazy, które kosztują bez konwersji (${this.terms.length ? "30 dni" : "brak danych"})</h3>${waste.length ? hbars(waste.slice(0, 10).map(t => ({name: t.term, v: t.cost, color: "var(--bad)"})), {fmt: v => zl(v)}) + `<div class="row" style="margin-top:8px"><button class="ghost mini" data-wx="neg" type="button">Pobierz kandydatów do wykluczeń (CSV)</button></div>` : `<div class="hint">Brak fraz bez konwersji albo brak zakładki RC_frazy.</div>`}</div>
-      </div>
-      ${winners.length ? `<h3>Frazy z konwersjami</h3>${sortableTable("wwin", [{k: "term", t: "Fraza"}, ...(this.acc === "__all__" ? [{k: "acc", t: "Konto"}] : []), {k: "camp", t: "Kampania"}, {k: "conv", t: "Konw.", n: 1, f: n1}, {k: "cost", t: "Koszt", n: 1, f: v => zl(v)}, {k: "cpa", t: "CPA", n: 1, h: t => t.conv ? kk(t.cost / t.conv) : "—"}], winners, {sort: "conv"})}<div class="hint">Frazy z konwersjami, których nie ma jako słowa kluczowe, warto dodać jako dopasowanie ścisłe.</div>` : ""}
-      <div class="hint">Alerty to reguły: kampania wydała co najmniej 2× CPA konta (min. 100) bez konwersji; CPA +30% przy ≥3 konwersjach wcześniej; wydatki −50%; brak emisji w ostatnim dniu; ROAS −25%. Dane Google Ads z poprzedniego dnia mogą się jeszcze lekko zmieniać.</div>
-    </div>`;
-  },
-  negCsv(){ const w = this.last && this.last.waste || []; const csv = "﻿fraza;konto;kampania;koszt;klikniecia;wyswietlenia\n" + w.map(t => [t.term, t.acc, t.camp, t.cost.toFixed(2).replace(".", ","), t.clk, t.impr].map(x => `"${String(x).replace(/"/g, '""')}"`).join(";")).join("\n");
-    download(`rivalcore_wykluczenia_${isoD(Date.now())}.csv`, csv, "text/csv"); },
-  xlsx(){
-    if (typeof XLSX === "undefined" || !this.last) return; const L = this.last; const wb = XLSX.utils.book_new(); const r2 = v => v == null ? "" : Math.round(v * 100) / 100;
-    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["Wskaźnik","Okres","Poprzedni okres"],["Okres", `${L.R.s} – ${L.R.e}`, `${L.R.ps} – ${L.R.pe}`],
-      ...[["Koszt","cost"],["Wyświetlenia","impr"],["Kliknięcia","clk"],["CTR %","ctr"],["CPC","cpc"],["Konwersje","conv"],["CPA","cpa"],["Wartość konwersji","val"],["ROAS","roas"]].map(([l, k]) => [l, k === "ctr" ? r2((L.A[k] || 0) * 100) : r2(L.A[k]), k === "ctr" ? r2((L.B[k] || 0) * 100) : r2(L.B[k])])]), "KPI");
-    if (L.accRows.length) XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["Konto","ID","Koszt","Koszt poprz.","Konwersje","CPA","CPA poprz.","ROAS","CTR %","Alerty"]].concat(L.accRows.map(a => [a.nm, a.id, r2(a.cost), r2(a.pcost), r2(a.conv), r2(a.cpa), r2(a.pcpa), r2(a.roas), r2((a.ctr || 0) * 100), a.alerts]))), "Konta");
-    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["Konto","Kampania","Typ","Status","Koszt","Koszt poprz.","Wyświetlenia","Kliknięcia","CTR %","Konwersje","CPA","CPA poprz.","Wartość","ROAS"]].concat(L.camps.map(c => [c.acc, c.camp, TYPE_PL[c.type] || c.type, c.status, r2(c.cost), r2(c.pcost), c.impr, c.clk, r2((c.ctr || 0) * 100), r2(c.conv), r2(c.cpa), r2(c.pcpa), r2(c.val), r2(c.roas)]))), "Kampanie");
-    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["Poziom","Konto","Kampania","Opis"]].concat(L.al.map(a => [a.lvl === "bad" ? "pilne" : "uwaga", a.c.acc, a.c.camp, a.t]))), "Alerty");
-    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["Fraza","Konto","Kampania","Koszt","Kliknięcia","Wyświetlenia","Konwersje"]].concat(L.waste.map(t => [t.term, t.acc, t.camp, r2(t.cost), t.clk, t.impr, t.conv]))), "Frazy bez konwersji");
-    XLSX.writeFile(wb, `rivalcore_google_ads_wyniki_${isoD(Date.now())}.xlsx`);
-  }
-};
-const TYPE_PL = {SEARCH: "Search", PERFORMANCE_MAX: "Performance Max", DISPLAY: "Display", VIDEO: "Video (YouTube)", SHOPPING: "Shopping", DEMAND_GEN: "Demand Gen", DISCOVERY: "Demand Gen", LOCAL: "Local", SMART: "Smart", MULTI_CHANNEL: "Aplikacje", HOTEL: "Hotel", LOCAL_SERVICES: "Usługi lokalne"};
-function demoAds(){
-  // dane przykładowe: deterministyczne, oznaczone jako przykładowe
-  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-  const accs = [["111-111-1111","Przykład · Sklep A"],["222-222-2222","Przykład · Usługi B"],["333-333-3333","Przykład · Dealer C"]];
-  const camps = [["SEARCH","Search · marka",300,0.18,60],["SEARCH","Search · ogólne",900,0.04,90],["PERFORMANCE_MAX","PMax · produkty",1400,0.03,140],["VIDEO","YouTube · zasięg",500,0.002,0]];
-  const out = []; const end = Date.now() - DAY;
-  accs.forEach(([aid, an], ai) => camps.forEach(([type, cn, budget, cr, aov], ci) => {
-    for (let k = 89; k >= 0; k--){
-      const d = isoD(end - k * DAY); const dow = new Date(d).getUTCDay(); const f = (dow === 0 || dow === 6 ? 0.8 : 1.05) * (0.8 + rnd() * 0.4) * (1 + ai * 0.3);
-      let cost = budget / 30 * f * (ci === 1 && ai === 1 && k < 12 ? 1.6 : 1); if (ci === 3 && ai === 2 && k === 0) cost = 0;
-      const cpc = type === "VIDEO" ? 0.35 : 1.4 + rnd() * 1.6; const clk = Math.round(cost / cpc); const impr = Math.round(clk / (type === "VIDEO" ? 0.004 : 0.05 + rnd() * 0.03));
-      let conv = type === "VIDEO" ? 0 : Math.round(clk * cr * (0.6 + rnd() * 0.8) * (ci === 1 && ai === 1 && k < 12 ? 0.3 : 1) * 10) / 10;
-      out.push({data: d, konto_id: aid, konto: an, waluta: "PLN", kampania_id: aid + "-" + ci, kampania: cn, typ: type, status: "ENABLED", koszt: +cost.toFixed(2), wyswietlenia: impr, klikniecia: clk, konwersje: conv, wartosc_konw: +(conv * aov * (0.8 + rnd() * 0.4)).toFixed(2)});
-    }
-  }));
-  W._demoTerms = [["blacha trapezowa cena",412,0],["darmowe projekty dachów",286,0],["rynny pcv allegro",198,0],["jak samemu położyć dach",164,0],["blachodachówka modułowa",520,9],["sklep z rynnami kraków",233,4],["praca dekarz",121,0]]
-    .map(([t, c, v], i) => ({konto_id: accs[i % 3][0], konto: accs[i % 3][1], kampania: "Search · ogólne", fraza: t, wyswietlenia: Math.round(c * 9), klikniecia: Math.round(c / 1.8), koszt: c, konwersje: v, wartosc_konw: v * 90}));
-  return out;
-}
 
 // ---------------------------------------------------------------- źródła, zakładki kanałów, wspólna analiza, nawigacja
 const SRC = {
@@ -6457,28 +6400,33 @@ const CH = {
   draw(){
     const wrap = E("gResWrap"); if (!wrap) return;
     const mr = metaResults(), g = G.res || [], m = mr.length;
-    wrap.hidden = !g.length;
-    if (!g.length){ this.apply("meta"); return; }
+    const any = !!(m || g.length);
+    wrap.hidden = !any;
+    const mb = E("marksBar"); if (mb) mb.hidden = !any;
+    if (!any){ this.apply("meta"); return; }
     if (!m && this.cur === "meta") this.cur = "google";
+    if (!g.length && this.cur !== "meta") this.cur = "meta";
     const mCost = sum(mr, x => x.costMo), gCost = sum(g, x => x.costMoMid);
+    const mMain = mr.find(x => x.isMain), gMain = g.find(x => x.main);
     const cards = [
-      ["meta", "M", "var(--c0)", "Meta", m ? `${m} marek · ${n0(sum(mr, x => x.active))} aktywnych reklam · ~${kk(mCost)} zł/mies.` : "brak analizy Meta (włącz źródło Meta)", !m],
-      ["google", "G", "var(--c1)", "Google", `${g.length} marek · ${n0(sum(g, x => x.active))} aktywnych kreacji · ~${kk(gCost)} zł/mies.`, false],
-      ["razem", "+", "var(--c2)", "Meta + Google", m ? `podział budżetu między kanały · razem ~${kk(mCost + gCost)} zł/mies.` : "potrzebne obie analizy", !m]];
+      ["meta", "M", "var(--c0)", "Meta", m ? `${m} marek · ${n0(sum(mr, x => x.active))} aktywnych reklam · ~${kk(mCost)} zł/mies.` : "brak analizy (włącz źródło Meta)", !m, mMain ? `Ty: ${mCost ? pc(mMain.costMo / mCost, 0) : "—"} udziału` : ""],
+      ["google", "G", "var(--c1)", "Google", g.length ? `${g.length} marek · ${n0(sum(g, x => x.active))} aktywnych kreacji · ~${kk(gCost)} zł/mies.` : "brak analizy (włącz źródło Google)", !g.length, gMain ? `Ty: ${pc(gMain.sovImpr, 0)} wyświetleń` : ""],
+      ["razem", "+", "var(--c2)", "Meta + Google", m && g.length ? `udział w głosie i budżet w obu kanałach · razem ~${kk(mCost + gCost)} zł/mies.` : "potrzebne obie analizy", !(m && g.length), ""]];
     E("chTabs").className = "chsum";
-    E("chTabs").innerHTML = cards.map(([k, ic, col, l, d, dis]) => `<button type="button" class="chc${this.cur === k ? " on" : ""}${dis ? " dis" : ""}" data-ch="${k}"><span class="cht"><i style="background:color-mix(in srgb,${col} 20%,transparent);color:${col}">${ic}</i>${l}</span><span class="chs">${d}</span></button>`).join("");
+    E("chTabs").innerHTML = cards.map(([k, ic, col, l, d, dis, me]) => `<button type="button" class="chc${this.cur === k ? " on" : ""}${dis ? " dis" : ""}" data-ch="${k}"${dis ? " aria-disabled=\"true\"" : ""}><span class="cht"><i style="background:color-mix(in srgb,${col} 20%,transparent);color:${col}">${ic}</i>${l}${me ? `<em class="chme">${me}</em>` : ""}</span><span class="chs">${d}</span></button>`).join("");
     this.apply(this.cur);
   },
   show(k){ this.cur = k; this.draw(); const w = E("gResWrap"); if (w && !w.hidden) w.scrollIntoView({behavior: "smooth", block: "start"}); },
   apply(k){
-    const rc = E("resultsCard"), g = E("gResults"), rz = E("rzOut"), hasG = (G.res || []).length;
-    if (!hasG){ if (rc) rc.style.display = ""; const fc0 = E("filtersCard"); if (fc0) fc0.style.display = ""; return; }
-    const eh = document.querySelector(".empty-hero"); if (eh) eh.style.display = metaResults().length ? "" : "none";
-    if (rc) rc.style.display = k === "meta" ? "" : "none";
-    const fc = E("filtersCard"); if (fc) fc.style.display = k === "meta" ? "" : "none";
-    g.hidden = k !== "google"; rz.hidden = k !== "razem";
+    const rc = E("resultsCard"), g = E("gResults"), rz = E("rzOut");
+    const isM = k === "meta";
+    if (rc) rc.style.display = isM ? "" : "none";
+    const fc = E("filtersCard"); if (fc) fc.style.display = isM ? "" : "none";
+    const eh = document.querySelector(".empty-hero"); if (eh) eh.style.display = (metaResults().length || (G.res || []).length) ? "none" : "";
+    if (g) g.hidden = k !== "google"; if (rz) rz.hidden = k !== "razem";
+    if (k === "google") G.render();
     if (k === "razem") RZ.render();
-    const w = E("gResWrap"); if (rc && w && k === "meta" && w.nextElementSibling !== rc) w.after(rc);
+    const ex = E("expMenu"); if (ex) ex.style.display = isM ? "" : "none";
   }
 };
 async function unifiedRun(origRun){
@@ -6494,9 +6442,9 @@ async function unifiedRun(origRun){
   try { await Promise.allSettled(jobs); } finally { E("go").disabled = false; SRC.status(); CH.draw(); }
   if (useG && G.res.length){ if (!useM) CH.show("google"); else if (metaResults().length) { /* zostaw bieżącą zakładkę */ } }
 }
-const ROUTES = {konkurencja: "modMeta", wyniki: "modWyniki", polaczenia: "modPolaczenia"};
-const ALIAS = {meta: "konkurencja", google: "konkurencja", razem: "konkurencja", pulpit: "konkurencja", "": "konkurencja"};
-const CRUMB = {konkurencja: "/ konkurencja · meta + google", wyniki: "/ wyniki kont google ads", polaczenia: "/ połączenia"};
+const ROUTES = {konkurencja: "modMeta", polaczenia: "modPolaczenia"};
+const ALIAS = {wyniki: "konkurencja", meta: "konkurencja", google: "konkurencja", razem: "konkurencja", pulpit: "konkurencja", "": "konkurencja"};
+const CRUMB = {konkurencja: "/ konkurencja · meta + google", polaczenia: "/ połączenia"};
 function route(){
   const h = (location.hash || "").replace("#", ""); const k = ROUTES[h] ? h : (ALIAS[h] || "konkurencja");
   Object.entries(ROUTES).forEach(([key, id]) => { const el = E(id); if (el) el.hidden = key !== k; });
@@ -6510,16 +6458,30 @@ function init(){
   const metaWrap = document.querySelector("body > .wrap:not(.rcmod)"); if (metaWrap) metaWrap.id = "modMeta";
   // nawigacja
   const nav = document.createElement("nav"); nav.className = "rcnav"; nav.setAttribute("aria-label", "Moduły RivalCore");
-  nav.innerHTML = `<a href="#konkurencja">Konkurencja <span class="src">META + GOOGLE</span></a><a href="#wyniki">Wyniki kont <span class="src">GOOGLE ADS</span></a><a href="#polaczenia">Połączenia</a>`;
+  nav.innerHTML = `<a href="#konkurencja">Konkurencja</a><a href="#polaczenia">Połączenia</a>`;
   const bar = document.querySelector(".appbar-in"); const meta = bar && bar.querySelector(".appbar-meta"); if (bar) bar.insertBefore(nav, meta || null);
   // bloki Google w formularzu i wynikach
   const srcBox = E("gInlineSrc");
   const inputCard = E("token") && E("token").closest(".card");
   if (inputCard){ const tr = inputCard.querySelector(".title-row"); tr.after(E("gGuide")); E("gGuide").after(E("gSources"));
     const adv = E("adv"); (adv || inputCard.querySelector(".actions")).before(E("gBrandBlock")); }
-  const rc = E("resultsCard"); if (rc) rc.before(E("gResWrap")); else if (metaWrap) metaWrap.appendChild(E("gResWrap"));
+  const fcard = E("filtersCard"), gw = E("gResWrap");
+  if (fcard) fcard.before(gw); else if (metaWrap) metaWrap.appendChild(gw);
+  // Lupa detektywa: przy wynikach, widoczna dopiero po analizie
+  const mbar = E("marksBar"); if (mbar){ gw.before(mbar); mbar.hidden = true; }
+  // eksporty Meta w jednym menu przy nagłówku wyników
+  const trw = gw.querySelector(".title-row"); const ex = document.createElement("details"); ex.className = "expm"; ex.id = "expMenu";
+  ex.innerHTML = `<summary>Eksport i zapis <span aria-hidden="true">▾</span></summary><div class="expm-pop"><div class="expm-h">Meta · wyniki z tej sesji</div></div>`;
+  const pop = ex.querySelector(".expm-pop"); ["pdf", "xlsx", "strat", "ai", "saveAn", "clear"].forEach(id => { const b = E(id); if (b){ b.classList.remove("ghost"); b.classList.add("expi"); pop.appendChild(b); } });
+  pop.addEventListener("click", ev => { if (ev.target.closest("button")) ex.open = false; });
+  document.addEventListener("click", ev => { if (!ex.contains(ev.target)) ex.open = false; });
+  if (trw) trw.appendChild(ex);
+  // motyw jasny / ciemny
+  if (bar){ const tb = document.createElement("button"); tb.type = "button"; tb.className = "themetog"; tb.setAttribute("aria-label", "Przełącz motyw");
+    const setT = t => { if (t === "light") document.documentElement.setAttribute("data-theme", "light"); else document.documentElement.removeAttribute("data-theme"); tb.textContent = t === "light" ? "◐ Ciemny" : "◑ Jasny"; store.set("theme", t); };
+    setT(store.get("theme", "dark")); tb.onclick = () => setT(document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light"); bar.appendChild(tb); }
   if (srcBox) srcBox.remove();
-  E("chTabs").addEventListener("click", ev => { const b = ev.target.closest("[data-ch]"); if (b) { CH.cur = b.dataset.ch; CH.draw(); } });
+  E("chTabs").addEventListener("click", ev => { const b = ev.target.closest("[data-ch]"); if (b && !b.classList.contains("dis")) { CH.cur = b.dataset.ch; CH.draw(); } });
   // hero
   const k = document.querySelector(".hero .kicker"); if (k) k.textContent = "BeDigital · analiza konkurencji: Meta + Google Ads";
   const hp = document.querySelector(".hero-main p"); if (hp) hp.textContent = "Wpisz markę, a RivalCore sprawdzi w Meta i w Google, ile reklam puszcza, do kogo trafia, co komunikuje, które kreacje działają najdłużej i ile mniej więcej na to wydaje. Konkurencję też prześwietli.";
@@ -6535,14 +6497,10 @@ function init(){
     try { const r = await BQ.query(`SELECT COUNT(DISTINCT c.advertiser_id) AS adv, COUNT(*) AS n, MAX(rs.last_shown) AS last FROM ${TABLE} c, UNNEST(c.region_stats) rs WHERE rs.region_code = 'PL' AND rs.last_shown >= @since`, {since: isoD(Date.now() - 7 * DAY)});
       status("cStatus", `BigQuery działa. W Polsce w ostatnich 7 dniach: ${n0(+r[0].n)} reklam od ${n0(+r[0].adv)} reklamodawców, dane do ${dPL(r[0].last)}. Przetworzono ${n1(BQ.bytes / 1e9)} GB.`); }
     catch(e){ status("cStatus", e.message, true); } };
-  E("cTestSheet").onclick = async () => { const id = W.sheetId(); if (!id){ status("cStatus", "Najpierw wklej link do arkusza w zakładce Wyniki kont.", true); return; }
-    try { const j = await GA.fetch(`https://sheets.googleapis.com/v4/spreadsheets/${id}?fields=properties.title,sheets.properties.title`);
-      const tabs = (j.sheets || []).map(s => s.properties.title); status("cStatus", `Arkusz „${j.properties.title}” jest dostępny. Zakładki: ${tabs.join(", ")}.${tabs.includes("RC_dane") ? "" : " Brak RC_dane: uruchom skrypt w Google Ads."}`); }
-    catch(e){ status("cStatus", e.message, true); } };
   // źródła
   const st = store.get("src", {meta: true, google: false}); E("srcMeta").checked = st.meta !== false; E("srcGoogle").checked = !!st.google;
   ["srcMeta","srcGoogle"].forEach(id => E(id).addEventListener("change", () => { store.set("src", {meta: E("srcMeta").checked, google: E("srcGoogle").checked}); SRC.status(); G.drawBrands(); }));
-  G.loadCfg(); G.bind(); G.srcUi(); G.drawBrands(); W.bind();
+  G.loadCfg(); G.bind(); G.srcUi(); G.drawBrands();
   document.addEventListener("click", ev => { const g = ev.target.closest("[data-goto]"); if (g){ ev.preventDefault(); gotoEl(g.dataset.goto); } });
   // numery kroków przy polach formularza Meta
   const lbl = (sel, n) => { const el = typeof sel === "string" ? document.querySelector(sel) : sel; if (el && !el.querySelector(".stepno")) el.insertAdjacentHTML("afterbegin", `<span class="stepno">${n}</span>`); };
@@ -6568,7 +6526,7 @@ function init(){
   // po analizie Meta: odśwież zakładki i porównanie
   try { if (typeof renderAll === "function"){ const orig = renderAll; renderAll = function(){ const r = orig.apply(this, arguments); try { CH.draw(); RZ.render(); SRC.status(); } catch(e){} return r; }; } } catch(e){}
   window.addEventListener("hashchange", route); route(); GA.ui(); SRC.status(); CH.draw();
-  window.RivalCoreG = {G, W, RZ, BQ, GA, CH, SRC, version: RCV};
+  window.RivalCoreG = {G, RZ, BQ, GA, CH, SRC, version: RCV};
 }
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
 })();
