@@ -1,6 +1,6 @@
 # RivalCore — README
 
-**RivalCore** to wewnętrzne narzędzie agencji BeDigital (w parze z feedcore) do analizy reklam marek i konkurencji z **Biblioteki Reklam Meta** (Facebook, Instagram, Messenger, Audience Network) i z **Centrum przejrzystości reklam Google** (Search, YouTube, sieć reklamowa), a od wersji 20 także wyników kont **Google Ads** naszych klientów. Jeden plik HTML — bez instalacji, bez serwera, bez opłat. Otwierasz w przeglądarce, wklejasz token, wpisujesz marki i dostajesz analizę z wykresami, raport PDF, Excel oraz plik dla AI.
+**RivalCore** to wewnętrzne narzędzie  do analizy reklam marek i konkurencji z **Biblioteki Reklam Meta** (Facebook, Instagram, Messenger, Audience Network) i z **Centrum przejrzystości reklam Google** (Search, YouTube, sieć reklamowa), a od wersji 20 także wyników kont **Google Ads** naszych klientów. Jeden plik HTML — bez instalacji, bez serwera, bez opłat. Otwierasz w przeglądarce, wklejasz token, wpisujesz marki i dostajesz analizę z wykresami, raport PDF, Excel oraz plik dla AI.
 
 Aktualna wersja: **20.0** (8 listopada 2026). Plik narzędzia nadal nazywa się `meta-ads-bot.html` — tej nazwy używają automatyczne testy. Wygląd ekranu, raportów PDF i grafik PNG jest zgodny z identyfikacją wizualną BeDigital.
 
