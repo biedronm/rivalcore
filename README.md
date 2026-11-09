@@ -1,3 +1,5 @@
+https://biedronm.github.io/rivalcore/#konkurencja
+
 # RivalCore — README
 
 **RivalCore** to wewnętrzne narzędzie  do analizy reklam marek i konkurencji z **Biblioteki Reklam Meta** (Facebook, Instagram, Messenger, Audience Network) i z **Centrum przejrzystości reklam Google** (Search, YouTube, sieć reklamowa), a od wersji 20 także wyników kont **Google Ads** naszych klientów. Jeden plik HTML — bez instalacji, bez serwera, bez opłat. Otwierasz w przeglądarce, wklejasz token, wpisujesz marki i dostajesz analizę z wykresami, raport PDF, Excel oraz plik dla AI.
