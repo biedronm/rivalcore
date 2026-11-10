@@ -1222,6 +1222,133 @@ body{font-variant-numeric:tabular-nums}
 .rp .card,.rp .kpi,.rp .mk{-webkit-backdrop-filter:none;backdrop-filter:none}
 .rp .see{font-size:9pt;font-weight:400}
 .rp .kpi .v{font-size:13.5pt}
+
+/* ================================================================ v22 — warstwa zarządcza: „w 5 sekund”, plan ruchów, mapa przewag, symulator, raport w skrócie */
+.x5{margin:0 0 22px}
+.x5-h{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between;margin:0 0 12px}
+.x5-h b{font:700 10.5px/1.4 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--text)}
+.x5-h b::before{content:"";display:inline-block;width:22px;height:1px;background:currentColor;opacity:.6;vertical-align:middle;margin-right:10px}
+.x5-verdict{font-size:17px;line-height:1.45;font-weight:400;letter-spacing:-.01em;margin:0 0 14px;max-width:70ch}
+.x5-verdict b{font-weight:700}
+.x5-k.bigk{grid-template-columns:repeat(4,minmax(0,1fr))}
+.x5-k .bk{min-width:0}
+.x5-k .bv{white-space:nowrap}
+.x5st{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:7px;vertical-align:1px;background:var(--faint)}
+.x5st.good{background:var(--good)}.x5st.warn{background:var(--warn)}.x5st.bad{background:var(--bad)}
+.nba{display:grid;gap:8px;margin-top:14px}
+.nba-r{display:grid;grid-template-columns:34px minmax(0,1fr) minmax(0,1fr) minmax(0,1.15fr);gap:0;border:1px solid var(--line);border-radius:14px;background:var(--bg-2);overflow:hidden}
+.nba-r > *{padding:13px 16px;min-width:0}
+.nba-r > * + *{border-left:1px solid var(--line)}
+.nba-n{font:700 13px var(--sans);color:var(--muted);text-align:center;padding-left:0!important;padding-right:0!important;border-left:3px solid var(--pc,var(--accent))}
+.nba-l{display:block;font:700 9.5px/1.3 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.nba-r .t{font-size:14px;font-weight:600;line-height:1.35}
+.nba-r .w{font-size:12.5px;line-height:1.5;color:var(--muted)}
+.nba-r .a{font-size:13px;line-height:1.5}
+.nba-r .a .nba-l{color:var(--accent)}
+.nba-p{display:inline-block;font:700 9px var(--sans);letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border-radius:99px;margin-left:8px;vertical-align:1px;color:var(--pc);background:color-mix(in srgb,var(--pc) 14%,transparent)}
+.hm{margin:16px 0 0;overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--bg-2);padding:6px 8px 4px}
+.hm table{border-collapse:separate;border-spacing:3px;width:100%;min-width:640px;font-size:12.5px}
+.hm th{font:700 9.5px var(--sans);letter-spacing:.09em;text-transform:uppercase;color:var(--muted);text-align:right;padding:6px 8px 4px;white-space:nowrap}
+.hm th:first-child,.hm td:first-child{text-align:left}
+.hm td{padding:8px 9px;text-align:right;font-weight:600;font-variant-numeric:tabular-nums;border-radius:6px;white-space:nowrap;background:color-mix(in srgb,var(--accent) calc(var(--h,0) * 58%),transparent)}
+.hm td:first-child{font-weight:500;background:none;max-width:190px;overflow:hidden;text-overflow:ellipsis}
+.hm td.sp{background:none;padding:4px 6px;text-align:center}
+.hm td.sp svg{display:block;width:76px;height:22px;margin:0 auto}
+.hm td.top{font-weight:700;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--text) 50%,transparent)}
+.hm td.na{color:var(--faint);background:none;font-weight:400}
+.hm tr.me td:first-child{font-weight:700}
+.hm-cap{font-size:11.5px;color:var(--muted);margin:8px 2px 0;line-height:1.5}
+.dq{margin-top:12px;border:1px solid var(--line);border-radius:14px;padding:0 16px;background:var(--bg-2)}
+.dq summary{cursor:pointer;padding:11px 0;font-size:13px;list-style:none;display:flex;gap:8px;align-items:center}
+.dq summary::-webkit-details-marker{display:none}
+.dq ul{margin:0 0 12px;padding:0;list-style:none;display:grid;gap:6px;font-size:12.5px;color:var(--muted)}
+.dq li{display:grid;grid-template-columns:9px minmax(0,1fr);gap:8px;align-items:baseline}
+.dq li b{color:var(--text)}
+.dq li i{width:7px;height:7px;border-radius:50%;background:var(--warn);display:block}
+.sim{border:1px solid var(--line);border-radius:14px;background:var(--bg-2);padding:18px 20px;margin:0 0 18px}
+.sim-h{font:700 10.5px/1.4 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--text);margin:0 0 12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.sim-tag{font:700 9px var(--sans);letter-spacing:.1em;padding:2px 8px;border-radius:99px;color:var(--warn);background:color-mix(in srgb,var(--warn) 14%,transparent)}
+.sim-g{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:26px;align-items:start}
+.sim input[type=range]{width:100%;accent-color:var(--accent);margin:10px 0 4px;padding:0;border:0;background:none;min-height:0}
+.sim-v{font-size:30px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.02em;line-height:1.1}
+.sim-v small{font-size:12px;font-weight:500;color:var(--muted);letter-spacing:0}
+.sim-o{display:flex;gap:22px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--muted)}
+.sim-o b{display:block;font-size:18px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums}
+.sim-p{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.sim-b{display:grid;gap:9px}
+.sim-b > div{display:grid;grid-template-columns:minmax(0,130px) minmax(0,1fr) 46px;gap:10px;align-items:center;font-size:13px}
+.sim-b .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sim-b .bar{height:10px;background:var(--track,var(--card-2));border-radius:99px;overflow:hidden}
+.sim-b .bar i{display:block;height:100%;border-radius:99px;transition:width .18s ease}
+.sim-b .p{font-weight:700;font-variant-numeric:tabular-nums;text-align:right}
+.sim .note{margin-top:14px}
+.rp .sim,.png-frame .sim,.png-src .sim,.rp .dq,.png-src .dq,.png-frame .dq,.rp .x5copy,.png-src .x5copy{display:none!important}
+@media print{.sim,.dq,.x5copy{display:none!important}}
+.bulk{margin-top:10px;display:grid;gap:8px}
+.bulk textarea{min-height:110px;font-size:13px}
+.edsum{margin-top:12px;font-size:12.5px;color:var(--muted);display:flex;gap:6px 16px;flex-wrap:wrap;align-items:center}
+.edsum b{font-weight:700;color:var(--text);font-variant-numeric:tabular-nums}
+.edsum .er{color:var(--bad)}
+.edsum .er b{color:inherit}
+/* ---------------- PDF: raport w skrócie + szlif stron */
+.rp .x5{margin:0 0 5mm}
+.rp .x5-verdict{font-size:13pt;line-height:1.4;margin:0 0 5mm;max-width:none}
+.rp .x5-k.bigk{gap:2.5mm}
+.rp .bk{padding:3.2mm 3.6mm;border-radius:2mm;background:var(--card-2);gap:1mm;border-color:var(--line)}
+.rp .bk .bl{font-size:6.3pt}.rp .bk .bv{font-size:15pt}.rp .bk .bv small{font-size:7pt}.rp .bk .bs{font-size:7.3pt;line-height:1.35}
+.rp .bigk{grid-template-columns:repeat(auto-fit,minmax(27mm,1fr));gap:2.5mm}
+.rp .nba{gap:2mm;margin-top:3mm}
+.rp .nba-r{grid-template-columns:8mm minmax(0,1fr) minmax(0,1fr) minmax(0,1.15fr);border-radius:2mm;break-inside:avoid;background:#fff}
+.rp .nba-r > *{padding:2.6mm 3mm}
+.rp .nba-l{font-size:5.8pt;margin-bottom:.8mm}.rp .nba-r .t{font-size:9pt}.rp .nba-r .w{font-size:7.8pt}.rp .nba-r .a{font-size:8.2pt}.rp .nba-n{font-size:9pt}.rp .nba-p{font-size:5.5pt}
+.rp .hm{border-radius:2mm;padding:1.2mm 1.6mm;margin-top:3mm;overflow:visible;background:#fff;break-inside:avoid}
+.rp .hm table{min-width:0;font-size:8pt;border-spacing:.6mm}
+.rp .hm th{font-size:5.8pt;padding:1mm 1.6mm}.rp .hm td{padding:1.6mm 1.8mm;border-radius:1mm}
+.rp .hm td.sp svg{width:16mm;height:5mm}
+.rp .hm-cap{font-size:7pt;margin-top:1.5mm}
+.rp-exec-sub{font:700 6.6pt var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:5.5mm 0 2.2mm;display:flex;align-items:center;gap:2mm;break-after:avoid}
+.rp-exec-sub::before{content:"";width:6mm;height:.3mm;background:currentColor}
+.rp-mix{display:grid;gap:1.6mm;break-inside:avoid}
+.rp-mix > div{display:grid;grid-template-columns:38mm minmax(0,1fr) 46mm;gap:3mm;align-items:center;font-size:8pt}
+.rp-mix .bar{display:flex;height:3mm;border-radius:99px;overflow:hidden;background:var(--card-2)}
+.rp-mix .bar i{display:block;height:100%}
+.rp-mix .v{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.rp-mix .v b{color:var(--text)}
+.rp-mixleg{display:flex;gap:4mm;font-size:7pt;color:var(--muted);margin-top:1.5mm}
+.rp-mixleg i{display:inline-block;width:2mm;height:2mm;border-radius:50%;margin-right:1.2mm}
+.rp-caveat{font-size:7.3pt;color:var(--muted);line-height:1.5;margin-top:4mm;padding-top:2.5mm;border-top:.3mm solid var(--line)}
+.rp-caveat b{color:var(--text)}
+.rp .blk:has(.rp-scgrid){break-inside:auto}
+.rp .rec{border-radius:2mm}
+.rp-h{position:relative}
+.rp .rp-g .gsplit{display:grid;grid-template-columns:1fr 1fr;gap:4mm}
+.rp .rp-g button,.rp .rp-g details,.rp .rp-g .gres-head .row,.rp .rp-g .rz-head .row{display:none!important}
+.rp .rp-g .see{background:var(--accent-soft)}
+.rp .rp-g .mcards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2.5mm}
+.rp .rp-g .mcard{break-inside:avoid;padding:3mm;border-radius:2mm}
+.rp .rp-g .gt{font-size:7.6pt}.rp .rp-g .gt th{font-size:5.8pt;padding:1.4mm 1.6mm;background:var(--card-2)}.rp .rp-g .gt td{padding:1.4mm 1.6mm}
+.rp .rp-g h3{break-after:avoid}
+.rp .rp-g .tscroll,.rp .rp-g .gtw{overflow:visible!important}
+@media screen and (max-width:860px){
+  .x5-k.bigk{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .x5-k .bv{white-space:normal;font-size:20px}
+  .x5-verdict{font-size:15px}
+  .nba-r{grid-template-columns:30px minmax(0,1fr)}
+  .nba-r > .nba-c{grid-column:2;border-left:0;padding-top:0}
+  .nba-r > .nba-n{grid-row:1 / span 3}
+  .sim-g{grid-template-columns:1fr}
+  .sim-v{font-size:24px}
+}
+
+.lanes-w{overflow-x:auto}
+@media screen and (max-width:700px){.lanes-w svg{min-width:600px}}
+.lanes2 .lv{font:700 8px var(--sans);pointer-events:none}
+.lanes2 .lsum{font:700 12px var(--sans);fill:var(--text);font-variant-numeric:tabular-nums}
+.lanes-leg{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center;font-size:11.5px;color:var(--muted);margin-top:8px}
+.lanes-leg i{display:inline-block;width:14px;height:14px;border-radius:3px;background:var(--accent)}
+.lanes-leg .pk{margin-left:10px;display:inline-flex;gap:6px;align-items:center}
+.lanes-leg .pk i{background:none;box-shadow:inset 0 0 0 1.5px var(--text)}
+.rp .lanes-leg{font-size:7pt;margin-top:1.5mm}.rp .lanes-leg i{width:2.6mm;height:2.6mm}
 </style>
 </head>
 <body>
@@ -1307,7 +1434,12 @@ body{font-variant-numeric:tabular-nums}
     <div style="margin-top:20px">
       <label class="flabel">Konkurenci do porównania (opcjonalnie)</label>
       <div class="ed" id="compEd"></div>
-      <div class="row" style="margin-top:8px"><button type="button" class="ghost mini" id="compAdd">+ Dodaj konkurenta</button></div>
+      <div class="row" style="margin-top:8px"><button type="button" class="ghost mini" id="compAdd">+ Dodaj konkurenta</button><button type="button" class="ghost mini" id="bulkOpen">Wklej listę</button></div>
+      <div class="bulk" id="bulkBox" hidden>
+        <textarea id="bulkTxt" aria-label="Lista konkurentów do wklejenia" placeholder="Jeden konkurent w linii, np. skopiowane z Excela:&#10;Rossmann&#10;Hebe; 123456789&#10;Lidl; 111111111, 222222222"></textarea>
+        <div class="row"><button type="button" class="mini" id="bulkAdd">Dodaj do listy</button><span class="hint" id="bulkInfo" style="margin:0"></span></div>
+      </div>
+      <div class="edsum" id="edSum" aria-live="polite"></div>
       <textarea id="comp" class="backing" tabindex="-1" aria-hidden="true"></textarea>
       <div class="hint">Każdy konkurent w osobnym okienku: nazwa oraz ID strony albo link z Biblioteki Reklam. „+ konto” = kolejne konto tej samej marki, liczone razem. Konta, które chcesz porównać osobno, dodaj jako osobnych konkurentów. Nie wiesz, kogo wpisać? Użyj „Odkryj konkurentów po frazie” niżej.</div>
     </div>
@@ -2923,29 +3055,35 @@ function stackArea100(keys, series){
 function swimlanes(list){
   const {start, weeks} = laneWindow(list), end = start + weeks * 7 * DAY;
   const kdl = kdBetween(start, end);
-  const L = 130, R = 12, W = 640, rowH = 30, step = (W - L - R) / weeks;
-  // etykiety dat: rozkładane na poziomy tak, żeby się nie nakładały (szerokość tekstu ~5,9 px na znak)
+  const L = 122, R = 118, W = 640, rowH = 30, gapY = 6, step = (W - L - R) / weeks, cw = Math.max(1.5, step - (step > 6 ? 1.5 : .6));
   const ends = [], marks = kdl.map(k => { const x = L + ((k.t - start) / DAY / 7) * step, wd = k.name.length * 5.9 + 6;
-    const right = x + 3 + wd > W - 2, a = right ? x - 3 - wd : x + 3, b = right ? x - 3 : x + 3 + wd;
+    const right = x + 3 + wd > W - R, a = right ? x - 3 - wd : x + 3, b = right ? x - 3 : x + 3 + wd;
     let lv = ends.findIndex(e => e < a); if (lv < 0){ lv = ends.length; ends.push(b); } else ends[lv] = b;
     return {k, x, lv, right}; });
-  const T = marks.length ? 14 + ends.length * 12 + 6 : 18, H = T + list.length * rowH + 14;
-  const rMax = Math.max(2, Math.min(9, step * 0.42));
+  const T = (marks.length ? 14 + ends.length * 12 + 4 : 6) + 14, H = T + list.length * (rowH + gapY) + 16;
   const data = list.map(r => { const w = new Array(weeks).fill(0); for (const [t, v] of Object.entries(r.cal.launches)){ const i = Math.floor((+t - start) / DAY / 7); if (i >= 0 && i < weeks) w[i] += v; } return w; });
   const max = Math.max(1, ...data.flat());
+  const dm = t => { const d = new Date(t); return String(d.getUTCDate()).padStart(2, "0") + "." + String(d.getUTCMonth() + 1).padStart(2, "0"); };
   const kd = marks.map(({k, x, lv, right}) => {
-    const col = k.kind === "q" ? "var(--muted)" : k.kind === "u" ? "var(--accent)" : "var(--c1)", ty = 14 + lv * 12;
-    return `<line x1="${x.toFixed(1)}" x2="${x.toFixed(1)}" y1="${ty + 3}" y2="${H - 12}" stroke="${col}" stroke-dasharray="${k.kind === "q" ? "1 3" : "3 3"}"><title>${esc(k.name)} · ${iso(k.t)}</title></line><text x="${(right ? x - 3 : x + 3).toFixed(1)}" y="${ty}" class="hl" text-anchor="${right ? "end" : "start"}" style="fill:${col}">${esc(k.name)}</text>`; }).join("");
+    const col = k.kind === "q" ? "var(--muted)" : k.kind === "u" ? "var(--accent)" : "var(--c1)", ty = 12 + lv * 12;
+    return `<line x1="${x.toFixed(1)}" x2="${x.toFixed(1)}" y1="${ty + 3}" y2="${H - 14}" stroke="${col}" stroke-dasharray="${k.kind === "q" ? "1 3" : "3 3"}"><title>${esc(k.name)} · ${iso(k.t)}</title></line><text x="${(right ? x - 3 : x + 3).toFixed(1)}" y="${ty}" class="hl" text-anchor="${right ? "end" : "start"}" style="fill:${col}">${esc(k.name)}</text>`; }).join("");
   const months = []; let lm = -1;
   for (let w = 0; w < weeks; w++){ const m = new Date(start + w * 7 * DAY).getUTCMonth(); if (m !== lm){ months.push([w, m]); lm = m; } }
-  const minGap = 34 / step; let lastW = -1e9;
-  return `<svg class="lc" viewBox="0 0 ${W} ${H}">
-    ${months.filter(([w]) => { if (w - lastW < minGap) return false; lastW = w; return true; }).map(([w, m]) => `<text x="${L + w * step}" y="${H}" class="hl">${["sty","lut","mar","kwi","maj","cze","lip","sie","wrz","paź","lis","gru"][m]}</text>`).join("")}
+  const minGap = 30 / step; let lastW = -1e9;
+  const num = step >= 13;
+  return `<div class="lanes-w"><svg class="lc lanes2" viewBox="0 0 ${W} ${H}">
+    <text x="${W - 74}" y="${T - 5}" class="hl" text-anchor="end">razem</text><text x="${W}" y="${T - 5}" class="hl" text-anchor="end">szczyt · tydz. od</text>
+    ${months.slice(1).map(([w]) => `<line x1="${(L + w * step - .4).toFixed(1)}" x2="${(L + w * step - .4).toFixed(1)}" y1="${T - 3}" y2="${H - 14}" stroke="var(--line-2)" stroke-width=".6"/>`).join("")}
+    ${months.filter(([w]) => { if (w - lastW < minGap) return false; lastW = w; return true; }).map(([w, m]) => `<text x="${(L + w * step + 1).toFixed(1)}" y="${H - 2}" class="hl">${["sty","lut","mar","kwi","maj","cze","lip","sie","wrz","paź","lis","gru"][m]}</text>`).join("")}
+    ${list.map((r, i) => { const y = T + i * (rowH + gapY), row = data[i], sum = row.reduce((a, b) => a + b, 0), pk = Math.max(...row), pw = row.indexOf(pk), act = row.filter(Boolean).length;
+      return `<text x="0" y="${y + rowH / 2 - 1}" class="sl" style="font-weight:${r.isMain ? 700 : 500}">${esc(r.pageName.length > 17 ? r.pageName.slice(0, 16) + "…" : r.pageName)}</text>
+      <text x="0" y="${y + rowH / 2 + 10}" class="hl">aktywne ${act} z ${weeks} tyg.</text>
+      ${row.map((v, w) => { const x = L + w * step, o = v ? .16 + .84 * Math.sqrt(v / max) : 0;
+        return `<rect x="${x.toFixed(1)}" y="${y}" width="${cw.toFixed(1)}" height="${rowH}" rx="${Math.min(3, cw / 3).toFixed(1)}" fill="${v ? color(i) : "var(--line)"}" fill-opacity="${v ? o.toFixed(2) : ".35"}"${w === pw && pk ? ` stroke="var(--text)" stroke-width="1"` : ""}><title>${esc(r.pageName)} · tydzień ${dm(start + w * 7 * DAY)}–${dm(start + (w * 7 + 6) * DAY)}: ${v} nowych reklam${w === pw && pk ? " (szczyt marki)" : ""}</title></rect>${num && v ? `<text x="${(x + cw / 2).toFixed(1)}" y="${y + rowH / 2 + 3}" text-anchor="middle" class="lv" style="fill:${o > .5 ? "#fff" : "var(--text)"}">${v}</text>` : ""}`; }).join("")}
+      <text x="${W - 74}" y="${y + rowH / 2 + 4}" class="lsum" text-anchor="end">${fmt(sum)}</text>
+      <text x="${W}" y="${y + rowH / 2 + 4}" class="sl" text-anchor="end">${pk ? `${pk} · ${dm(start + pw * 7 * DAY)}` : "—"}</text>`; }).join("")}
     ${kd}
-    ${list.map((r, i) => `<text x="0" y="${T + i * rowH + rowH / 2 + 4}" class="sl">${esc(r.pageName.length > 18 ? r.pageName.slice(0, 17) + "…" : r.pageName)}</text>
-      <line x1="${L}" x2="${W - R}" y1="${T + i * rowH + rowH / 2}" y2="${T + i * rowH + rowH / 2}" stroke="var(--line)"/>
-      ${data[i].map((v, w) => v ? `<circle cx="${(L + (w + .5) * step).toFixed(1)}" cy="${T + i * rowH + rowH / 2}" r="${(2 + Math.sqrt(v / max) * rMax).toFixed(1)}" fill="${color(i)}" fill-opacity=".8"><title>${esc(r.pageName)} · tydzień od ${iso(start + w * 7 * DAY)}: ${v} nowych reklam</title></circle>` : "").join("")}`).join("")}
-  </svg>`;
+  </svg></div><div class="lanes-leg"><span>mniej</span>${[.2, .45, .7, 1].map(o => `<i style="opacity:${o}"></i>`).join("")}<span>więcej nowych reklam w tygodniu</span><span class="pk"><i></i>ramka = najmocniejszy tydzień marki</span>${num ? "" : "<span>liczby w kratkach widać przy zakresie do 26 tygodni; dokładna wartość po najechaniu</span>"}</div>`;
 }
 
 function diverging(items, {leftLabel = "", rightLabel = ""} = {}){
@@ -3642,9 +3780,237 @@ function scoreCard(r, i){
   </div>`;
 }
 
+
+// ================================================================ v22 — warstwa zarządcza (tylko prezentacja; nie zmienia obliczeń)
+const sparkSvg = (vals, col) => { const v = (vals || []).map(x => +x || 0); if (v.length < 2) return ""; const mx = Math.max(...v, 1), W0 = 76, H0 = 22, st = W0 / (v.length - 1);
+  const pts = v.map((y, i) => `${(i * st).toFixed(1)},${(H0 - 2 - y / mx * (H0 - 4)).toFixed(1)}`).join(" ");
+  return `<svg viewBox="0 0 ${W0} ${H0}" preserveAspectRatio="none" aria-hidden="true"><polyline points="${pts}" fill="none" stroke="${col}" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>`; };
+// uniwersalna mapa przewag: rows [{name, me, color, spark}], cols [[etykieta, wartości[], format]]
+function heatMapGen(rows, cols, o = {}){
+  const C2 = cols.map(([l, vals, f]) => { const ok = vals.filter(v => v != null && !isNaN(v)); return {l, f, vals, min: ok.length ? Math.min(...ok) : 0, max: ok.length ? Math.max(...ok) : 0}; });
+  const sp = rows.some(r => r.spark && r.spark.length > 1);
+  return `<div class="hm"><table><thead><tr><th>Marka</th>${sp ? `<th style="text-align:center">${o.sparkLabel || "Trend"}</th>` : ""}${C2.map(c => `<th>${c.l}</th>`).join("")}</tr></thead><tbody>
+    ${rows.map((r, i) => `<tr class="${r.me ? "me" : ""}"><td><span class="dot" style="background:${r.color}"></span> ${esc(r.name)}</td>${sp ? `<td class="sp">${sparkSvg(r.spark, r.color)}</td>` : ""}${C2.map(c => { const v = c.vals[i]; if (v == null || isNaN(v)) return '<td class="na">—</td>'; const hh = c.max > c.min ? (v - c.min) / (c.max - c.min) : (c.max ? 1 : 0); const rk = c.vals.filter(x => x != null && x > v).length + 1; return `<td class="${rk === 1 && c.max > 0 ? "top" : ""}" style="--h:${hh.toFixed(2)}"${W("c", esc(r.name) + " — " + c.l, [`Wartość: <b>${c.f(v)}</b>`, `Pozycja ${rk} z ${c.vals.filter(x => x != null).length} w tej kolumnie.`, "Im mocniejsze tło, tym wyższa wartość na tle porównywanych marek."])}>${c.f(v)}</td>`; }).join("")}</tr>`).join("")}
+  </tbody></table></div><div class="hm-cap">Mapa przewag: tło = wartość na tle pozostałych marek w kolumnie, ramka = lider kolumny. Wyższa wartość to większa intensywność działań, niekoniecznie lepszy wynik.${sp && o.sparkNote ? " " + o.sparkNote : ""}</div>`;
+}
+const x5Rank = (list, main, g) => [...list].sort((a, b) => (g(b) || 0) - (g(a) || 0)).indexOf(main) + 1;
+function x5Data(list){
+  const main = list.find(r => r.isMain); if (!main || list.length < 2) return null;
+  const tot = list.reduce((s, r) => s + (r.s.miesSr || 0), 0), my = main.s.miesSr || 0;
+  const byB = [...list].sort((a, b) => (b.s.miesSr || 0) - (a.s.miesSr || 0)), pos = byB.indexOf(main) + 1;
+  const lead = byB[0], second = byB[1], gap = pos === 1 ? my - (second.s.miesSr || 0) : (lead.s.miesSr || 0) - my;
+  const comps = list.filter(r => r !== main), fair = 100 / list.length, sov = tot ? my / tot * 100 : 0;
+  const per = !!main.s.okres, nv = r => per ? r.s.okres.nowe : r.s.n30;
+  const cn = comps.map(nv).filter(v => v != null).sort((a, b) => a - b), med = cn.length ? cn[Math.floor((cn.length - 1) / 2)] : null;
+  return {main, tot, my, pos, lead, second, gap, comps, fair, sov, per, myNew: nv(main), med, idxPos: x5Rank(list, main, r => r.idx.index)};
+}
+function x5Verdict(list){
+  const d = x5Data(list); if (!d) return "";
+  const nm = `<b>${esc(d.main.pageName)}</b>`, tempo = d.myNew == null || d.med == null ? "" : d.myNew >= d.med ? " Nowe kreacje dodaje szybciej niż konkurencja." : " Nowe kreacje dodaje wolniej niż konkurencja.";
+  return d.pos === 1
+    ? `${nm} jest liderem szacowanych wydatków w Meta: <b>${Math.round(d.sov)}%</b> udziału w głosie i ok. <b>${fmtK(Math.abs(d.gap))} zł</b> miesięcznie przewagi nad marką ${esc(d.second.pageName)}.${tempo}`
+    : `${nm} zajmuje <b>${d.pos}. miejsce z ${list.length}</b> w szacowanych wydatkach w Meta: <b>${Math.round(d.sov)}%</b> udziału w głosie, do lidera (${esc(d.lead.pageName)}) brakuje ok. <b>${fmtK(Math.abs(d.gap))} zł</b> miesięcznie.${tempo}`;
+}
+function x5Tiles(list){
+  const d = x5Data(list); if (!d) return "";
+  const {pos, lead, second, gap, fair, sov, per, myNew, med, idxPos} = d, n = list.length;
+  const st = c => `<i class="x5st ${c}"></i>`;
+  const sovC = sov >= fair * 1.1 ? "good" : sov >= fair * 0.6 ? "warn" : "bad";
+  const newC = myNew == null || med == null ? "" : myNew >= med ? "good" : myNew >= med * 0.5 ? "warn" : "bad";
+  const bk = (why, l, v, s) => `<div class="bk"${why}><span class="bl">${l}</span><span class="bv">${v}</span><span class="bs">${s}</span></div>`;
+  return `<div class="bigk x5-k">
+    ${bk(W("p", "Udział w głosie (wydatki)", [`Szac. wydatki Twojej marki: <b>~${fmtK(d.my)} zł/mies.</b>`, `Suma porównywanych marek: ~${fmtK(d.tot)} zł/mies.`, `Równy podział przy ${n} markach to ${Math.round(fair)}%.`, "Szacunek z zasięgu aktywnych reklam — rząd wielkości, nie faktura."], SRC_META), "Udział w głosie", Math.round(sov) + "%", `${st(sovC)}równy podział: ${Math.round(fair)}%`)}
+    ${bk(W("p", "Pozycja w szacowanych wydatkach", list.map(r => `${esc(r.pageName)}: ~${fmtK(r.s.miesSr)} zł/mies.`), SRC_META), "Pozycja w wydatkach", `${pos}<small>z ${n}</small>`, `${st(pos === 1 ? "good" : pos <= Math.ceil(n / 2) ? "warn" : "bad")}${pos === 1 ? "lider zestawienia" : "lider: " + esc(lead.pageName)}`)}
+    ${bk(W("p", pos === 1 ? "Przewaga nad drugą marką" : "Luka do lidera", [pos === 1 ? `Twoje ~${fmtK(d.my)} zł vs ${esc(second.pageName)} ~${fmtK(second.s.miesSr)} zł/mies.` : `${esc(lead.pageName)} ~${fmtK(lead.s.miesSr)} zł vs Twoje ~${fmtK(d.my)} zł/mies.`, "Różnica szacowanych miesięcznych wydatków."], SRC_META), pos === 1 ? "Przewaga nad nr 2" : "Luka do lidera", `${pos === 1 ? "+" : "−"}${fmtK(Math.abs(gap))}<small>zł/mies.</small>`, `${st(pos === 1 ? "good" : "warn")}${pos === 1 ? "nad: " + esc(second.pageName) : "do: " + esc(lead.pageName)}`)}
+    ${bk(W("c", per ? "Nowe reklamy w wybranym okresie" : "Nowe reklamy w 30 dni", [`Twoja marka: <b>${myNew == null ? "brak danych" : fmt(myNew)}</b>`, `Mediana konkurentów: ${med == null ? "brak danych" : fmt(med)}`, `Pozycja w indeksie aktywności: ${idxPos} z ${n}.`], SRC_META), "Tempo nowych kreacji", `${myNew == null ? "—" : fmt(myNew)}<small>${per ? "w okresie" : "/ 30 dni"}</small>`, `${st(newC)}mediana konkurencji: ${med == null ? "—" : fmt(med)}`)}
+  </div>`;
+}
+function heatMap(list){
+  const g = f => list.map(f);
+  return heatMapGen(list.map((r, i) => ({name: r.pageName, me: r.isMain, color: color(i), spark: (r.months || []).slice(-12).map(m => m.nowe)})), [
+    ["Aktywne", g(r => r.s.aktywne), v => fmt(v)],
+    ["Budżet / mies.", g(r => r.s.miesSr), v => "~" + fmtK(v)],
+    ["Nowe", g(r => r.s.okres ? r.s.okres.nowe : r.s.n30), v => fmt(v)],
+    ["Wideo", g(r => r.mediaLoaded ? r.s.wideo : null), v => v + "%"],
+    ["Z ofertą", g(r => r.s.zOfertaProc), v => v + "%"],
+    ["Wył. ≤7 dni", g(r => r.testing.killRate), v => v + "%"],
+    ["Evergreeny", g(r => r.s.evergreeny), v => fmt(v)],
+    ["Indeks", g(r => r.idx.index), v => String(v)]
+  ], {sparkLabel: "Nowe / mies.", sparkNote: "Linia: nowe reklamy miesiąc po miesiącu (do 12 miesięcy)."});
+}
+function dataFlags(list){
+  const F = [];
+  list.forEach(r => {
+    const nm = `<b>${esc(r.pageName)}</b>`;
+    if (r.limited) F.push(`${nm}: pobrano próbę reklam (limit) — liczby reklam i budżet mogą być zaniżone.`);
+    if (r.cands && r.cands.length > 1) F.push(`${nm}: strona znaleziona po nazwie spośród ${r.cands.length} kandydatów — potwierdź, że to właściwe konto, albo podaj ID.`);
+    if ((r.s.lacznie || 0) < 10) F.push(`${nm}: tylko ${fmt(r.s.lacznie || 0)} reklam w danych — udziały procentowe są mało stabilne.`);
+    if (!r.mediaLoaded) F.push(`${nm}: formaty reklam nie zostały pobrane — brak danych o wideo.`);
+    if (r.demoMissing) F.push(`${nm}: brak danych demograficznych dla części reklam.`);
+    if (r.s.prevStale) F.push(`${nm}: poprzedni okres starszy niż ok. 12 miesięcy — zmiany okres do okresu niepokazywane.`);
+  });
+  return F;
+}
+function dataQuality(list){
+  const F = dataFlags(list);
+  return `<details class="dq"><summary><i class="x5st ${F.length ? "warn" : "good"}"></i>${F.length ? `Wiarygodność danych: ${F.length} ${F.length === 1 ? "uwaga" : F.length < 5 ? "uwagi" : "uwag"} — sprawdź, zanim pokażesz wyniki dalej` : "Wiarygodność danych: bez zastrzeżeń dla tego zestawu"}</summary>
+    ${F.length ? `<ul>${F.map(f => `<li><i></i><span>${f}</span></li>`).join("")}</ul>` : `<ul><li><i style="background:var(--good)"></i><span>Pełne pobranie, konta wskazane jednoznacznie, formaty i demografia wczytane.</span></li></ul>`}</details>`;
+}
+const topMoves = (list, k = 3) => recommendations(list).slice().sort((a, b) => a.prio - b.prio).slice(0, k);
+const nbaRows = recs => recs.length ? `<div class="nba">${recs.map((x, i) => `<div class="nba-r" style="--pc:${PRIO[x.prio][1]}"><span class="nba-n">${i + 1}</span>
+    <div class="nba-c"><span class="nba-l">Stan<span class="nba-p">priorytet ${PRIO[x.prio][0]}</span></span><div class="t">${x.title}</div></div>
+    <div class="nba-c w"><span class="nba-l">Dowód w danych</span>${x.why}</div>
+    <div class="nba-c a"><span class="nba-l">Ruch</span>${x.todo}</div></div>`).join("")}</div>` : "";
+function execPanel(list){
+  const d = x5Data(list); if (!d) return "";
+  return `<div class="x5"><div class="x5-h"><b>W 5 sekund — ${esc(d.main.pageName)} na tle ${d.comps.length} ${d.comps.length === 1 ? "konkurenta" : "konkurentów"}</b><button type="button" class="ghost mini x5copy" data-x5copy>Kopiuj podsumowanie</button></div>
+    <p class="x5-verdict">${x5Verdict(list)}</p>
+    ${x5Tiles(list)}
+    ${nbaRows(topMoves(list))}
+    ${heatMap(list)}
+    ${dataQuality(list)}
+  </div>`;
+}
+const x5Strip = s => { const t = document.createElement("div"); t.innerHTML = s; return t.textContent.replace(/\s+/g, " ").trim(); };
+const rcG = () => { try { const g = window.RivalCoreG && window.RivalCoreG.G; return g && g.data && g.res && g.res.some(x => x.n) ? g : null; } catch(e){ return null; } };
+const rcNorm = s => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/ł/g, "l").replace(/[^a-z0-9]+/g, "");
+function execText(list){
+  const d = x5Data(list); if (!d) return "";
+  const top = topMoves(list), F = dataFlags(list), G = rcG(), gm = G && (G.res.find(x => x.main) || G.res[0]);
+  return [`RivalCore — ${d.main.pageName} vs ${d.comps.map(r => r.pageName).join(", ")} (stan na ${iso(todayUTC)})`, "",
+    x5Strip(x5Verdict(list)), "",
+    "META",
+    `- Udział w głosie (szac. wydatki): ${Math.round(d.sov)}% (równy podział: ${Math.round(d.fair)}%)`,
+    `- Pozycja w wydatkach: ${d.pos} z ${list.length}` + (d.pos === 1 ? `, przewaga nad ${d.second.pageName}: ~${fmtK(Math.abs(d.gap))} zł/mies.` : `, luka do lidera (${d.lead.pageName}): ~${fmtK(Math.abs(d.gap))} zł/mies.`),
+    `- Nowe reklamy ${d.per ? "w okresie" : "w 30 dni"}: ${d.myNew == null ? "brak danych" : fmt(d.myNew)} (mediana konkurencji: ${d.med == null ? "brak danych" : fmt(d.med)})`,
+    ...(gm && gm.n ? ["", "GOOGLE", `- Udział w wyświetleniach: ${Math.round((gm.sovImpr || 0) * 100)}%`, `- Szac. koszt: ~${fmtK(gm.costMoMid)} zł/mies., aktywne kreacje: ${fmt(gm.active)}`] : []), "",
+    ...(top.length ? ["CO ZROBIĆ NAJPIERW", ...top.flatMap((x, i) => [`${i + 1}. [STAN] ${x5Strip(x.title)}`, `   [DOWÓD] ${x5Strip(x.why)}`, `   [RUCH] ${x5Strip(x.todo)}`]), ""] : []),
+    ...(F.length ? ["ZASTRZEŻENIA DO DANYCH", ...F.map(f => "- " + x5Strip(f)), ""] : []),
+    "Wydatki to szacunek z zasięgu i wyświetleń reklam w publicznych bibliotekach Meta i Google — rząd wielkości, nie dane z kont reklamowych."].join("\n");
+}
+// ---------------------------------------------------------------- PDF: strona „Raport w skrócie” i strony Google
+function execPdfPage(sel, top){
+  const d = x5Data(sel); if (!d) return "";
+  const G = rcG(), F = dataFlags(sel);
+  let gHtml = "", mix = "";
+  if (G){
+    const gm = G.res.find(x => x.main) || G.res[0];
+    if (gm && gm.n) gHtml = `<div class="rp-exec-sub">Google Ads — ${esc(gm.name)}</div>${G.heroCards(gm)}`;
+    const rows = sel.map((r, i) => { const g = G.res.find(x => rcNorm(x.name) === rcNorm(r.brand) || rcNorm(x.name) === rcNorm(r.pageName)); return {n: r.pageName, m: r.s.miesSr || 0, g: g ? g.costMoMid || 0 : null}; }).filter(x => x.g != null);
+    const mx = Math.max(...rows.map(x => x.m + x.g), 1);
+    if (rows.length) mix = `<div class="rp-exec-sub">Podział szacowanego budżetu: Meta i Google</div><div class="rp-mix">${rows.map(x => `<div><span>${esc(x.n)}</span><span class="bar"><i style="width:${(x.m / mx * 100).toFixed(1)}%;background:var(--c0)"></i><i style="width:${(x.g / mx * 100).toFixed(1)}%;background:var(--c1)"></i></span><span class="v"><b>~${fmtK(x.m + x.g)} zł</b> · Google ${x.m + x.g ? Math.round(x.g / (x.m + x.g) * 100) : 0}%</span></div>`).join("")}</div><div class="rp-mixleg"><span><i style="background:var(--c0)"></i>Meta</span><span><i style="background:var(--c1)"></i>Google</span></div>`;
+  }
+  return `<section class="rp-page">${top}
+    <div class="rp-kicker">Dla zarządu · jedna strona</div><h2 class="rp-h">Raport w skrócie</h2>
+    <p class="x5-verdict">${x5Verdict(sel)}</p>
+    <div class="rp-exec-sub">Meta — ${esc(d.main.pageName)}</div>${x5Tiles(sel)}
+    ${gHtml}${mix}
+    <div class="rp-exec-sub">Co zrobić najpierw</div>${nbaRows(topMoves(sel))}
+    <div class="rp-exec-sub">Kto gdzie prowadzi (Meta)</div>${heatMap(sel)}
+    <div class="rp-caveat"><b>Jak czytać:</b> wydatki i wyświetlenia to szacunki z publicznych bibliotek reklam (rząd wielkości, do porównań między markami), nie dane z kont reklamowych.${F.length ? " <b>Zastrzeżenia:</b> " + F.map(x5Strip).join(" ") : ""}</div>
+  </section>`;
+}
+function googlePdfPages(has, top){
+  const G = rcG(); if (!G) return [];
+  const out = [], multi = G.res.length > 1, pg = (t, body) => `<section class="rp-page">${top}<div class="rp-kicker">Google Ads · Centrum przejrzystości reklam</div><h2 class="rp-h">${t}</h2><div class="rp-g">${body}</div></section>`;
+  try {
+    if (has("g_ins")) out.push(pg(multi ? "Google: wnioski i marki" : "Google: " + esc(G.res[0].name), multi ? G.cmpTab("ins") : G.brandTab(G.res[0], "ov")));
+    if (has("g_sov") && multi) out.push(pg("Google: udział w głosie i budżet", G.cmpTab("sov")));
+    if (has("g_rz")){ const rz = document.getElementById("rzOut"); if (rz && rz.innerHTML.trim() && !rz.querySelector(".gempty")) out.push(`<section class="rp-page">${top}<div class="rp-kicker">Meta + Google · wszystkie kanały</div><h2 class="rp-h">Kanały razem</h2><div class="rp-g">${rz.innerHTML.replace(/<h2[\s\S]*?<\/h2>/, "")}</div></section>`); }
+  } catch(e){}
+  return out;
+}
+// ---------------------------------------------------------------- symulator udziału w głosie (Meta i Google)
+function simBoxGen(data, o = {}){
+  const me = data.find(x => x.me), tot = data.reduce((s, x) => s + (x.v || 0), 0); if (!me || !tot || data.length < 2) return "";
+  const my = me.v || 0, others = tot - my, lead = Math.max(...data.map(x => x.v || 0)), maxB = Math.max(lead, my, 1000) * 2.5;
+  const pos = [...data].sort((a, b) => b.v - a.v).indexOf(me) + 1;
+  return `<div class="sim" data-sim="${attrEsc(JSON.stringify({data, my, others}))}">
+    <div class="sim-h">Symulator: co, jeśli zmienisz budżet${o.ch ? " w " + o.ch : ""}? <span class="sim-tag">scenariusz</span></div>
+    <div class="sim-g"><div>
+        <div class="sim-v"><span data-simv></span> <small>zł / mies. — Twoja marka</small></div>
+        <input type="range" min="0" max="${Math.round(maxB)}" step="1" value="${Math.round(my)}" aria-label="Twój miesięczny budżet w symulacji" data-simr>
+        <div class="sim-o"><span><b data-simsov></b>udział w głosie</span><span><b data-simpos></b>pozycja</span><span><b data-simd></b>zmiana budżetu</span></div>
+        <div class="sim-p"><button type="button" class="ghost mini" data-simset="now">Stan dziś</button>${pos > 1 ? '<button type="button" class="ghost mini" data-simset="up">Wyprzedź markę wyżej</button><button type="button" class="ghost mini" data-simset="lead">Dogoń lidera</button>' : ""}<button type="button" class="ghost mini" data-simset="s25">Udział 25%</button><button type="button" class="ghost mini" data-simset="s40">Udział 40%</button></div>
+      </div><div class="sim-b" data-simb></div></div>
+    <div class="note">Symulacja zakłada, że konkurenci utrzymają dzisiejsze szacowane wydatki, a Twój zasięg rośnie proporcjonalnie do budżetu. To scenariusz do rozmowy o budżecie, nie prognoza wyniku sprzedażowego.</div>
+  </div>`;
+}
+const simBox = list => list.some(r => r.isMain) ? simBoxGen(list.map((r, i) => ({n: r.pageName, v: r.s.miesSr || 0, me: !!r.isMain, c: color(i)})), {ch: "Meta"}) : "";
+function simUpdate(box){
+  const S = JSON.parse(box.dataset.sim), r = box.querySelector("[data-simr]"), b = +r.value;
+  const rows = S.data.map(x => ({...x, v: x.me ? b : x.v})), tot = rows.reduce((s, x) => s + x.v, 0);
+  const pos = [...rows].sort((a, c) => c.v - a.v).findIndex(x => x.me) + 1, dl = b - S.my;
+  box.querySelector("[data-simv]").textContent = "~" + fmtK(b);
+  box.querySelector("[data-simsov]").textContent = (tot ? Math.round(b / tot * 100) : 0) + "%";
+  box.querySelector("[data-simpos]").textContent = pos + " z " + rows.length;
+  box.querySelector("[data-simd]").textContent = Math.abs(dl) < 2 ? "bez zmian" : (dl > 0 ? "+" : "−") + fmtK(Math.abs(dl)) + " zł" + (S.my ? ` (${dl > 0 ? "+" : "−"}${Math.abs(Math.round(dl / S.my * 100))}%)` : "");
+  box.querySelector("[data-simb]").innerHTML = rows.map(x => { const p = tot ? x.v / tot * 100 : 0; return `<div><span class="nm"${x.me ? ' style="font-weight:700"' : ""}>${esc(x.n)}</span><span class="bar"><i style="width:${p.toFixed(1)}%;background:${x.c}"></i></span><span class="p">${Math.round(p)}%</span></div>`; }).join("");
+}
+function simInit(root){ (root || document).querySelectorAll(".sim[data-sim]").forEach(b => { if (!b.dataset.simok){ b.dataset.simok = "1"; simUpdate(b); } }); }
+document.addEventListener("input", e => { const r = e.target.closest && e.target.closest("[data-simr]"); if (r) simUpdate(r.closest(".sim")); });
+document.addEventListener("click", e => {
+  const t = e.target.closest && e.target.closest("button"); if (!t) return;
+  if (t.dataset.simset){
+    const box = t.closest(".sim"), S = JSON.parse(box.dataset.sim), r = box.querySelector("[data-simr]"), k = t.dataset.simset;
+    const oth = S.data.filter(x => !x.me).map(x => x.v).sort((a, b) => a - b), above = oth.filter(v => v > S.my);
+    let v = S.my;
+    if (k === "up" && above.length) v = above[0] * 1.02;
+    if (k === "lead" && oth.length) v = oth[oth.length - 1];
+    if (k === "s25") v = S.others * 0.25 / 0.75;
+    if (k === "s40") v = S.others * 0.4 / 0.6;
+    if (v > +r.max) r.max = Math.ceil(v * 1.1);
+    r.value = Math.round(v); simUpdate(box); return;
+  }
+  if (t.hasAttribute("data-x5copy")){
+    const txt = execText(cmpList());
+    const done = () => { t.textContent = "Skopiowano"; setTimeout(() => { t.textContent = "Kopiuj podsumowanie"; }, 1800); };
+    (navigator.clipboard && navigator.clipboard.writeText ? navigator.clipboard.writeText(txt) : Promise.reject()).then(done, () => { const a = document.createElement("textarea"); a.value = txt; document.body.appendChild(a); a.select(); try { document.execCommand("copy"); done(); } catch(_){} a.remove(); });
+  }
+});
+new MutationObserver(() => simInit()).observe(document.documentElement, {childList: true, subtree: true});
+// ---------------------------------------------------------------- wklejanie listy konkurentów + podsumowanie formularza + skrót
+function bulkParse(txt){
+  return String(txt || "").split(/\r?\n/).map(l => l.trim()).filter(Boolean).map(l => {
+    const p = l.split(/\t|;/).map(x => x.trim()).filter(Boolean); if (!p.length) return null;
+    let name = p[0], rest = p.slice(1);
+    if (p.length === 1 && parsePageId(p[0]) !== undefined && /^\d+$|facebook\.com|^https?:/i.test(p[0])){ name = ""; rest = [p[0]]; }
+    const accs = edSplit(rest.join(", ")).filter(Boolean);
+    return {name, accs: accs.length ? accs.slice(0, 10) : [""]};
+  }).filter(Boolean);
+}
+function edSummary(){
+  const el = $("edSum"); if (!el) return;
+  const comps = ED.comp.filter(c => c.name.trim() || c.accs.some(a => a.trim()));
+  const accs = ED.main.filter(a => a.trim()).length + comps.reduce((s, c) => s + c.accs.filter(a => a.trim()).length, 0);
+  const bad = ED.main.filter(edBad).length + ED.comp.reduce((s, c) => s + c.accs.filter(edBad).length, 0);
+  const noId = comps.filter(c => !c.accs.some(a => a.trim())).length;
+  const names = comps.map(c => c.name.trim().toLowerCase()).filter(Boolean), dup = names.length - new Set(names).size;
+  const hasMain = $("brand").value.trim() || ED.main.some(a => a.trim());
+  el.innerHTML = `<span>Do analizy: <b>${hasMain ? 1 : 0}</b> Twoja marka + <b>${comps.length}</b> ${comps.length === 1 ? "konkurent" : "konkurentów"}</span><span>Konta Meta z ID: <b>${accs}</b></span>${noId ? `<span>Szukane po nazwie: <b>${noId}</b></span>` : ""}${bad ? `<span class="er">Do poprawy: <b>${bad}</b> ${bad === 1 ? "pole" : "pola"} z ID</span>` : ""}${dup ? `<span class="er">Powtórzona nazwa konkurenta</span>` : ""}${!hasMain ? `<span class="er">Podaj nazwę lub ID swojej marki</span>` : ""}<span>Skrót: Ctrl + Enter uruchamia analizę</span>`;
+}
+function v22Init(){
+  const host = $("mainEd").closest(".card");
+  host.addEventListener("input", edSummary);
+  new MutationObserver(edSummary).observe($("compEd"), {childList: true, subtree: true});
+  new MutationObserver(edSummary).observe($("mainEd"), {childList: true, subtree: true});
+  $("bulkOpen").onclick = () => { const b = $("bulkBox"); b.hidden = !b.hidden; if (!b.hidden) $("bulkTxt").focus(); };
+  $("bulkTxt").addEventListener("input", () => { const L = bulkParse($("bulkTxt").value), bad = L.reduce((s, c) => s + c.accs.filter(edBad).length, 0); $("bulkInfo").textContent = L.length ? `Rozpoznano: ${L.length} ${L.length === 1 ? "konkurent" : "konkurentów"}, ${L.reduce((s, c) => s + c.accs.filter(Boolean).length, 0)} kont${bad ? `, ${bad} ID do poprawy` : ""}.` : ""; });
+  $("bulkAdd").onclick = () => {
+    const L = bulkParse($("bulkTxt").value); if (!L.length) return;
+    const cur = ED.comp.filter(c => c.name.trim() || c.accs.some(a => a.trim()));
+    const seen = new Set(cur.map(c => c.name.trim().toLowerCase()).filter(Boolean));
+    L.forEach(c => { const k = c.name.trim().toLowerCase(); if (k && seen.has(k)) return; if (k) seen.add(k); cur.push(c); });
+    ED.comp = cur.length ? cur : [{name: "", accs: [""]}];
+    edToHidden(); edRender(); $("bulkTxt").value = ""; $("bulkInfo").textContent = ""; $("bulkBox").hidden = true; edSummary();
+  };
+  document.addEventListener("keydown", e => { if ((e.ctrlKey || e.metaKey) && e.key === "Enter" && !$("go").disabled){ e.preventDefault(); $("go").click(); } });
+  edSummary();
+}
+
 // ================================================================ panele porównania
 const C = {};
-C.recs = list => `${blk("[c]Najważniejsze wnioski", insights(list))}
+C.recs = list => `${execPanel(list)}${blk("[c]Najważniejsze wnioski", insights(list))}
   ${blk("[x]Rekomendacje — co z tego wynika", recCards(recommendations(list)) + `<div class="note">Rekomendacje są generowane automatycznie na podstawie reguł i danych z Biblioteki Reklam — traktuj je jako punkt wyjścia do decyzji.</div>`)}
   ${blk("[c]Marki w skrócie", `<div class="rp-scgrid">${list.map(scoreCard).join("")}</div>`)}`;
 // porównanie okres do okresu dla wszystkich marek
@@ -3665,6 +4031,7 @@ C.sov = list => {
   return `${main ? see(list[0].s.okres
     ? `W wybranym okresie Twój szacowany udział w wydatkach to <b>${totP ? Math.round(main.s.okres.koszt / totP * 100) : 0}%</b>, w nowych reklamach <b>${pct(main.s.okres.nowe, list.reduce((s, r) => s + r.s.okres.nowe, 0))}%</b>. Prognoza „na dziś” (tylko reklamy aktywne dziś): <b>${tot ? Math.round(main.s.miesSr / tot * 100) : 0}%</b> wydatków — różnica pokazuje, czy marka przyspiesza, czy zwalnia.`
     : `Twój szacowany udział w wydatkach: <b>${tot ? Math.round(main.s.miesSr / tot * 100) : 0}%</b>, w aktywnych reklamach: <b>${pct(main.s.aktywne, list.reduce((s, r) => s + r.s.aktywne, 0))}%</b>.`) : ""}
+    ${simBox(list)}
     <div class="segtog" role="group" aria-label="Sposób pokazywania"><button data-shareabs="0" class="${view.shareAbs ? "" : "on"}">Udział %</button><button data-shareabs="1" class="${view.shareAbs ? "on" : ""}">Wartości</button></div>
     <div class="three">
       ${blk(list[0].s.okres ? "[p]Prognoza wydatków / mies. (aktywne dziś)" : "[p]Szacowane wydatki / mies.", shareBlock(list, r => r.s.miesSr, "zł"))}
@@ -3734,7 +4101,7 @@ C.audience = list => {
 C.calendar = list => {
   const busiest = list.map(r => { const i = r.cal.dow.indexOf(Math.max(...r.cal.dow)); const t = r.cal.dow.reduce((a,b) => a+b, 0); return {r, i, p: pct(r.cal.dow[i], t)}; });
   const lw = laneWindow(list), kdN = kdBetween(lw.start, lw.start + lw.weeks * 7 * DAY).length;
-  return `${blk(`[d]Starty reklam tydzień po tygodniu (${lw.per ? `wybrany okres: ${lw.per.min} – ${lw.per.max}` : `ostatnie ${lw.weeks} tygodni`})`, kdControls(list) + swimlanes(list) + `<div class="note">Wielkość kropki = liczba nowych reklam w tygodniu.${kdN ? " Linie przerywane = wybrane ważne daty (kropkowane = początek kwartału)." : ""}</div>`)}
+  return `${blk(`[d]Starty reklam tydzień po tygodniu (${lw.per ? `wybrany okres: ${lw.per.min} – ${lw.per.max}` : `ostatnie ${lw.weeks} tygodni`})`, kdControls(list) + swimlanes(list) + `<div class="note">Jedna kratka = jeden tydzień; im mocniejszy kolor, tym więcej nowych reklam (wspólna skala dla wszystkich marek). Po prawej suma startów i najmocniejszy tydzień marki.${kdN ? " Linie przerywane = wybrane ważne daty (kropkowane = początek kwartału)." : ""}</div>`)}
     ${blk("[c]Ulubiony dzień startu", `<ul class="lines">${busiest.map((x, i) => `<li><span class="dot" style="background:${color(i)}"></span><b>${esc(x.r.pageName)}</b>: ${WEEKDAYS_FULL[x.i]} (${x.p}% startów)</li>`).join("")}</ul>`)}
     ${blk("[p]Fale startów w ostatnim roku", brandBars(list, r => r.camp.waves365))}`;
 };
@@ -4048,12 +4415,14 @@ async function importSnaps(e){
 // ================================================================ raport PDF
 const PDF_KEY = "metaAdsBotPdf";
 const PDF_GROUPS = [
-  ["Ogólne", [["cover", "Okładka"], ["summary", "Podsumowanie i karty marek"], ["recs", "Rekomendacje"], ["method", "Metodologia i zastrzeżenia"]]],
+  ["Ogólne", [["cover", "Okładka"], ["exec", "Raport w skrócie (1 strona dla zarządu)"], ["summary", "Podsumowanie i karty marek"], ["recs", "Rekomendacje"], ["method", "Metodologia i zastrzeżenia"]]],
   ["Porównanie marek", CMP_TABS.filter(([k]) => k !== "recs").map(([k, l]) => ["cmp_" + k, l])],
-  ["Strony każdej marki", BRAND_TABS.map(([k, l]) => ["b_" + k, l])]
+  ["Strony każdej marki", BRAND_TABS.map(([k, l]) => ["b_" + k, l])],
+  ["Google Ads (gdy jest analiza Google)", [["g_ins", "Google: wnioski i marki"], ["g_sov", "Google: udział w głosie i budżet"], ["g_rz", "Meta + Google: kanały razem"]]]
 ];
 const PDF_ALL = PDF_GROUPS.flatMap(g => g[1].map(x => x[0]));
-const PDF_SHORT = ["cover", "summary", "recs", "method", "cmp_sov", "cmp_ranks", "b_overview"];
+const PDF_SHORT = ["cover", "exec", "summary", "recs", "method", "cmp_sov", "cmp_ranks", "b_overview", "g_ins", "g_rz"];
+const PDF_EXEC = ["cover", "exec", "recs", "method", "g_rz"];
 const pdfPrefs = () => { try { return JSON.parse(store.get(PDF_KEY) || "{}"); } catch(e){ return {}; } };
 let pdfLogo = null;
 
@@ -4077,7 +4446,7 @@ function openPdfPanel(){
     </div>
     <div style="margin-top:14px"><label for="pdfNote">Komentarz analityka (pojawi się na stronie podsumowania)</label>
       <textarea id="pdfNote" placeholder="np. Konkurencja mocno inwestuje w wideo i rabaty — rekomendujemy test kreacji z kodem rabatowym…"></textarea></div>
-    <div class="row" style="margin:14px 0 4px"><b style="margin-right:6px">Zawartość:</b><button class="ghost mini" id="pdfFull">Pełny raport</button><button class="ghost mini" id="pdfShort">Skrót dla klienta</button><button class="ghost mini" id="pdfNone">Odznacz wszystko</button></div>
+    <div class="row" style="margin:14px 0 4px"><b style="margin-right:6px">Zawartość:</b><button class="ghost mini" id="pdfFull">Pełny raport</button><button class="ghost mini" id="pdfShort">Skrót dla klienta</button><button class="ghost mini" id="pdfExec" title="Okładka, raport w skrócie, rekomendacje, kanały razem, metodologia">Dla zarządu</button><button class="ghost mini" id="pdfNone">Odznacz wszystko</button></div>
     ${PDF_GROUPS.map(([g, items]) => `<h3>${g}</h3><div class="optgrid">${items.map(([k, label]) => `<label class="check" style="margin:0"><input type="checkbox" data-sec="${k}" ${secs.includes(k) ? "checked" : ""} ${k.startsWith("cmp_") && results.length < 2 ? "disabled" : ""}><span>${label}</span></label>`).join("")}</div>`).join("")}
     ${results.length > 1 ? `<h3>Marki w raporcie</h3><div class="optgrid">${results.map((r, i) => `<label class="check" style="margin:0"><input type="checkbox" data-brand="${r.uid}" checked><span><span class="dot" style="background:${color(i)}"></span>${esc(r.pageName)}</span></label>`).join("")}</div>` : ""}
     <div class="row" style="margin-top:16px"><button id="pdfGo">Pobierz PDF</button><span class="hint" id="pdfEst"></span></div>
@@ -4090,6 +4459,8 @@ function openPdfPanel(){
   card.querySelectorAll("input").forEach(i => i.addEventListener("change", est)); est();
   $("pdfFull").onclick = () => setSecs(PDF_ALL);
   $("pdfShort").onclick = () => setSecs(PDF_SHORT);
+  $("pdfExec").onclick = () => setSecs(PDF_EXEC);
+  if (!secs.includes("exec") && !pdfPrefs().v22){ card.querySelectorAll('input[data-sec="exec"],input[data-sec^="g_"]').forEach(cb => { if (!cb.disabled) cb.checked = true; }); est(); }
   $("pdfNone").onclick = () => setSecs([]);
   $("pdfClose").onclick = () => card.classList.add("hidden");
   $("pdfLogoBtn").onclick = () => $("pdfLogoFile").click();
@@ -4116,7 +4487,7 @@ function generatePdf(){
   if (!o.brands.length) return setStatus("Zaznacz co najmniej jedną markę do raportu.", true);
   if (!o.secs.size) return setStatus("Zaznacz co najmniej jedną sekcję raportu.", true);
   const main = results.find(r => r.isMain) || results[0];
-  const prefs = {author: o.author, client: o.client, lastBrand: main.pageName, sections: [...o.secs], cover: o.cover};
+  const prefs = {author: o.author, client: o.client, lastBrand: main.pageName, sections: [...o.secs], cover: o.cover, v22: 1};
   if (o.logo && o.logo.length < 400000) prefs.logo = o.logo;
   store.set(PDF_KEY, JSON.stringify(prefs));
 
@@ -4154,7 +4525,7 @@ function buildReport(o){
       </div>
       <div class="rp-hero">
         <div class="rp-hero-txt">
-          <div class="kicker">RivalCore · raport konkurencji · Facebook i Instagram</div>
+          <div class="kicker">RivalCore · raport konkurencji · ${rcG() ? "Meta + Google Ads" : "Facebook i Instagram"}</div>
           <h1>${esc(o.title)}</h1>
           <p>${sel.length > 1 ? `${esc(main.pageName)} na tle ${sel.length - 1} ${sel.length - 1 === 1 ? "konkurenta" : "konkurentów"}` : `Analiza reklam marki ${esc(main.pageName)}`} · emisja: ${esc(regionLabel(main.region))}${fl ? ` · ${esc(fl)}` : ""}</p>
         </div>
@@ -4172,10 +4543,12 @@ function buildReport(o){
       </div>
       <div class="rp-cover-foot">
         <div>${o.author ? `<b>Przygotował(a):</b> ${esc(o.author)}` : ""}${o.client ? `${o.author ? "<br>" : ""}<b>Dla:</b> ${esc(o.client)}` : ""}</div>
-        <div style="text-align:right">Źródło danych: Meta Ad Library API<br>Stan na ${iso(todayUTC)}</div>
+        <div style="text-align:right">Źródło danych: Meta Ad Library API${rcG() ? " · Google Ads Transparency Center" : ""}<br>Stan na ${iso(todayUTC)}</div>
       </div>
     </section>`);
   }
+
+  if (has("exec") && sel.length > 1){ const ep = execPdfPage(sel, top); if (ep) pages.push(ep); }
 
   if (has("summary") || has("recs")){
     pages.push(`<section class="rp-page">${top}
@@ -4191,6 +4564,8 @@ function buildReport(o){
     for (const [k, l] of CMP_TABS) if (k !== "recs" && has("cmp_" + k))
       pages.push(`<section class="rp-page">${top}<div class="rp-kicker">Porównanie marek</div><h2 class="rp-h">${l}</h2>${cmpPanel(k, sel)}</section>`);
   }
+
+  googlePdfPages(has, top).forEach(pg => pages.push(pg));
 
   const bt = BRAND_TABS.filter(([k]) => has("b_" + k));
   if (bt.length){
@@ -5431,6 +5806,7 @@ $("loadAn").onclick = () => $("anFile").click();
 $("anFile").addEventListener("change", loadAnalysis);
 $("discGo").onclick = discover;
 edInit();
+v22Init();
 $("discAdd").onclick = addDiscovered;
 $("discAddGroup").onclick = () => addDiscoveredGroup(false);
 $("discAddMain").onclick = () => addDiscoveredGroup(true);
@@ -5463,7 +5839,7 @@ regionChanged();
 // ================================================================ RivalCore 20 · moduły Meta + Google
 (() => {
 "use strict";
-const RCV = "21.0";
+const RCV = "22.0";
 const E = id => document.getElementById(id);
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const NF = new Intl.NumberFormat("pl-PL", {maximumFractionDigits: 0});
@@ -5953,6 +6329,10 @@ WHERE rs.last_shown >= @since AND rs.first_shown <= @until AND c.advertiser_id I
       const order = {"Wysoki": 0, "Średni": 1, "Niski": 2}; recs.sort((a, b) => order[a[0]] - order[b[0]]);
       return `<div class="see" data-k="x"><span>${ICON_BULB}</span><div><b>Najważniejsze w skrócie</b><ul class="lines" style="margin-top:6px">${ins.map(x => `<li>${x}</li>`).join("")}</ul></div></div>
         ${main && main.n ? `<div class="blk" data-k="c"><h3>Twoja marka w Google: ${esc(main.name)}</h3>${this.heroCards(main)}</div>` : ""}
+        ${W.length > 1 && typeof heatMapGen === "function" ? `<div class="blk" data-k="c"><h3>Kto gdzie prowadzi w Google</h3>${heatMapGen(W.map(x => ({name: x.name, me: x.main, color: x.color, spark: x.weekImpr})), [
+          ["Wyświetlenia / mies.", W.map(x => x.imprMo), kk], ["Koszt / mies.", W.map(x => x.costMoMid), v => "~" + kk(v) + " zł"], ["Aktywne", W.map(x => x.active), n0], ["Nowe / mies.", W.map(x => x.newPerMo), n1],
+          ["Tekst", W.map(x => Math.round((x.fmtShare.TEXT || 0) * 100)), v => v + "%"], ["Wideo", W.map(x => Math.round((x.fmtShare.VIDEO || 0) * 100)), v => v + "%"], ["Wył. ≤7 dni", W.map(x => x.quickPct == null ? null : Math.round(x.quickPct * 100)), v => v + "%"], ["Indeks", W.map(x => x.index), n0]
+        ], {sparkLabel: "Wyświetlenia / tydz.", sparkNote: "Linia: wyświetlenia tydzień po tygodniu w okresie."})}</div>` : ""}
         ${recs.length ? `<div class="blk" data-k="x"><h3>Rekomendacje (reguły RivalCore)</h3><div class="recs">${recs.map(([p, a, d]) => `<div class="rec" style="border-left-color:${p === "Wysoki" ? "var(--bad)" : p === "Średni" ? "var(--warn)" : "var(--accent)"}"><div class="rh"><span class="rprio" style="background:${p === "Wysoki" ? "var(--bad)" : p === "Średni" ? "var(--warn)" : "var(--accent)"}">${p}</span><span class="ra">${a}</span></div><div class="rd">${d}</div></div>`).join("")}</div></div>` : ""}
         <div class="blk" data-k="c"><h3>Marki w skrócie</h3><div class="mcards">${R.map(x => `<div class="mcard${x.main ? " me" : ""}"><div class="mch"><i class="sw" style="background:${x.color}"></i><b>${esc(x.name)}</b>${x.main ? "<em>Ty</em>" : ""}<span class="idxchip" style="margin-left:auto">${x.index}<small>/100</small></span></div>
           <div class="mcg"><div><b>${n0(x.active)}</b><span>aktywne</span></div><div><b>${kk(x.imprMo)}</b><span>wyświetlenia / mies.</span></div><div><b>${pc(x.sovImpr, 0)}</b><span>udział${x.prevSov != null ? " (" + pc(x.prevSov, 0) + ")" : ""}</span></div><div><b>~${kk(x.costMoMid)} zł</b><span>koszt / mies. ${x.prev ? deltaHtml(x.costMoMid, x.prev.costMo) : ""}</span></div></div>
@@ -5960,7 +6340,7 @@ WHERE rs.last_shown >= @since AND rs.first_shown <= @until AND c.advertiser_id I
           <div class="leg">${FMTS.map((k, i) => `<span><i style="background:${COLORS[i]}"></i>${FMT_PL[k]}</span>`).join("")}</div></div>`;
     }
     if (t === "sov"){
-      return `<div class="gsplit"><div class="blk" data-k="c"><h3>Udział w wyświetleniach</h3>${hbars(R.map(x => ({name: x.name, v: x.sovImpr || 0, color: x.color})), {fmt: v => pc(v)})}</div>
+      return `${typeof simBoxGen === "function" ? simBoxGen(R.filter(x => x.n).map(x => ({n: x.name, v: x.costMoMid || 0, me: !!x.main, c: x.color})), {ch: "Google"}) : ""}<div class="gsplit"><div class="blk" data-k="c"><h3>Udział w wyświetleniach</h3>${hbars(R.map(x => ({name: x.name, v: x.sovImpr || 0, color: x.color})), {fmt: v => pc(v)})}</div>
         <div class="blk" data-k="p"><h3>Udział w szacowanych wydatkach</h3>${hbars(R.map(x => ({name: x.name, v: x.sovCost || 0, color: x.color})), {fmt: v => pc(v)})}</div></div>
         <div class="blk" data-k="c"><h3>Udział w wyświetleniach wg formatu</h3>${sortableTable("gsovf", [{k: "name", t: "Marka", h: sw}, ...FMTS.map(k => ({k: "s_" + k, t: FMT_PL[k], n: 1, v: x => x.sovFmt[k] || 0, h: x => `${pc(x.sovFmt[k], 0)} <small class="sub">${kk(x.fmtImpr[k])}</small>`}))], R, {rowCls: x => x.main ? "me" : ""})}
           <div class="hint">Udział marki w wyświetleniach danego formatu wśród analizowanych marek. Tekst ≈ wyszukiwarka, wideo ≈ YouTube.</div></div>
