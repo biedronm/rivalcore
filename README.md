@@ -4,10 +4,11 @@ https://biedronm.github.io/rivalcore/#konkurencja
 
 RivalCore to wewnętrzne narzędzie do analizy reklam marek i konkurencji z Biblioteki Reklam Meta (Facebook, Instagram, Messenger, Audience Network) i z Centrum przejrzystości reklam Google (Search, YouTube, sieć reklamowa), a od wersji 20 także wyników kont Google Ads naszych klientów. Jeden plik HTML — bez instalacji, bez serwera, bez opłat. Otwierasz w przeglądarce, wklejasz token, wpisujesz marki i dostajesz analizę z wykresami, raport PDF, Excel oraz plik dla AI.
 
-**Aktualna wersja: 23.0 (10 listopada 2026).** Plik narzędzia nadal nazywa się meta-ads-bot.html — tej nazwy używają automatyczne testy. 
+**Aktualna wersja: 24.0 (10 listopada 2026).** Plik narzędzia nadal nazywa się meta-ads-bot.html — tej nazwy używają automatyczne testy. Wygląd ekranu, raportów PDF i grafik PNG jest zgodny z identyfikacją wizualną BeDigital.
 
 ## Spis treści
 
+- [Co nowego? Wersja 24.0 · nowy raport PDF](#co-nowego-wersja-240--nowy-raport-pdf)
 - [Co nowego? Wersja 23.0 · wyniki kont i kalibracja Google](#co-nowego-wersja-230--wyniki-kont-i-kalibracja-google)
 - [Co nowego? Wersja 22.0 · warstwa zarządcza](#co-nowego-wersja-220--warstwa-zarządcza)
 - [Co nowego? Wersja 20.0 · Meta + Google](#co-nowego-wersja-200--meta--google)
@@ -25,6 +26,19 @@ RivalCore to wewnętrzne narzędzie do analizy reklam marek i konkurencji z Bibl
 - [10. Rozwiązywanie problemów](#10-rozwiązywanie-problemów)
 - [11. Prywatność i bezpieczeństwo](#11-prywatność-i-bezpieczeństwo)
 - [12. Najczęstsze pytania (FAQ)](#12-najczęstsze-pytania-faq)
+
+## Co nowego? Wersja 24.0 · nowy raport PDF
+
+- **Raport drukuje się w skali 1:1.** Wcześniej kilka tabel wystawało poza kartkę, przez co przeglądarka pomniejszała cały raport o około jedną trzecią i tekst wychodził w wielkości ok. 6–7 pt. Teraz nic nie wystaje, a najmniejszy tekst ma 8 pt.
+- **Kontrast.** Tekst jest prawie czarny i grubszy (Montserrat 500–700), szare napisy na białym zniknęły; etykiety na wykresach są ciemne i pogrubione.
+- **Czarny pas tytułowy** z logo BeDigital na początku każdej sekcji i każdego tematu marki; na stronach kontynuacji zwykły margines.
+- **Strona „Co jest w raporcie”** po okładce: spis sekcji i trzy zdania o tym, jak czytać szacunki.
+- **Kafelki, tabele i karty w jednym stylu:** liczby pogrubione z czarną belką u góry, tabele z czarnym nagłówkiem i co drugim wierszem w szarości, rekomendacje z kolorową belką priorytetu.
+- **Wykresy na pełną szerokość** tam, gdzie obok siebie były nieczytelne (udziały w głosie, karty marek, tabele Google).
+- **Okładka** z mocnym tytułem, w wersji ciemnej i jasnej do druku.
+- **„Raport w skrócie”** mieści się na jednej stronie.
+- Pełny raport dla trzech marek ma teraz ok. 75 stron zamiast 44, bo tekst jest realnie większy. Do wysyłki służą zestawy „Skrót dla klienta” i „Dla zarządu” (ok. 8 stron). Licznik stron przy przycisku pokazuje nową liczbę.
+- Przy zapisie do PDF zostaw skalę 100% i włączoną „Grafikę w tle”.
 
 ## Co nowego? Wersja 23.0 · wyniki kont i kalibracja Google
 
