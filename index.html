@@ -1349,6 +1349,37 @@ body{font-variant-numeric:tabular-nums}
 .lanes-leg .pk{margin-left:10px;display:inline-flex;gap:6px;align-items:center}
 .lanes-leg .pk i{background:none;box-shadow:inset 0 0 0 1.5px var(--text)}
 .rp .lanes-leg{font-size:7pt;margin-top:1.5mm}.rp .lanes-leg i{width:2.6mm;height:2.6mm}
+
+/* ================================================================ v23 — Wyniki kont · Google Ads + kalibracja kosztu Google */
+.wbar{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:flex-end;margin:0 0 18px}
+.wbar > div{min-width:180px}
+.wbar .wmeta{margin-left:auto;font-size:12px;color:var(--muted);text-align:right;line-height:1.5}
+.whealth{display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;align-items:center;border:1px solid var(--line);border-radius:14px;background:var(--bg-2);padding:16px 20px;margin:0 0 14px}
+.whealth .sc{font-size:44px;font-weight:700;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+.whealth .sc small{font-size:14px;font-weight:500;color:var(--muted)}
+.whealth .sc.good{color:var(--good)}.whealth .sc.warn{color:var(--warn)}.whealth .sc.bad{color:var(--bad)}
+.whealth .tx{font-size:15px;line-height:1.5}
+.whealth .tx small{display:block;font-size:12px;color:var(--muted);margin-top:3px}
+.wk.bigk{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.dl.inv.up{color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,transparent)}
+.dl.inv.down{color:var(--good);background:color-mix(in srgb,var(--good) 12%,transparent)}
+.nba-cost{display:block;margin-top:6px;font-size:12.5px;font-weight:700;color:var(--bad);font-variant-numeric:tabular-nums}
+.nba-cost.amber{color:var(--warn)}
+.wtrend{border:1px solid var(--line);border-radius:14px;background:var(--bg-2);padding:14px 16px;margin-top:8px}
+.wtrend svg{display:block;width:100%;height:auto}
+.wtrend text{font:500 10px var(--sans);fill:var(--muted)}
+.wleg{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:8px}
+.wleg i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.wdist{display:flex;height:14px;border-radius:99px;overflow:hidden;background:var(--track);margin:10px 0 8px}
+.wdist i{display:block;height:100%}
+.gt td.sp svg{display:block;width:76px;height:22px}
+.wdemo{display:inline-block;font:700 9.5px var(--sans);letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:99px;color:var(--warn);background:color-mix(in srgb,var(--warn) 14%,transparent);margin-left:8px;vertical-align:2px}
+.gcal{margin-top:16px;border:1px solid var(--line);border-radius:14px;background:var(--bg-2);padding:14px 16px}
+.gcal-h{font:700 10.5px/1.4 var(--sans);letter-spacing:.14em;text-transform:uppercase;margin:0 0 4px}
+.gcal .grid{margin-top:10px;align-items:end}
+.gcal-st{margin-top:10px;font-size:12.5px;color:var(--muted);line-height:1.5}
+.gcal-st b{color:var(--text)}
+@media screen and (max-width:700px){.whealth{grid-template-columns:1fr;gap:8px}.wbar .wmeta{margin-left:0;text-align:left}}
 </style>
 </head>
 <body>
@@ -1673,6 +1704,17 @@ body{font-variant-numeric:tabular-nums}
           <div><label>Grafika (Display, Demand Gen) · CPM zł</label><div class="row" style="flex-wrap:nowrap"><input id="gCpmImin" type="number" min="0" step="1" value="4"><span class="field-unit">–</span><input id="gCpmImax" type="number" min="0" step="1" value="14"></div></div>
           <div><label>Wideo (YouTube) · CPM zł</label><div class="row" style="flex-wrap:nowrap"><input id="gCpmVmin" type="number" min="0" step="1" value="10"><span class="field-unit">–</span><input id="gCpmVmax" type="number" min="0" step="1" value="30"></div></div>
         </div>
+        <div class="gcal">
+          <div class="gcal-h">Kalibracja na realnym wydatku Google</div>
+          <div class="hint" style="margin:0">Znasz prawdziwy miesięczny wydatek jednej z marek w Google (np. klienta agencji)? Po analizie wybierz markę i wpisz kwotę. RivalCore przeskaluje CPM wszystkich formatów tak, żeby szacunek tej marki zgadzał się z rzeczywistością, i zastosuje te stawki do wszystkich marek.</div>
+          <div class="grid">
+            <div><label for="gCalBrand">Marka ze znanym wydatkiem</label><select id="gCalBrand"><option value="">najpierw zrób analizę Google</option></select></div>
+            <div><label for="gCalSpend">Realny wydatek w Google · zł / mies.</label><input id="gCalSpend" type="number" min="0" step="100" placeholder="np. 85000"></div>
+            <div><label for="gCalAcc">albo weź z „Wyników kont” (ostatnie 30 dni)</label><select id="gCalAcc"><option value="">brak wczytanych kont</option></select></div>
+          </div>
+          <div class="row" style="margin-top:12px"><button class="mini" id="gCalGo" type="button">Skalibruj CPM</button><button class="ghost mini" id="gCalReset" type="button">Przywróć stawki domyślne</button></div>
+          <div class="gcal-st" id="gCalSt"></div>
+        </div>
         <div id="gFileBox" hidden style="margin-top:14px">
           <div class="gbox">Tryb bez logowania: skopiuj zapytanie, uruchom je w <a href="https://console.cloud.google.com/bigquery" target="_blank" rel="noopener">konsoli BigQuery</a>, zapisz wynik jako CSV lub JSON i wczytaj tutaj. Najpierw uzupełnij ID reklamodawców.</div>
           <div class="row" style="margin-top:10px"><button class="ghost mini" id="gShowSql" type="button">Pokaż zapytanie SQL</button><button class="ghost mini" id="gCopySql" type="button">Kopiuj SQL</button><button class="mini" id="gPickFile" type="button">Wczytaj plik z wynikami</button><input type="file" id="gFile" accept=".csv,.json" class="hidden"></div>
@@ -1718,13 +1760,40 @@ body{font-variant-numeric:tabular-nums}
     <h3>Projekt i BigQuery · ok. 15 minut</h3>
     <ol class="gsteps">
       <li><span>Wejdź na <a href="https://console.cloud.google.com/projectcreate" target="_blank" rel="noopener">console.cloud.google.com/projectcreate</a> i utwórz projekt (albo użyj istniejącego). Skopiuj jego <b>ID projektu</b> (nie nazwę) i wpisz wyżej.</span></li>
-      <li><span>Włącz API: <a href="https://console.cloud.google.com/apis/library/bigquery.googleapis.com" target="_blank" rel="noopener">BigQuery API</a>.</span></li>
+      <li><span>Włącz API: <a href="https://console.cloud.google.com/apis/library/bigquery.googleapis.com" target="_blank" rel="noopener">BigQuery API</a> oraz <a href="https://console.cloud.google.com/apis/library/sheets.googleapis.com" target="_blank" rel="noopener">Google Sheets API</a> (do modułu Wyniki kont).</span></li>
       <li><span>Bez karty działa <b>tryb piaskownicy BigQuery</b>: 1 TB zapytań miesięcznie za darmo, czyli ok. 25 analiz Google. Więcej po podpięciu płatności (ok. 6,25 USD za każdy kolejny TB).</span></li>
       <li><span>Ekran zgody: <a href="https://console.cloud.google.com/auth/branding" target="_blank" rel="noopener">Google Auth Platform → Branding</a>. Nazwa „RivalCore”, e-mail pomocy, odbiorcy <b>Zewnętrzny</b>. W „Odbiorcy” dodaj konta zespołu jako <b>użytkowników testowych</b>.</span></li>
       <li><span>Klient OAuth: <a href="https://console.cloud.google.com/auth/clients" target="_blank" rel="noopener">Klienci → Utwórz klienta</a>, typ <b>Aplikacja internetowa</b>. „Autoryzowane źródła JavaScript”: <code>https://biedronm.github.io</code> i <code>http://localhost:8000</code>. Skopiuj <b>ID klienta</b> i wpisz wyżej.</span></li>
       <li><span>Kliknij <b>Połącz z Google</b> i zaakceptuj uprawnienia. Przy ekranie „aplikacja niezweryfikowana” kliknij „Kontynuuj”. Potem <b>Test BigQuery</b>.</span></li>
     </ol>
 
+  </div>
+</div>
+
+<div class="wrap rcmod" id="modWyniki" hidden>
+  <header class="ghero">
+    <div class="kicker">Wyniki kont · Google Ads · dane ze skryptu w MCC</div>
+    <h1>Wyniki <b>kont klientów</b></h1>
+    <p>Koszt, konwersje, CPA i ROAS z kont, którymi zarządzamy, z porównaniem do poprzedniego okresu i listą rzeczy do sprawdzenia. Dane zapisuje skrypt Google Ads do arkusza Google; RivalCore tylko je czyta.</p>
+  </header>
+  <div class="card">
+    <h2><span class="sn">01</span>Dane</h2>
+    <div class="grid">
+      <div style="grid-column:1/-1"><label for="wSheet">Link do arkusza Google z danymi skryptu</label><input id="wSheet" placeholder="https://docs.google.com/spreadsheets/d/…" autocomplete="off"><div class="hint">Arkusz musi mieć zakładki RC_dane, RC_frazy i RC_info (tworzy je skrypt). Odczyt z arkusza wymaga „Połącz z Google” w zakładce Połączenia.</div></div>
+    </div>
+    <div class="row" style="margin-top:14px"><button id="wLoadSheet" type="button">Wczytaj z arkusza</button><button class="ghost" id="wPick" type="button">Wczytaj CSV / XLSX</button><input type="file" id="wFile" accept=".csv,.xlsx,.xls" class="hidden"><button class="ghost" id="wScript" type="button">Skrypt Google Ads</button><button class="ghost" id="wDemo" type="button">Dane przykładowe</button></div>
+    <div class="gstatus" id="wStatus"></div>
+    <details class="adv" style="margin-top:12px"><summary><span class="adv-t">Jak to podłączyć (10 minut, raz)</span><span class="adv-s">skrypt w MCC → arkusz → RivalCore</span></summary>
+      <div class="adv-body"><ol class="gsteps">
+        <li><span>Utwórz pusty arkusz Google i udostępnij go osobom, które będą czytać wyniki.</span></li>
+        <li><span>W Google Ads na koncie menedżera (MCC): <b>Narzędzia → Działania zbiorcze → Skrypty → Nowy skrypt</b>.</span></li>
+        <li><span>Kliknij wyżej <b>Skrypt Google Ads</b> (kopiuje się do schowka), wklej go w edytorze i w pierwszej linii podmień <code>SHEET_URL</code> na link do arkusza. Opcjonalnie <code>ACCOUNT_LABEL</code> (tylko konta z tą etykietą) i <code>DAYS</code> (domyślnie 90).</span></li>
+        <li><span><b>Autoryzuj</b>, potem <b>Uruchom</b>. Ustaw harmonogram: codziennie, np. o 6:00.</span></li>
+        <li><span>Wklej tu link do arkusza i kliknij <b>Wczytaj z arkusza</b>. Bez logowania: w arkuszu Plik → Pobierz → Microsoft Excel (.xlsx) i „Wczytaj CSV / XLSX”.</span></li>
+      </ol></div></details>
+  </div>
+  <div class="card" id="wCard" hidden>
+    <div id="wOut"></div>
   </div>
 </div>
 
@@ -5839,7 +5908,7 @@ regionChanged();
 // ================================================================ RivalCore 20 · moduły Meta + Google
 (() => {
 "use strict";
-const RCV = "22.0";
+const RCV = "23.0";
 const E = id => document.getElementById(id);
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const NF = new Intl.NumberFormat("pl-PL", {maximumFractionDigits: 0});
@@ -5957,7 +6026,7 @@ const toObjs = rows => { if (!rows.length) return []; const h = rows[0].map(x =>
 // ---------------------------------------------------------------- Google: logowanie (OAuth w przeglądarce)
 const GA = {
   token: null, exp: 0, client: null, pending: [],
-  SCOPES: "https://www.googleapis.com/auth/bigquery",
+  SCOPES: "https://www.googleapis.com/auth/bigquery https://www.googleapis.com/auth/spreadsheets.readonly",
   cfg(){ return {project: (E("cProject").value || "").trim(), client: (E("cClient").value || "").trim()}; },
   valid(){ return this.token && Date.now() < this.exp - 60e3; },
   loadGis(){ return new Promise((res, rej) => {
@@ -6822,9 +6891,277 @@ async function unifiedRun(origRun){
   try { await Promise.allSettled(jobs); } finally { E("go").disabled = false; SRC.status(); CH.draw(); }
   if (useG && G.res.length){ if (!useM) CH.show("google"); else if (metaResults().length) { /* zostaw bieżącą zakładkę */ } }
 }
-const ROUTES = {konkurencja: "modMeta", polaczenia: "modPolaczenia"};
-const ALIAS = {wyniki: "konkurencja", meta: "konkurencja", google: "konkurencja", razem: "konkurencja", pulpit: "konkurencja", "": "konkurencja"};
-const CRUMB = {konkurencja: "/ konkurencja · meta + google", polaczenia: "/ połączenia"};
+
+// ================================================================ v23 — Wyniki kont · Google Ads (dane ze skryptu w MCC)
+const ADS_SCRIPT = `var SHEET_URL = 'WKLEJ_TUTAJ_LINK_DO_ARKUSZA';
+var ACCOUNT_LABEL = '';   // opcjonalnie: tylko konta z tą etykietą w MCC, np. 'RivalCore'
+var DAYS = 90;            // ile dni kampanii zapisać
+
+// RivalCore · eksport wyników Google Ads do arkusza (zakładki RC_dane, RC_frazy, RC_info)
+function main() {
+  var ss = SpreadsheetApp.openByUrl(SHEET_URL);
+  var tz = AdsApp.currentAccount().getTimeZone();
+  var fmt = function (d) { return Utilities.formatDate(d, tz, 'yyyy-MM-dd'); };
+  var now = new Date().getTime(), DAY = 24 * 3600 * 1000;
+  var d1 = fmt(new Date(now - DAYS * DAY)), d2 = fmt(new Date(now - DAY)), t1 = fmt(new Date(now - 30 * DAY));
+  var rows = [], terms = [], errors = [], count = 0;
+
+  function one() {
+    var acc = AdsApp.currentAccount();
+    var name = acc.getName() || acc.getCustomerId(), id = acc.getCustomerId(), cur = acc.getCurrencyCode();
+    try {
+      var it = AdsApp.search(
+        "SELECT segments.date, campaign.name, campaign.advertising_channel_type, campaign.status, " +
+        "metrics.cost_micros, metrics.impressions, metrics.clicks, metrics.conversions, metrics.conversions_value " +
+        "FROM campaign WHERE segments.date BETWEEN '" + d1 + "' AND '" + d2 + "' AND metrics.impressions > 0");
+      while (it.hasNext()) {
+        var r = it.next();
+        rows.push([r.segments.date, name, id, cur, r.campaign.name, r.campaign.advertisingChannelType, r.campaign.status,
+          (r.metrics.costMicros || 0) / 1e6, +r.metrics.impressions || 0, +r.metrics.clicks || 0,
+          +r.metrics.conversions || 0, +r.metrics.conversionsValue || 0]);
+      }
+      var st = AdsApp.search(
+        "SELECT search_term_view.search_term, campaign.name, metrics.cost_micros, metrics.impressions, metrics.clicks, " +
+        "metrics.conversions, metrics.conversions_value FROM search_term_view " +
+        "WHERE segments.date BETWEEN '" + t1 + "' AND '" + d2 + "' AND metrics.clicks > 0 " +
+        "ORDER BY metrics.cost_micros DESC LIMIT 300");
+      while (st.hasNext()) {
+        var s = st.next();
+        terms.push([name, id, s.campaign.name, s.searchTermView.searchTerm, (s.metrics.costMicros || 0) / 1e6,
+          +s.metrics.impressions || 0, +s.metrics.clicks || 0, +s.metrics.conversions || 0, +s.metrics.conversionsValue || 0]);
+      }
+    } catch (e) { errors.push(name + ': ' + e); }
+    count++;
+  }
+
+  if (typeof AdsManagerApp !== 'undefined') {
+    var sel = AdsManagerApp.accounts();
+    if (ACCOUNT_LABEL) sel = sel.withCondition("LabelNames CONTAINS '" + ACCOUNT_LABEL + "'");
+    var ai = sel.get();
+    while (ai.hasNext()) { AdsManagerApp.select(ai.next()); one(); }
+  } else { one(); }
+
+  write(ss, 'RC_dane', ['data', 'konto', 'id_konta', 'waluta', 'kampania', 'typ', 'status', 'koszt', 'wyswietlenia', 'klikniecia', 'konwersje', 'wartosc_konwersji'], rows);
+  write(ss, 'RC_frazy', ['konto', 'id_konta', 'kampania', 'fraza', 'koszt', 'wyswietlenia', 'klikniecia', 'konwersje', 'wartosc_konwersji'], terms);
+  write(ss, 'RC_info', ['klucz', 'wartosc'], [['aktualizacja', Utilities.formatDate(new Date(), tz, 'yyyy-MM-dd HH:mm')],
+    ['okres_od', d1], ['okres_do', d2], ['liczba_kont', count], ['bledy', errors.join(' | ')]]);
+}
+
+function write(ss, name, header, data) {
+  var sh = ss.getSheetByName(name) || ss.insertSheet(name);
+  sh.clearContents();
+  sh.getRange(1, 1, 1, header.length).setValues([header]);
+  if (data.length) sh.getRange(2, 1, data.length, header.length).setValues(data);
+}`;
+const WY = {
+  data: null, acc: "", per: "30", demo: false,
+  col(o, ...names){ for (const k of Object.keys(o)){ const kk2 = normName(k); if (names.some(nm => kk2 === nm || kk2.startsWith(nm))) return o[k]; } return ""; },
+  normDate(v){ if (v instanceof Date) return isoD(v.getTime()); if (typeof v === "number" && v > 20000 && v < 80000) return isoD(Math.round((v - 25569) * 864e5)); const s = String(v || "").trim(); let m = s.match(/^(\d{4})-(\d{2})-(\d{2})/); if (m) return m[0]; m = s.match(/^(\d{1,2})[.\/](\d{1,2})[.\/](\d{4})/); return m ? `${m[3]}-${m[2].padStart(2, "0")}-${m[1].padStart(2, "0")}` : ""; },
+  ingest(tabs, src){
+    const rows = toObjs(tabs.RC_dane || []).map(o => ({d: this.normDate(this.col(o, "data", "date", "dzien")), acc: String(this.col(o, "konto", "account")).trim(), cur: String(this.col(o, "waluta", "currency") || "PLN").trim(), camp: String(this.col(o, "kampania", "campaign")).trim(), type: String(this.col(o, "typ", "type")).trim() || "INNE", status: String(this.col(o, "status")).trim(),
+      cost: pnum(this.col(o, "koszt", "cost")), impr: pnum(this.col(o, "wyswietlenia", "impr")), clicks: pnum(this.col(o, "klikniecia", "clicks")), conv: pnum(this.col(o, "konwersje", "conversions")), val: pnum(this.col(o, "wartosckonwersji", "wartosc", "value", "convvalue"))})).filter(r => r.d && r.acc);
+    if (!rows.length) throw new Error("Nie znalazłem danych kampanii. Arkusz albo plik musi mieć zakładkę RC_dane z kolumnami: data, konto, kampania, typ, status, koszt, wyswietlenia, klikniecia, konwersje, wartosc_konwersji.");
+    const terms = toObjs(tabs.RC_frazy || []).map(o => ({acc: String(this.col(o, "konto", "account")).trim(), camp: String(this.col(o, "kampania", "campaign")).trim(), term: String(this.col(o, "fraza", "term", "searchterm", "haslo")).trim(), cost: pnum(this.col(o, "koszt", "cost")), impr: pnum(this.col(o, "wyswietlenia", "impr")), clicks: pnum(this.col(o, "klikniecia", "clicks")), conv: pnum(this.col(o, "konwersje", "conversions")), val: pnum(this.col(o, "wartosckonwersji", "wartosc", "value"))})).filter(t => t.term);
+    const info = Object.fromEntries((tabs.RC_info || []).slice(1).map(r => [normName(r[0]), r[1]]));
+    const ds = rows.map(r => r.d).sort();
+    this.data = {rows, terms, info, src, min: ds[0], max: ds[ds.length - 1], accs: [...new Set(rows.map(r => r.acc))].sort((a, b) => a.localeCompare(b, "pl"))};
+    if (!this.data.accs.includes(this.acc)) this.acc = "";
+    this.render(); GCAL.fill();
+  },
+  status(t, bad){ const el = E("wStatus"); if (el){ el.textContent = t || ""; el.className = "gstatus" + (bad ? " bad" : ""); } },
+  async loadSheet(){
+    const m = (E("wSheet").value || "").match(/\/d\/([a-zA-Z0-9_-]{20,})/) || (E("wSheet").value || "").trim().match(/^([a-zA-Z0-9_-]{30,})$/);
+    if (!m) return this.status("Wklej pełny link do arkusza Google (…/spreadsheets/d/…).", true);
+    store.set("wSheet", E("wSheet").value.trim());
+    this.status("Czytam arkusz…");
+    try {
+      const j = await GA.fetch(`https://sheets.googleapis.com/v4/spreadsheets/${m[1]}/values:batchGet?ranges=RC_dane&ranges=RC_frazy&ranges=RC_info&valueRenderOption=UNFORMATTED_VALUE&dateTimeRenderOption=FORMATTED_STRING`);
+      const tabs = {}; (j.valueRanges || []).forEach(v => { const nm = String(v.range || "").split("!")[0].replace(/'/g, ""); tabs[nm] = v.values || []; });
+      this.demo = false; this.ingest(tabs, "arkusz Google"); this.status(`Wczytano ${n0(this.data.rows.length)} wierszy z arkusza.`);
+    } catch(e){
+      const s = String(e.message || e);
+      this.status(/unable to parse range|400/i.test(s) ? "Arkusz nie ma zakładek RivalCore (RC_dane, RC_frazy, RC_info). Sprawdź SHEET_URL w skrypcie i uruchom skrypt ręcznie." : /403|404|permission|not found/i.test(s) ? "Brak dostępu do arkusza (403/404). Udostępnij arkusz kontu, którym łączysz się z Google, i włącz Google Sheets API w projekcie. Szczegóły: " + s : s, true);
+    }
+  },
+  async loadFile(f){
+    try {
+      const tabs = {};
+      if (/\.csv$/i.test(f.name)) tabs.RC_dane = parseCSV(await f.text());
+      else { if (!window.XLSX) throw new Error("Biblioteka do Excela nie wczytała się (brak internetu?). Zapisz zakładkę RC_dane jako CSV i wczytaj CSV.");
+        const wb = XLSX.read(await f.arrayBuffer(), {type: "array", cellDates: true});
+        wb.SheetNames.forEach(nm => { tabs[nm] = XLSX.utils.sheet_to_json(wb.Sheets[nm], {header: 1, raw: true, defval: ""}); });
+        if (!tabs.RC_dane) tabs.RC_dane = tabs[wb.SheetNames[0]]; }
+      this.demo = false; this.ingest(tabs, "plik " + f.name); this.status(`Wczytano ${n0(this.data.rows.length)} wierszy z pliku ${f.name}.`);
+    } catch(e){ this.status(String(e.message || e), true); }
+  },
+  loadDemo(){
+    let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    const end = isoD(Date.now() - DAY), rows = [], terms = [];
+    const A = [["Sklep Alfa", [["Search · brand", "SEARCH", 180, 9, 6.5, 1], ["Search · kategorie", "SEARCH", 420, 2.6, 4.2, 1], ["PMax · cały asortyment", "PERFORMANCE_MAX", 650, 1.4, 5.1, 1], ["YouTube · zasięg", "VIDEO", 210, 0.15, 0, 1], ["Display · remarketing", "DISPLAY", 90, 0.9, 3.0, .55]]],
+               ["Usługi Beta", [["Search · usługi", "SEARCH", 260, 3.2, 0, 1.45], ["Search · konkurencja", "SEARCH", 95, 0, 0, 1], ["PMax · leady", "PERFORMANCE_MAX", 300, 2.1, 0, 1]]],
+               ["Marka Gamma", [["Search · brand", "SEARCH", 70, 12, 8.0, 1], ["Demand Gen · prospecting", "DEMAND_GEN", 240, 0.8, 2.2, 1], ["Zakupy · bestsellery", "SHOPPING", 380, 2.9, 6.3, 0]]]];
+    for (let k = 119; k >= 0; k--){ const d = addD(end, -k), recent = k < 30;
+      A.forEach(([acc, camps]) => camps.forEach(([camp, type, cost0, cr, roas, drift]) => {
+        if (drift === 0 && k < 2) return;                                  // kampania bez emisji w ostatnich dniach
+        const f = recent ? (drift > 1 ? 1 : drift || 1) : 1, cost = cost0 * (0.75 + rnd() * 0.5) * (recent && drift < 1 && drift > 0 ? drift : 1);
+        const cpc = type === "SEARCH" ? 1.6 + rnd() : type === "VIDEO" ? 0.25 : 0.9 + rnd() * 0.5, clicks = Math.max(1, Math.round(cost / cpc));
+        const conv = Math.round(clicks * cr / 100 * (0.7 + rnd() * 0.6) / (recent && drift > 1 ? drift : 1) * 10) / 10;
+        rows.push({d, acc, cur: "PLN", camp, type, status: "ENABLED", cost: Math.round(cost * 100) / 100, impr: Math.round(clicks * (type === "SEARCH" ? 14 : 160)), clicks, conv, val: Math.round(conv * (roas ? cost0 * roas / Math.max(.1, cost0 / cpc * cr / 100) : 0) * 100) / 100});
+      })); }
+    [["Sklep Alfa", "Search · kategorie", [["krem do twarzy opinie", 310, 190, 0], ["darmowe próbki kosmetyków", 240, 210, 0], ["krem z filtrem 50", 520, 260, 21], ["serum witamina c ranking", 180, 95, 0], ["krem nawilżający", 430, 230, 14]]],
+     ["Usługi Beta", "Search · usługi", [["hydraulik praca", 205, 120, 0], ["jak naprawić kran samemu", 160, 140, 0], ["hydraulik kraków cena", 380, 150, 9], ["pogotowie hydrauliczne", 290, 110, 7]]],
+     ["Marka Gamma", "Zakupy · bestsellery", [["buty zimowe damskie", 610, 340, 19], ["buty zimowe allegro", 150, 130, 0], ["kozaki wyprzedaż", 270, 170, 6]]]]
+      .forEach(([acc, camp, ts]) => ts.forEach(([term, cost, clicks, conv]) => terms.push({acc, camp, term, cost, impr: clicks * 12, clicks, conv, val: conv * 140})));
+    const ds = rows.map(r => r.d).sort();
+    this.demo = true; this.data = {rows, terms, info: {aktualizacja: end + " 06:00", liczbakont: 3}, src: "dane przykładowe", min: ds[0], max: ds[ds.length - 1], accs: A.map(a => a[0])};
+    this.acc = ""; this.status("Pokazuję dane przykładowe — to nie są prawdziwe konta."); this.render(); GCAL.fill();
+  },
+  range(){
+    const D = this.data, end = D.max; let a, b, pa, pb, lbl;
+    if (this.per === "tm"){ a = end.slice(0, 8) + "01"; b = end; const len = daysBetween(a, b); const pm = addD(a, -1); pa = pm.slice(0, 8) + "01"; pb = addD(pa, len); if (pb > pm) pb = pm; lbl = "ten miesiąc"; }
+    else if (this.per === "pm"){ b = addD(end.slice(0, 8) + "01", -1); a = b.slice(0, 8) + "01"; pb = addD(a, -1); pa = pb.slice(0, 8) + "01"; lbl = "poprzedni miesiąc"; }
+    else { const nD = +this.per; b = end; a = addD(end, -(nD - 1)); pb = addD(a, -1); pa = addD(pb, -(nD - 1)); lbl = `ostatnie ${nD} dni`; }
+    return {a, b, pa, pb, lbl, prevOk: pa >= D.min};
+  },
+  agg(rows){ const s = {cost: 0, impr: 0, clicks: 0, conv: 0, val: 0}; rows.forEach(r => { s.cost += r.cost; s.impr += r.impr; s.clicks += r.clicks; s.conv += r.conv; s.val += r.val; });
+    s.cpa = s.conv ? s.cost / s.conv : null; s.roas = s.cost && s.val ? s.val / s.cost : null; s.ctr = s.impr ? s.clicks / s.impr : null; s.cpc = s.clicks ? s.cost / s.clicks : null; s.cr = s.clicks ? s.conv / s.clicks : null; return s; },
+  group(rows, key){ const m = new Map(); rows.forEach(r => { const k = key(r); (m.get(k) || m.set(k, []).get(k)).push(r); }); return m; },
+  zl(v){ return v == null || !isFinite(v) ? "—" : (Math.abs(v) >= 10000 ? kk(v) : NF1.format(Math.round(v * 100) / 100)) + " zł"; },
+  alerts(cur, prev, R, T, multi){
+    const A = [], a = this.agg(cur), p = this.agg(prev), zl = v => this.zl(v), days = daysBetween(R.a, R.b) + 1;
+    const push = (prio, t, why, todo, cost, amber) => A.push({prio, t, why, todo, cost, amber});
+    // 1. kampanie wydające bez konwersji
+    const byC = this.group(cur, r => r.acc + "\u0001" + r.camp), thr = Math.max(50, (a.cpa || 0) * 2);
+    const dead = [...byC].map(([k, rs]) => ({k, s: this.agg(rs), type: rs[0].type})).filter(x => x.s.conv === 0 && x.s.cost >= thr && !/VIDEO|DISPLAY/.test(x.type)).sort((x, y) => y.s.cost - x.s.cost);
+    if (dead.length){ const sum = dead.reduce((s, x) => s + x.s.cost, 0);
+      push(0, `${dead.length} ${dead.length === 1 ? "kampania wydaje" : "kampanie wydają"} bez konwersji`, dead.slice(0, 3).map(x => `${esc(x.k.split("\u0001")[1])}${multi ? " (" + esc(x.k.split("\u0001")[0]) + ")" : ""}: ${zl(x.s.cost)}, ${n0(x.s.clicks)} kliknięć`).join("; ") + (dead.length > 3 ? ` i ${dead.length - 3} kolejne` : "") + `. Próg: koszt ≥ ${zl(thr)} i 0 konwersji.`, "Sprawdź śledzenie konwersji i dopasowanie fraz. Jeśli śledzenie działa: obniż budżet albo wstrzymaj i przenieś środki do kampanii z najniższym CPA.", `Koszt bez efektu: ${zl(sum)} w okresie (~${zl(sum / days * 7)} / tydzień)`); }
+    if (R.prevOk && p.cost > 0){
+      // 2. wzrost CPA
+      if (a.cpa && p.cpa && a.cpa > p.cpa * 1.3) push(0, `CPA wzrósł o ${Math.round((a.cpa / p.cpa - 1) * 100)}%`, `CPA ${zl(a.cpa)} vs ${zl(p.cpa)} w poprzednim okresie; konwersje ${n1(a.conv)} vs ${n1(p.conv)}, koszt ${zl(a.cost)} vs ${zl(p.cost)}. Próg: +30%.`, "Zobacz w tabeli kampanii, gdzie CPA urósł najmocniej. Sprawdź zmiany stawek i budżetów, nowe frazy oraz stronę docelową.", `Nadpłata względem poprzedniego CPA: ${zl((a.cpa - p.cpa) * a.conv)} w okresie`);
+      // 3. spadek ROAS
+      if (a.roas && p.roas && a.roas < p.roas * 0.8) push(0, `ROAS spadł o ${Math.round((1 - a.roas / p.roas) * 100)}%`, `ROAS ${NF1.format(a.roas)} vs ${NF1.format(p.roas)}; wartość konwersji ${zl(a.val)} vs ${zl(p.val)}. Próg: −20%.`, "Sprawdź kampanie z największym kosztem i najniższym ROAS (tabela kampanii) oraz feed i dostępność produktów.", `Utracona wartość przy poprzednim ROAS: ${zl((p.roas - a.roas) * a.cost)} w okresie`);
+      // 4. spadek wydatków
+      if (a.cost < p.cost * 0.6) push(1, `Wydatki spadły o ${Math.round((1 - a.cost / p.cost) * 100)}%`, `Koszt ${zl(a.cost)} vs ${zl(p.cost)} w poprzednim okresie. Próg: −40%.`, "Sprawdź, czy to decyzja (budżet, sezon), czy problem: odrzucone reklamy, wyczerpany budżet konta, błąd płatności.", `Niewydane względem poprzedniego okresu: ${zl(p.cost - a.cost)}`, true);
+    }
+    // 5. brak emisji w ostatnim dniu danych
+    const last = this.data.max, wk = addD(last, -7), all = this.acc ? this.data.rows.filter(r => r.acc === this.acc) : this.data.rows;
+    const act = this.group(all.filter(r => r.d > wk), r => r.acc + "\u0001" + r.camp), silent = [...act].filter(([k, rs]) => !rs.some(r => r.d === last) && rs.reduce((s, r) => s + r.cost, 0) >= 50).map(([k, rs]) => ({k, c: rs.reduce((s, r) => s + r.cost, 0) / 7}));
+    if (silent.length) push(1, `${silent.length} ${silent.length === 1 ? "kampania bez emisji" : "kampanie bez emisji"} w ostatnim dniu danych (${dPL(last)})`, silent.slice(0, 4).map(x => esc(x.k.split("\u0001")[1]) + (multi ? " (" + esc(x.k.split("\u0001")[0]) + ")" : "")).join("; ") + ". Miały koszt w poprzednich 7 dniach.", "Sprawdź status kampanii, budżet dzienny, odrzucenia reklam i płatności na koncie.", `Zwykły dzienny koszt tych kampanii: ${zl(silent.reduce((s, x) => s + x.c, 0))}`, true);
+    // 6. frazy bez konwersji
+    const bleed = T.filter(t => t.conv === 0 && t.cost >= 100).sort((x, y) => y.cost - x.cost);
+    if (bleed.length){ const sum = bleed.reduce((s, t) => s + t.cost, 0);
+      push(1, `${bleed.length} ${bleed.length === 1 ? "fraza" : bleed.length < 5 ? "frazy" : "fraz"} z kosztem ≥ 100 zł i bez konwersji`, bleed.slice(0, 4).map(t => `„${esc(t.term)}” ${zl(t.cost)}`).join("; ") + ". Ostatnie 30 dni.", "Przejrzyj listę niżej, dodaj nietrafione frazy jako wykluczenia (eksport CSV) i zawęź dopasowania.", `Koszt bez konwersji: ${zl(sum)} w 30 dni (~${zl(sum / 30 * 7)} / tydzień)`); }
+    return A;
+  },
+  trend(cur, R){
+    const days = []; for (let d = R.a; d <= R.b; d = addD(d, 1)) days.push(d);
+    const by = this.group(cur, r => r.d), c = days.map(d => (by.get(d) || []).reduce((s, r) => s + r.cost, 0)), v = days.map(d => (by.get(d) || []).reduce((s, r) => s + r.conv, 0));
+    const W2 = 640, H = 150, L = 6, T = 8, B = 20, mc = Math.max(...c, 1), mv = Math.max(...v, 1), st = (W2 - L * 2) / Math.max(1, days.length), bw = Math.max(1.5, st - (st > 6 ? 2 : .5));
+    const line = v.map((y, i) => `${(L + (i + .5) * st).toFixed(1)},${(T + (H - T - B) * (1 - y / mv)).toFixed(1)}`).join(" "), tick = Math.max(1, Math.ceil(days.length / 8));
+    return `<div class="wtrend"><svg viewBox="0 0 ${W2} ${H}" role="img" aria-label="Koszt i konwersje dzień po dniu">
+      ${c.map((y, i) => `<rect x="${(L + i * st).toFixed(1)}" y="${(T + (H - T - B) * (1 - y / mc)).toFixed(1)}" width="${bw.toFixed(1)}" height="${((H - T - B) * y / mc).toFixed(1)}" rx="1.5" fill="var(--c0)" fill-opacity=".8"><title>${dPL(days[i])}: koszt ${this.zl(y)}, konwersje ${n1(v[i])}</title></rect>`).join("")}
+      <polyline points="${line}" fill="none" stroke="var(--c1)" stroke-width="1.8" stroke-linejoin="round"/>
+      ${days.map((d, i) => i % tick === 0 ? `<text x="${(L + (i + .5) * st).toFixed(1)}" y="${H - 5}" text-anchor="middle">${d.slice(8, 10)}.${d.slice(5, 7)}</text>` : "").join("")}
+    </svg><div class="wleg"><span><i style="background:var(--c0)"></i>koszt dziennie (maks. ${this.zl(mc)})</span><span><i style="background:var(--c1)"></i>konwersje dziennie (maks. ${n1(mv)})</span></div></div>`;
+  },
+  render(){
+    const D = this.data, out = E("wOut"); if (!D){ E("wCard").hidden = true; return; }
+    E("wCard").hidden = false;
+    const R = this.range(), inAcc = r => !this.acc || r.acc === this.acc, multi = !this.acc && D.accs.length > 1;
+    const cur = D.rows.filter(r => inAcc(r) && r.d >= R.a && r.d <= R.b), prev = R.prevOk ? D.rows.filter(r => inAcc(r) && r.d >= R.pa && r.d <= R.pb) : [];
+    const T = D.terms.filter(inAcc), a = this.agg(cur), p = this.agg(prev), zl = v => this.zl(v), hasP = R.prevOk && p.cost > 0;
+    const curs = [...new Set(cur.map(r => r.cur))];
+    const AL = this.alerts(cur, prev, R, T, multi);
+    const score = Math.max(0, 100 - AL.reduce((s, x) => s + (x.prio === 0 ? 18 : 8), 0)), sCls = score >= 80 ? "good" : score >= 55 ? "warn" : "bad";
+    const card = (lbl, val, c, pv, inv, sub) => `<div class="bk"><span class="bl">${lbl}</span><span class="bv">${val}</span><span class="bs">${hasP ? deltaHtml(c, pv, inv) + " vs poprz. okres" : "brak poprzedniego okresu w danych"}${sub ? " · " + sub : ""}</span></div>`;
+    const spark = (rs, f) => { const by = this.group(rs, r => r.d), v = []; for (let d = R.a; d <= R.b; d = addD(d, 1)) v.push((by.get(d) || []).reduce((s, r) => s + f(r), 0)); return typeof sparkSvg === "function" ? sparkSvg(v, "var(--c0)") : ""; };
+    const rowsOf = (key, nameOf) => [...this.group(cur, key)].map(([k, rs]) => { const s = this.agg(rs), ps = this.agg(prev.filter(r => key(r) === k)); return {k, name: nameOf(k, rs), type: rs[0].type, acc: rs[0].acc, ...s, pcost: ps.cost, pcpa: ps.cpa, rs}; });
+    const cols = first => [first, {k: "cost", t: "Koszt", n: 1, h: r => zl(r.cost) + (hasP ? " " + deltaHtml(r.cost, r.pcost, 0) : "")}, {k: "trend", t: "Koszt / dzień", v: r => r.cost, h: r => `<span class="sp">${spark(r.rs, x => x.cost)}</span>`},
+      {k: "conv", t: "Konwersje", n: 1, f: v => n1(v)}, {k: "cpa", t: "CPA", n: 1, h: r => zl(r.cpa) + (hasP && r.cpa ? " " + deltaHtml(r.cpa, r.pcpa, 1) : "")}, {k: "roas", t: "ROAS", n: 1, f: v => v == null ? "—" : NF1.format(v)},
+      {k: "clicks", t: "Kliknięcia", n: 1, f: v => n0(v)}, {k: "ctr", t: "CTR", n: 1, f: v => pc(v)}, {k: "cpc", t: "CPC", n: 1, f: v => zl(v)}, {k: "cr", t: "Wsp. konw.", n: 1, f: v => pc(v)}];
+    const types = [...this.group(cur, r => r.type)].map(([k, rs]) => ({k, ...this.agg(rs)})).sort((x, y) => y.cost - x.cost);
+    const TN = {SEARCH: "Wyszukiwarka", PERFORMANCE_MAX: "Performance Max", SHOPPING: "Zakupy", DISPLAY: "Sieć reklamowa", VIDEO: "Wideo (YouTube)", DEMAND_GEN: "Demand Gen", DISCOVERY: "Demand Gen", MULTI_CHANNEL: "Aplikacje", LOCAL: "Lokalne", SMART: "Inteligentne", HOTEL: "Hotele"};
+    const tn = k => TN[k] || k;
+    const noConv = T.filter(t => t.conv === 0).sort((x, y) => y.cost - x.cost), withConv = T.filter(t => t.conv > 0).sort((x, y) => y.conv - x.conv);
+    const tcols = [{k: "term", t: "Fraza"}, ...(multi ? [{k: "acc", t: "Konto"}] : []), {k: "camp", t: "Kampania"}, {k: "cost", t: "Koszt", n: 1, f: v => zl(v)}, {k: "clicks", t: "Kliknięcia", n: 1, f: v => n0(v)}, {k: "conv", t: "Konwersje", n: 1, f: v => n1(v)}, {k: "cpa", t: "CPA", n: 1, v: r => r.conv ? r.cost / r.conv : 1e12, h: r => r.conv ? zl(r.cost / r.conv) : "—"}];
+    out.innerHTML = `
+      <div class="wbar">
+        <div><label for="wAcc">Konto</label><select id="wAcc"><option value="">Wszystkie konta (${D.accs.length})</option>${D.accs.map(x => `<option${x === this.acc ? " selected" : ""}>${esc(x)}</option>`).join("")}</select></div>
+        <div><label for="wPer">Okres</label><select id="wPer">${[["7", "ostatnie 7 dni"], ["14", "ostatnie 14 dni"], ["30", "ostatnie 30 dni"], ["90", "ostatnie 90 dni"], ["tm", "ten miesiąc"], ["pm", "poprzedni miesiąc"]].map(([v, l]) => `<option value="${v}"${v === this.per ? " selected" : ""}>${l}</option>`).join("")}</select></div>
+        <div class="wmeta">${dPL(R.a)} – ${dPL(R.b)}${hasP ? ` · porównanie: ${dPL(R.pa)} – ${dPL(R.pb)}` : ""}<br>Źródło: ${esc(D.src)}${D.info.aktualizacja ? " · aktualizacja " + esc(String(D.info.aktualizacja)) : ""}${this.demo ? '<span class="wdemo">dane przykładowe</span>' : ""}</div>
+      </div>
+      ${curs.length > 1 ? `<div class="gbox warn">W widoku są konta w różnych walutach (${curs.map(esc).join(", ")}). Sumy kosztu i wartości mieszają waluty — wybierz jedno konto, żeby czytać kwoty.</div>` : ""}
+      ${D.info.bledy ? `<div class="gbox warn">Skrypt zgłosił błędy przy części kont: ${esc(String(D.info.bledy))}</div>` : ""}
+      <div class="whealth"><div class="sc ${sCls}">${score}<small>/100</small></div><div class="tx">${AL.length ? `<b>${AL.length} ${AL.length === 1 ? "rzecz" : AL.length < 5 ? "rzeczy" : "rzeczy"} do sprawdzenia</b>${AL.filter(x => x.prio === 0).length ? `, w tym ${AL.filter(x => x.prio === 0).length} o wysokim priorytecie` : ""}.` : "<b>Bez alertów</b> w tym okresie."} Koszt ${zl(a.cost)}, ${n1(a.conv)} konwersji${a.cpa ? `, CPA ${zl(a.cpa)}` : ""}${a.roas ? `, ROAS ${NF1.format(a.roas)}` : ""}.<small>Kondycja konta: 100 punktów minus 18 za każdy alert wysokiego priorytetu i 8 za średni. To wskaźnik porządkowy, nie ocena wyników.</small></div></div>
+      <div class="bigk wk">
+        ${card("Koszt", zl(a.cost), a.cost, p.cost, 0)}${card("Konwersje", n1(a.conv), a.conv, p.conv, 0)}${card("CPA", zl(a.cpa), a.cpa, p.cpa, 1)}${card("ROAS", a.roas == null ? "—" : NF1.format(a.roas), a.roas, p.roas, 0)}${card("Wartość konwersji", zl(a.val), a.val, p.val, 0)}
+        ${card("Kliknięcia", n0(a.clicks), a.clicks, p.clicks, 0)}${card("CTR", pc(a.ctr), a.ctr, p.ctr, 0)}${card("CPC", zl(a.cpc), a.cpc, p.cpc, 1)}${card("Wsp. konwersji", pc(a.cr), a.cr, p.cr, 0)}
+      </div>
+      <div class="blk" data-k="x"><h3>Do sprawdzenia — stan, koszt, rekomendacja</h3>
+        ${AL.length ? `<div class="nba">${AL.map((x, i) => `<div class="nba-r" style="--pc:${x.prio === 0 ? "var(--bad)" : "var(--warn)"}"><span class="nba-n">${i + 1}</span>
+          <div class="nba-c"><span class="nba-l">Stan<span class="nba-p">priorytet ${x.prio === 0 ? "wysoki" : "średni"}</span></span><div class="t">${x.t}</div><span class="nba-cost${x.amber ? " amber" : ""}">${x.cost}</span></div>
+          <div class="nba-c w"><span class="nba-l">Dowód w danych</span>${x.why}</div>
+          <div class="nba-c a"><span class="nba-l">Rekomendacja</span>${x.todo}</div></div>`).join("")}</div>` : `<div class="gempty">Żadna reguła nie zgłosiła problemu: nie ma kampanii wydających bez konwersji, skoków CPA, spadków ROAS ani przerw w emisji.</div>`}
+        <div class="note">Reguły są jawne i stałe (progi podane przy każdym alercie). Kwoty to koszt z konta w wybranym okresie, nie prognoza.</div></div>
+      <div class="blk" data-k="d"><h3>Koszt i konwersje dzień po dniu</h3>${this.trend(cur, R)}</div>
+      ${multi ? `<div class="blk" data-k="d"><h3>Konta</h3>${sortableTable("wAccs", cols({k: "name", t: "Konto"}), rowsOf(r => r.acc, k => k), {sort: "cost"})}</div>` : ""}
+      <div class="blk" data-k="d"><h3>Kampanie</h3>${sortableTable("wCamps", cols({k: "name", t: "Kampania", h: r => `${esc(r.name)}<div class="hint" style="margin:2px 0 0">${esc(tn(r.type))}${multi ? " · " + esc(r.acc) : ""}</div>`}), rowsOf(r => r.acc + "\u0001" + r.camp, (k, rs) => rs[0].camp), {sort: "cost"})}</div>
+      <div class="blk" data-k="c"><h3>Koszt według typu kampanii</h3><div class="wdist">${types.map((t, i) => `<i style="width:${a.cost ? (t.cost / a.cost * 100).toFixed(1) : 0}%;background:${COLORS[i % COLORS.length]}" title="${esc(tn(t.k))}"></i>`).join("")}</div>
+        ${sortableTable("wTypes", [{k: "k", t: "Typ kampanii", h: r => `<span class="dot" style="background:${COLORS[types.indexOf(r) % COLORS.length]}"></span> ${esc(tn(r.k))}`}, {k: "cost", t: "Koszt", n: 1, f: v => zl(v)}, {k: "share", t: "Udział", n: 1, v: r => r.cost, h: r => pc(a.cost ? r.cost / a.cost : 0)}, {k: "conv", t: "Konwersje", n: 1, f: v => n1(v)}, {k: "cpa", t: "CPA", n: 1, f: v => zl(v)}, {k: "roas", t: "ROAS", n: 1, f: v => v == null ? "—" : NF1.format(v)}], types, {sort: "cost"})}</div>
+      <div class="blk" data-k="d"><h3>Frazy bez konwersji (ostatnie 30 dni)</h3>${T.length ? `<div class="row" style="margin:0 0 8px"><button class="ghost mini" id="wNegCsv" type="button">Eksport kandydatów do wykluczeń (CSV)</button><span class="hint" style="margin:0">${n0(noConv.length)} fraz · łącznie ${zl(noConv.reduce((s, t) => s + t.cost, 0))}</span></div>${sortableTable("wNoConv", tcols.filter(c => c.k !== "cpa" && c.k !== "conv"), noConv.slice(0, 60), {sort: "cost"})}` : `<div class="gempty">Brak zakładki RC_frazy w danych (plik CSV zawiera tylko kampanie). Wczytaj XLSX albo arkusz.</div>`}</div>
+      ${withConv.length ? `<div class="blk" data-k="d"><h3>Frazy z konwersjami (ostatnie 30 dni)</h3>${sortableTable("wConv", tcols, withConv.slice(0, 60), {sort: "conv"})}</div>` : ""}`;
+    this._noConv = noConv;
+  },
+  init(){
+    E("wSheet").value = store.get("wSheet", "") || "";
+    E("wLoadSheet").onclick = () => this.loadSheet();
+    E("wPick").onclick = () => E("wFile").click();
+    E("wFile").onchange = e => { const f = e.target.files[0]; if (f) this.loadFile(f); e.target.value = ""; };
+    E("wDemo").onclick = () => this.loadDemo();
+    E("wScript").onclick = async () => { try { await navigator.clipboard.writeText(ADS_SCRIPT); this.status("Skrypt skopiowany do schowka. Wklej go w Google Ads → Narzędzia → Działania zbiorcze → Skrypty i podmień SHEET_URL."); } catch(e){ download("rivalcore-google-ads-skrypt.js", ADS_SCRIPT, "text/javascript"); this.status("Nie udało się skopiować — pobrałem skrypt jako plik rivalcore-google-ads-skrypt.js."); } };
+    E("wOut").addEventListener("change", e => { if (e.target.id === "wAcc"){ this.acc = e.target.value; this.render(); } if (e.target.id === "wPer"){ this.per = e.target.value; this.render(); } });
+    E("wOut").addEventListener("click", e => {
+      if (e.target.closest("#wNegCsv")){ const q = v => `"${String(v).replace(/"/g, '""')}"`; download("rivalcore-frazy-do-wykluczenia.csv", "﻿" + [["fraza", "konto", "kampania", "koszt", "klikniecia"].join(";"), ...(this._noConv || []).map(t => [q(t.term), q(t.acc), q(t.camp), String(Math.round(t.cost * 100) / 100).replace(".", ","), t.clicks].join(";"))].join("\n"), "text/csv"); return; }
+      if (e.target.closest(".gt th[data-sort]")) setTimeout(() => this.render(), 0);
+    });
+  }
+};
+// ---------------------------------------------------------------- kalibracja kosztu Google na realnym wydatku
+const GCAL = {
+  IDS: ["gCpmTmin","gCpmTmax","gCpmImin","gCpmImax","gCpmVmin","gCpmVmax"], DEF: [40, 120, 4, 14, 10, 30],
+  fill(){
+    const b = E("gCalBrand"), a = E("gCalAcc"); if (!b) return;
+    const keep = b.value, R = (G.res || []).filter(x => x.n);
+    b.innerHTML = R.length ? R.map(x => `<option${x.name === keep ? " selected" : ""}>${esc(x.name)}</option>`).join("") : `<option value="">najpierw zrób analizę Google</option>`;
+    const accs = WY.data ? WY.data.accs : [];
+    a.innerHTML = accs.length ? `<option value="">— wybierz konto —</option>` + accs.map(x => `<option>${esc(x)}</option>`).join("") : `<option value="">brak wczytanych kont</option>`;
+    this.state();
+  },
+  state(){ const c = store.get("gCal", null), el = E("gCalSt"); if (!el) return;
+    el.innerHTML = c ? `Skalibrowano <b>${dPL(c.at)}</b> na marce <b>${esc(c.brand)}</b>: realny wydatek ${kk(c.real)} zł / mies. wobec szacunku ${kk(c.est)} zł → mnożnik <b>×${NF1.format(Math.round(c.k * 100) / 100)}</b>. Stawki CPM wyżej są już przeliczone (±15% wokół skalibrowanej wartości) i dotyczą wszystkich marek.` : "Bez kalibracji: koszt Google liczony z CPM wpisanych wyżej."; },
+  go(){
+    const el = E("gCalSt"), name = E("gCalBrand").value, real = +E("gCalSpend").value, r = (G.res || []).find(x => x.name === name);
+    if (!r || !r.n){ el.innerHTML = `<span style="color:var(--bad)">Najpierw zrób analizę Google i wybierz markę.</span>`; return; }
+    if (!(real > 0)){ el.innerHTML = `<span style="color:var(--bad)">Wpisz realny miesięczny wydatek tej marki w Google (zł).</span>`; return; }
+    if (!(r.costMoMid > 0)){ el.innerHTML = `<span style="color:var(--bad)">Szacunek tej marki wynosi 0 — nie ma czego skalować.</span>`; return; }
+    const k = real / r.costMoMid, c = G.cpm(), mids = [c.TEXT, c.IMAGE, c.VIDEO].map(([lo, hi]) => (lo + hi) / 2 * k);
+    mids.forEach((m, i) => { const r2 = v => v >= 10 ? Math.round(v) : Math.round(v * 10) / 10; E(this.IDS[i * 2]).value = r2(m * 0.85); E(this.IDS[i * 2 + 1]).value = r2(m * 1.15); });
+    store.set("gCal", {brand: name, real, est: r.costMoMid, k, at: isoD(Date.now())});
+    G.saveCfg(); G.srcUi(); G.analyze(); G.render(); this.fill();
+  },
+  reset(){ this.IDS.forEach((id, i) => { E(id).value = this.DEF[i]; }); store.set("gCal", null); G.saveCfg(); G.srcUi(); if (G.data){ G.analyze(); G.render(); } this.fill(); },
+  init(){
+    E("gCalGo").onclick = () => this.go(); E("gCalReset").onclick = () => this.reset();
+    E("gCalAcc").onchange = e => { const acc = e.target.value; if (!acc || !WY.data) return; const end = WY.data.max, a = addD(end, -29); const cost = WY.data.rows.filter(r => r.acc === acc && r.d >= a && r.d <= end).reduce((s, r) => s + r.cost, 0); E("gCalSpend").value = Math.round(cost / 30 * 30.4); };
+    this.IDS.forEach(id => E(id).addEventListener("change", () => { if (store.get("gCal", null)){ store.set("gCal", null); this.state(); } }));
+    const gr = G.render; G.render = function(...a){ const x = gr.apply(this, a); try { GCAL.fill(); } catch(e){} return x; };
+    this.fill();
+  }
+};
+
+const ROUTES = {konkurencja: "modMeta", wyniki: "modWyniki", polaczenia: "modPolaczenia"};
+const ALIAS = {meta: "konkurencja", google: "konkurencja", razem: "konkurencja", pulpit: "konkurencja", "": "konkurencja"};
+const CRUMB = {konkurencja: "/ konkurencja · meta + google", wyniki: "/ wyniki kont · google ads", polaczenia: "/ połączenia"};
 function route(){
   const h = (location.hash || "").replace("#", ""); const k = ROUTES[h] ? h : (ALIAS[h] || "konkurencja");
   Object.entries(ROUTES).forEach(([key, id]) => { const el = E(id); if (el) el.hidden = key !== k; });
@@ -6838,7 +7175,7 @@ function init(){
   const metaWrap = document.querySelector("body > .wrap:not(.rcmod)"); if (metaWrap) metaWrap.id = "modMeta";
   // nawigacja
   const nav = document.createElement("nav"); nav.className = "rcnav"; nav.setAttribute("aria-label", "Moduły RivalCore");
-  nav.innerHTML = `<a href="#konkurencja">Konkurencja</a><a href="#polaczenia">Połączenia</a>`;
+  nav.innerHTML = `<a href="#konkurencja">Konkurencja</a><a href="#wyniki">Wyniki kont</a><a href="#polaczenia">Połączenia</a>`;
   const bar = document.querySelector(".appbar-in"); const meta = bar && bar.querySelector(".appbar-meta"); if (bar) bar.insertBefore(nav, meta || null);
   // bloki Google w formularzu i wynikach
   const srcBox = E("gInlineSrc");
@@ -6906,7 +7243,8 @@ function init(){
   // po analizie Meta: odśwież zakładki i porównanie
   try { if (typeof renderAll === "function"){ const orig = renderAll; renderAll = function(){ const r = orig.apply(this, arguments); try { CH.draw(); RZ.render(); SRC.status(); } catch(e){} return r; }; } } catch(e){}
   window.addEventListener("hashchange", route); route(); GA.ui(); SRC.status(); CH.draw();
-  window.RivalCoreG = {G, RZ, BQ, GA, CH, SRC, version: RCV};
+  try { WY.init(); GCAL.init(); } catch(e){ console.error(e); }
+  window.RivalCoreG = {WY, GCAL, G, RZ, BQ, GA, CH, SRC, version: RCV};
 }
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
 })();
