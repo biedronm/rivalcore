@@ -1380,6 +1380,206 @@ body{font-variant-numeric:tabular-nums}
 .gcal-st{margin-top:10px;font-size:12.5px;color:var(--muted);line-height:1.5}
 .gcal-st b{color:var(--text)}
 @media screen and (max-width:700px){.whealth{grid-template-columns:1fr;gap:8px}.wbar .wmeta{margin-left:0;text-align:left}}
+
+/* ================================================================ v24 — raport PDF: czytelność i układ agencyjny
+   zasady: tekst prawie czarny (min. kontrast 7:1), najmniejszy krój 8 pt, liczby pogrubione,
+   czarny pas tytułowy na początku każdej sekcji, tabele i wykresy z wyraźnymi etykietami */
+.rp{--text:#0b0b0b;--muted:#333333;--faint:#5a5a5a;--line:#d6d6d6;--line-2:#b9b9b9;--line-3:#8a8a8a;--card:#ffffff;--card-2:#f1f1f1;--bg-2:#f6f6f6;--track:#e3e3e3;
+  --accent:#1f5fbf;--accent-soft:#e6eefb;--good:#0d7a43;--bad:#b3261e;--warn:#9a5b00;
+  font-size:9.5pt;line-height:1.5;font-weight:500;color:#0b0b0b}
+.rp *{text-shadow:none}
+.rp .note,.rp .hint,.rp .see,.rp .lines li,.rp .sub,.rp ul.lines li,.rp p,.rp li{font-weight:500}
+.rp b,.rp strong{font-weight:700}
+@page{margin:0 0 14mm;
+  @bottom-left{content:"BeDigital · RivalCore · raport konkurencji";font:600 7.5pt "Montserrat",system-ui,sans-serif;color:#333;padding-left:14mm}
+  @bottom-right{content:counter(page) " / " counter(pages);font:700 8pt "Montserrat",system-ui,sans-serif;color:#0b0b0b;padding-right:14mm}}
+/* strona: marginesy w treści, żeby pas tytułowy sięgał krawędzi kartki */
+.rp-page{padding:11mm 14mm 0;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.rp .note,.rp .hm-cap,.rp .lanes-leg{break-before:avoid;break-inside:avoid}
+.rp-newpage{break-before:page}
+/* pas tytułowy sekcji */
+.rp-top{margin:-11mm -14mm 0;padding:7mm 14mm 0;background:#0d0d0d;color:#cfcfcf;border:0;font-size:8pt;font-weight:600;letter-spacing:.06em;text-transform:uppercase;align-items:center}
+.rp-top .rp-tl{display:flex;align-items:center;gap:3mm;color:#fff}
+.rp-top .rp-tl svg{height:5.2mm;width:auto;display:block;color:#fff}
+.rp-top .rp-tl i{display:block;width:.3mm;height:4mm;background:#6a6a6a}
+.rp-top .rp-tl b{font-weight:600;letter-spacing:.04em;text-transform:none;font-size:9pt}
+.rp-kicker{margin:0 -14mm;padding:7mm 14mm 0;background:#0d0d0d;color:#7fb0ff;font:700 8pt var(--sans);letter-spacing:.16em}
+.rp-kicker::before{width:8mm;height:.4mm}
+.rp-h{margin:0 -14mm 7mm;padding:2mm 14mm 7mm;background:#0d0d0d;color:#fff;font-size:22pt;font-weight:700;letter-spacing:-.02em;line-height:1.12;border-bottom:1.2mm solid var(--accent)}
+.rp-top + .rp-h{padding-top:7mm}
+.rp-h::before{display:none}
+.rp-h2{font-size:16pt;font-weight:700}
+/* nagłówki bloków */
+.rp .blk{margin-top:7mm}
+.rp .blk > h3,.rp-exec-sub,.rp .rp-g h3{font:700 9pt var(--sans);letter-spacing:.12em;text-transform:uppercase;color:#0b0b0b;margin:0 0 3mm;padding-bottom:1.6mm;border-bottom:.5mm solid #0b0b0b;display:flex;align-items:center;gap:2.2mm;opacity:1}
+.rp .blk > h3::before,.rp-exec-sub::before,.rp .rp-g h3::before{content:"";width:2.4mm;height:2.4mm;background:var(--accent);opacity:1;flex:none;border-radius:0}
+.rp .blk > h3 .whyi,.rp .whyi,.rp .blkpng{display:none!important}
+.rp-exec-sub{margin:7mm 0 3mm}
+.rp h3{font-size:11pt;font-weight:700;color:#0b0b0b}
+/* teksty */
+.rp ul.lines li{font-size:9.5pt;padding:1.8mm 0;border-color:#d6d6d6;color:#0b0b0b}
+.rp .note,.rp .hint,.rp .hm-cap,.rp-caveat,.rp .lanes-leg,.rp .mklegend{font-size:8.5pt;color:#333;line-height:1.5}
+.rp .see{font-size:9.5pt;line-height:1.5;padding:3.5mm 4.5mm;background:#e6eefb;border:0;border-left:1.2mm solid var(--accent);border-radius:0;color:#0b0b0b}
+.rp .x5-verdict{font-size:13pt;font-weight:500;line-height:1.4;color:#0b0b0b}
+.rp .pill,.rp .tag,.rp .mtag{font-size:8pt;font-weight:700}
+.rp a{color:#1f5fbf;font-weight:600}
+/* kafelki liczbowe */
+.rp .kpis{gap:2.5mm}
+.rp .kpi,.rp .mk,.rp .bk{background:#f1f1f1;border:0;border-top:.9mm solid #0b0b0b;border-radius:0;padding:3.5mm 3.5mm 3.2mm}
+.rp .kpi .v,.rp .bk .bv{font-size:15pt;font-weight:700;color:#0b0b0b;letter-spacing:-.02em;line-height:1.15}
+.rp .kpis:has(> .kpi:nth-child(6)) .v{font-size:12pt}
+.rp .kpi .l,.rp .bk .bl,.rp .mk span{font-size:6.8pt;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#333}
+.rp .bk .bv small{font-size:8.5pt;font-weight:600;color:#333;margin-left:1mm}
+.rp .bk .bs{font-size:8pt;font-weight:500;color:#222;line-height:1.4}
+.rp .mk b{font-size:13pt;font-weight:700}
+.rp .cost{font-size:13pt;font-weight:700}
+.rp .bigk{grid-template-columns:repeat(3,minmax(0,1fr));gap:2.5mm}
+.rp .x5-k.bigk{grid-template-columns:repeat(4,minmax(0,1fr))}
+.rp .dl{font-size:8pt;font-weight:700}
+/* słupki i udziały */
+.rp .hbar,.rp .share,.rp .stackrow,.rp .bb,.rp .lr,.rp .fr,.rp .pyr .pr,.rp .divg .dr,.rp .idxparts .hbar,.rp .wave,.rp .matrix,.rp .dleg,.rp .trendline{font-size:9.5pt;color:#0b0b0b}
+.rp .hbar b,.rp .share b,.rp .bb b,.rp .share .pct,.rp .lr span,.rp .fv{font-size:9.5pt;font-weight:700;color:#0b0b0b}
+.rp .hbar{padding:1.1mm 0}
+.rp .hbar .track,.rp .share .track,.rp .bar,.rp .stack{min-height:3.4mm}
+.rp .rank li{font-size:9.5pt;padding:1.2mm 0}
+.rp .rank .d,.rp .ad .m,.rp .concept .m{font-size:8pt;color:#333}
+.rp .ad .t,.rp .concept .t{font-size:10pt;font-weight:600;color:#0b0b0b}
+.rp .wc{font-size:9pt;font-weight:600;color:#0b0b0b;border-color:#b9b9b9}
+/* karty rekomendacji i marek */
+.rp .rec{padding:4mm 4.5mm;border:.3mm solid #b9b9b9;border-top:.9mm solid var(--pc,#0b0b0b);border-radius:0;background:#fff}
+.rp .rt{font-size:10.5pt;font-weight:700;color:#0b0b0b;line-height:1.3}
+.rp .rw,.rp .rd{font-size:9pt;color:#1a1a1a;line-height:1.5}
+.rp .rprio{font-size:7.5pt;font-weight:700}
+.rp .rp-sc{border:.3mm solid #b9b9b9;border-top:.9mm solid #0b0b0b;border-radius:0;padding:4mm}
+.rp .rp-sc-h{font-size:11.5pt;font-weight:700}
+.rp .rp-sc-g b{font-weight:700;color:#0b0b0b}
+.rp .rp-sc-g span{font-weight:700;color:#333}
+.rp-brandhead{border-radius:0;border:0;border-left:1.2mm solid var(--accent);background:#f1f1f1;padding:4mm 5mm}
+/* plan ruchów i mapa przewag */
+.rp .nba-r{border:.3mm solid #b9b9b9;border-radius:0;grid-template-columns:9mm minmax(0,1fr) minmax(0,1fr) minmax(0,1.15fr)}
+.rp .nba-r > * + *{border-left:.3mm solid #d6d6d6}
+.rp .nba-r > *{padding:3.2mm 3.6mm}
+.rp .nba-n{font-size:11pt;font-weight:700;color:#0b0b0b;border-left:1.2mm solid var(--pc,var(--accent))}
+.rp .nba-l{font-size:7pt;font-weight:700;color:#333;margin-bottom:1.2mm}
+.rp .nba-r .a .nba-l{color:#1f5fbf}
+.rp .nba-r .t{font-size:9.5pt;font-weight:700}.rp .nba-r .w{font-size:8.5pt;color:#1a1a1a}.rp .nba-r .a{font-size:8.5pt;color:#0b0b0b}
+.rp .nba-p{font-size:6.5pt}
+.rp .hm{border:0;border-radius:0;padding:0;background:none}
+.rp .hm table{font-size:9.5pt;border-spacing:.7mm}
+.rp .hm th{font-size:7pt;font-weight:700;color:#0b0b0b;padding:1.6mm 2mm;border-bottom:.5mm solid #0b0b0b}
+.rp .hm td{padding:2.2mm 2.2mm;border-radius:0;font-weight:700;color:#0b0b0b;background:color-mix(in srgb,#1f5fbf calc(var(--h,0) * 42%),#f1f1f1)}
+.rp .hm td:first-child{background:none;font-weight:600}
+.rp .hm td.sp{background:none}
+.rp .hm td.top{box-shadow:inset 0 0 0 .5mm #0b0b0b}
+.rp .hm td.na{background:#f1f1f1;color:#5a5a5a}
+.rp-mix > div{font-size:9.5pt}.rp-mix .bar{height:4mm;border-radius:0;background:#e3e3e3}.rp-mix .v{color:#1a1a1a}
+.rp-mixleg{font-size:8.5pt;color:#1a1a1a}
+/* tabele */
+.rp table{font-size:9.5pt;color:#0b0b0b}
+.rp .gt,.rp .rp-g .gt{font-size:9.5pt;border-collapse:collapse}
+.rp .gt th,.rp .rp-g .gt th,.rp .mx-h,.rp .pcmp .pc-h,.rp .pcb-h{font:700 7.5pt var(--sans);letter-spacing:.07em;text-transform:uppercase;color:#fff;background:#0d0d0d;padding:2.2mm 2.4mm;border:0}
+.rp .gt td,.rp .rp-g .gt td{padding:2.2mm 2.4mm;border-bottom:.25mm solid #d6d6d6;color:#0b0b0b;font-weight:500}
+.rp .gt td.n,.rp .gt th.n{font-family:var(--sans);font-weight:700}
+.rp .gt tr:nth-child(even) td{background:#f6f6f6}
+.rp .gt tr.me td{background:#e6eefb;font-weight:700}
+.rp .gtw{border:0;border-radius:0}
+.rp .mx-r,.rp .pcmp .pc-r,.rp .pcb-r{font-size:9.5pt;padding:2mm 2.4mm;color:#0b0b0b}
+.rp .pcmp .pc-r b{font-size:10pt}
+.rp .rp-g .mcard{border:.3mm solid #b9b9b9;border-top:.9mm solid #0b0b0b;border-radius:0;padding:4mm}
+/* wykresy SVG: ciemne, grubsze etykiety i wyraźne osie */
+.rp svg text{fill:#1a1a1a;font-weight:600}
+.rp svg .sl{fill:#0b0b0b;font-weight:700}
+.rp svg .hl{fill:#333;font-weight:600}
+.rp svg .lv{font-weight:700}
+.rp svg line[stroke="var(--line)"],.rp svg line[stroke="var(--line-2)"]{stroke:#b9b9b9}
+.rp .leg,.rp .legend{font-size:9pt;color:#0b0b0b;font-weight:600}
+.rp .dot{width:2.6mm;height:2.6mm}
+.rp .nodata,.rp .limwarn{font-size:9.5pt;color:#1a1a1a;border-color:#b9b9b9}
+.rp-method li{font-size:9.5pt;line-height:1.55;color:#0b0b0b}
+/* druk 1:1 — nic nie może wystawać poza kartkę, bo przeglądarka pomniejsza wtedy cały raport */
+@media print{#report{width:210mm;max-width:210mm;overflow-x:clip}}
+.rp-page,.rp-cover{max-width:210mm;overflow-x:clip;box-sizing:border-box}
+.rp .gt,.rp table{width:100%;max-width:100%}
+.rp .gt th,.rp .gt td,.rp .gt td.n,.rp .gt th.n,.rp .hm th,.rp .hm td{white-space:normal}
+.rp .gt td.n,.rp .hm td{white-space:nowrap}
+.rp .gt th{font-size:6.5pt;letter-spacing:.03em;padding:1.8mm 1.6mm}
+.rp .gt td{padding:1.8mm 1.6mm;font-size:8.5pt}
+.rp .hm table{font-size:8.5pt}.rp .hm th{font-size:6.3pt;letter-spacing:.03em;padding:1.4mm 1mm}.rp .hm td{padding:2mm 1.4mm}
+.rp .hm td.sp svg{width:13mm}
+.rp .rp-scgrid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.rp .rp-sc{min-width:0}
+.rp .two,.rp-two,.rp .three,.rp .recs,.rp .gsplit,.rp .rank{min-width:0}
+.rp .two > *,.rp-two > *,.rp .three > *,.rp .recs > *,.rp .gsplit > *,.rp .bigk > *,.rp .kpis > *{min-width:0}
+.rp svg{max-width:100%;height:auto}
+.rp .mixbar{max-width:100%}
+/* układy, które przy realnej wielkości pisma potrzebują pełnej szerokości */
+.rp .three{grid-template-columns:minmax(0,1fr);gap:0}
+.rp .three > .blk{margin-top:6mm}
+.rp .share{grid-template-columns:42mm minmax(0,1fr) 16mm}
+.rp .rp-scgrid{grid-template-columns:minmax(0,1fr);gap:3mm}
+.rp .rp-sc-g{grid-template-columns:.8fr 1.6fr .7fr .9fr 1.15fr .8fr .9fr .8fr;gap:2mm}
+.rp .rp-sc-g b{font-size:10pt;white-space:nowrap}
+.rp .rp-sc-g span{font-size:6.2pt;letter-spacing:.03em;overflow-wrap:anywhere}
+.rp .divg .dr,.rp .pyr .pr{font-size:8.5pt}
+.rp .rank li{font-size:9pt}
+/* raport w skrócie: jedna strona */
+.rp-exec .x5-verdict{font-size:12pt;margin:0 0 4mm}
+.rp-exec .rp-exec-sub{margin:4mm 0 2mm}
+.rp-exec .bigk{grid-template-columns:repeat(6,minmax(0,1fr));gap:2mm}
+.rp-exec .x5-k.bigk{grid-template-columns:repeat(4,minmax(0,1fr))}
+.rp-exec .bk{padding:2.6mm 2.6mm 2.4mm}
+.rp-exec .bk .bv{font-size:13pt}
+.rp-exec .bk .bl{font-size:6pt}
+.rp-exec .bk .bs{font-size:7.2pt;line-height:1.3}
+.rp-exec .bigk:not(.x5-k) .bk .bs{display:none}
+.rp-exec > *:not(.rp-top):not(.rp-kicker):not(.rp-h){zoom:.95}
+.rp-exec .nba{gap:1.2mm;margin-top:0}
+.rp-exec .nba-r{grid-template-columns:9mm minmax(0,1fr) minmax(0,1.5fr)}
+.rp-exec .nba-r .w{display:none}
+.rp-exec .nba-r > *{padding:1.8mm 3mm}
+.rp-exec .nba-r .w,.rp-exec .nba-r .a{font-size:8pt;line-height:1.4}
+.rp-exec .nba-r .t{font-size:9pt}
+.rp-exec .hm{margin-top:0}
+.rp-exec .hm td{padding:1.5mm 1.4mm}
+.rp-exec .hm-cap{display:none}
+.rp-exec .rp-caveat{font-size:7.5pt;margin-top:3mm;padding-top:2mm}
+.rp-exec .rp-mix{gap:1mm}.rp-exec .rp-mix > div{font-size:8.5pt}
+.rp-brandhead{margin:0 0 6mm;font-size:9.5pt}
+.rp-brandhead .title-row h2,.rp .title-row h2{font-size:15pt;font-weight:700;margin:0}
+.rp .rp-g .gsplit{grid-template-columns:minmax(0,1fr);gap:0}
+.rp .rp-g .gsplit > .blk{margin-top:6mm}
+.rp .rp-g .gt{font-size:8pt}
+.rp .rp-g .gt th{font-size:5.8pt;padding:1.6mm 1.1mm;letter-spacing:.02em}
+.rp .rp-g .gt td{padding:1.6mm 1.1mm;font-size:8pt}
+.rp .gt td:first-child{white-space:nowrap}
+.rp .gt td.n{white-space:normal}
+.rp .two{row-gap:6mm}
+/* okładka: mocniejsza typografia */
+.rp-cover{--muted:#c9c9c9;--faint:#9a9a9a}
+.rp-cover--light{--muted:#333;--faint:#5a5a5a}
+.rp-hero h1{font-size:38pt;font-weight:700;letter-spacing:-.025em;line-height:1.05}
+.rp-hero h1::before{display:none}
+.rp-hero .kicker{font-size:8.5pt;font-weight:700;color:#7fb0ff}
+.rp-cover--light .rp-hero .kicker{color:#1f5fbf}
+.rp-hero p{font-size:12.5pt;font-weight:500;color:var(--muted)}
+.rp-cover-top{font-size:9.5pt;font-weight:600}
+.rp-cover-kpis > div{padding:5mm 4.5mm;border-top:.9mm solid var(--accent)}
+.rp-cover-kpis .v{font-size:20pt!important;font-weight:700}
+.rp-cover-kpis .l{font-size:7.5pt;font-weight:700;color:var(--muted)}
+.rp-cover .rp-label{font-size:8pt;font-weight:700}
+.rp-brandchip{font-size:10.5pt;font-weight:600}
+.rp-cover-foot{font-size:9.5pt;font-weight:500}
+.rp-method li:last-child{break-before:avoid}
+.rp .rp-method li,.rp .rp-method ul.lines li{font-size:9pt;padding:1.2mm 0;line-height:1.45}
+/* spis treści */
+.rp-toc{list-style:none;margin:0;padding:0;columns:2;column-gap:10mm}
+.rp-toc li{display:flex;gap:3mm;align-items:baseline;padding:2.2mm 0;border-bottom:.25mm solid #d6d6d6;font-size:10pt;font-weight:600;break-inside:avoid}
+.rp-toc li b{font-size:9pt;font-weight:700;color:#1f5fbf;min-width:7mm;font-variant-numeric:tabular-nums}
+.rp-toc li small{display:block;font-size:8.5pt;font-weight:500;color:#333;margin-top:.6mm}
+.rp-toc-lead{font-size:11.5pt;line-height:1.55;margin:0 0 7mm;max-width:150mm}
+.rp-read{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3mm;margin-top:3mm}
+.rp-read > div{background:#f1f1f1;border-top:.9mm solid #0b0b0b;padding:4mm;font-size:8.8pt;line-height:1.5}
+.rp-read b{display:block;font-size:10.5pt;margin-bottom:1mm}
 </style>
 </head>
 <body>
@@ -3141,7 +3341,7 @@ function swimlanes(list){
   const minGap = 30 / step; let lastW = -1e9;
   const num = step >= 13;
   return `<div class="lanes-w"><svg class="lc lanes2" viewBox="0 0 ${W} ${H}">
-    <text x="${W - 74}" y="${T - 5}" class="hl" text-anchor="end">razem</text><text x="${W}" y="${T - 5}" class="hl" text-anchor="end">szczyt · tydz. od</text>
+    <text x="${W - 74}" y="${T - 5}" class="hl" text-anchor="end">razem</text><text x="${W}" y="${T - 5}" class="hl" text-anchor="end">szczyt</text>
     ${months.slice(1).map(([w]) => `<line x1="${(L + w * step - .4).toFixed(1)}" x2="${(L + w * step - .4).toFixed(1)}" y1="${T - 3}" y2="${H - 14}" stroke="var(--line-2)" stroke-width=".6"/>`).join("")}
     ${months.filter(([w]) => { if (w - lastW < minGap) return false; lastW = w; return true; }).map(([w, m]) => `<text x="${(L + w * step + 1).toFixed(1)}" y="${H - 2}" class="hl">${["sty","lut","mar","kwi","maj","cze","lip","sie","wrz","paź","lis","gru"][m]}</text>`).join("")}
     ${list.map((r, i) => { const y = T + i * (rowH + gapY), row = data[i], sum = row.reduce((a, b) => a + b, 0), pk = Math.max(...row), pw = row.indexOf(pk), act = row.filter(Boolean).length;
@@ -3152,7 +3352,7 @@ function swimlanes(list){
       <text x="${W - 74}" y="${y + rowH / 2 + 4}" class="lsum" text-anchor="end">${fmt(sum)}</text>
       <text x="${W}" y="${y + rowH / 2 + 4}" class="sl" text-anchor="end">${pk ? `${pk} · ${dm(start + pw * 7 * DAY)}` : "—"}</text>`; }).join("")}
     ${kd}
-  </svg></div><div class="lanes-leg"><span>mniej</span>${[.2, .45, .7, 1].map(o => `<i style="opacity:${o}"></i>`).join("")}<span>więcej nowych reklam w tygodniu</span><span class="pk"><i></i>ramka = najmocniejszy tydzień marki</span>${num ? "" : "<span>liczby w kratkach widać przy zakresie do 26 tygodni; dokładna wartość po najechaniu</span>"}</div>`;
+  </svg></div><div class="lanes-leg"><span>mniej</span>${[.2, .45, .7, 1].map(o => `<i style="opacity:${o}"></i>`).join("")}<span>więcej nowych reklam w tygodniu</span><span class="pk"><i></i>ramka = najmocniejszy tydzień marki (kolumna „szczyt”: liczba startów · początek tygodnia)</span>${num ? "" : "<span>liczby w kratkach widać przy zakresie do 26 tygodni; dokładna wartość po najechaniu</span>"}</div>`;
 }
 
 function diverging(items, {leftLabel = "", rightLabel = ""} = {}){
@@ -3969,7 +4169,7 @@ function execPdfPage(sel, top){
     const mx = Math.max(...rows.map(x => x.m + x.g), 1);
     if (rows.length) mix = `<div class="rp-exec-sub">Podział szacowanego budżetu: Meta i Google</div><div class="rp-mix">${rows.map(x => `<div><span>${esc(x.n)}</span><span class="bar"><i style="width:${(x.m / mx * 100).toFixed(1)}%;background:var(--c0)"></i><i style="width:${(x.g / mx * 100).toFixed(1)}%;background:var(--c1)"></i></span><span class="v"><b>~${fmtK(x.m + x.g)} zł</b> · Google ${x.m + x.g ? Math.round(x.g / (x.m + x.g) * 100) : 0}%</span></div>`).join("")}</div><div class="rp-mixleg"><span><i style="background:var(--c0)"></i>Meta</span><span><i style="background:var(--c1)"></i>Google</span></div>`;
   }
-  return `<section class="rp-page">${top}
+  return `<section class="rp-page rp-exec">${top}
     <div class="rp-kicker">Dla zarządu · jedna strona</div><h2 class="rp-h">Raport w skrócie</h2>
     <p class="x5-verdict">${x5Verdict(sel)}</p>
     <div class="rp-exec-sub">Meta — ${esc(d.main.pageName)}</div>${x5Tiles(sel)}
@@ -4522,7 +4722,7 @@ function openPdfPanel(){
     <div class="hint">Otworzy się okno drukowania — jako drukarkę wybierz <b>„Zapisz jako PDF”</b>. Raport uwzględnia aktualne filtry, założenia kosztu i oznaczenia „Lupy detektywa” włączone na górze strony${activeMarks().length ? ` (teraz: ${activeMarks().map(k => MARKS[k][0].toLowerCase()).join(", ")})` : " (teraz wyłączone)"}. Najlepiej wygląda w Chrome lub Edge.</div>`;
   card.classList.remove("hidden");
   const est = () => { const s = [...card.querySelectorAll("input[data-sec]:checked")].map(c => c.dataset.sec); const nb = results.length > 1 ? card.querySelectorAll("input[data-brand]:checked").length : 1;
-    const pages = (s.includes("cover") ? 1 : 0) + (s.includes("summary") || s.includes("recs") ? 2 : 0) + s.filter(x => x.startsWith("cmp_")).length + nb * s.filter(x => x.startsWith("b_")).length * 1.4 + (s.includes("method") ? 1 : 0);
+    const pages = (s.includes("cover") ? 1 : 0) + (s.includes("summary") || s.includes("recs") ? 2 : 0) + 1 + (s.includes("exec") ? 1 : 0) + s.filter(x => x.startsWith("cmp_")).length * 1.8 + nb * s.filter(x => x.startsWith("b_")).length * 1.7 + (rcG() ? s.filter(x => x.startsWith("g_")).length * 1.6 : 0) + (s.includes("method") ? 2 : 0);
     $("pdfEst").textContent = `ok. ${Math.max(1, Math.round(pages))} stron`; };
   const setSecs = list => { card.querySelectorAll("input[data-sec]").forEach(cb => { if (!cb.disabled) cb.checked = list.includes(cb.dataset.sec); }); est(); };
   card.querySelectorAll("input").forEach(i => i.addEventListener("change", est)); est();
@@ -4545,6 +4745,19 @@ function openPdfPanel(){
   card.scrollIntoView({behavior: "smooth", block: "start"});
 }
 
+// spis treści raportu: budowany z gotowych stron, wstawiany po okładce
+function rpToc(o){
+  const rep0 = $("report"), secs = [...rep0.querySelectorAll(".rp-page")]; if (secs.length < 4) return;
+  const items = secs.map(s => { const hh = s.querySelector(".rp-h"), k = s.querySelector(".rp-kicker"); return s.dataset.toc ? {t: s.dataset.toc, k: s.dataset.tock || ""} : hh ? {t: hh.textContent.trim(), k: k ? k.textContent.trim() : ""} : null; }).filter(Boolean);
+  const top = secs[0].querySelector(".rp-top"), cover = rep0.querySelector(".rp-cover");
+  const el = document.createElement("section"); el.className = "rp-page";
+  el.innerHTML = `${top ? top.outerHTML : ""}<div class="rp-kicker">Zawartość</div><h2 class="rp-h">Co jest w raporcie</h2>
+    <p class="rp-toc-lead">Raport porównuje aktywność reklamową marek na podstawie publicznych bibliotek reklam. Zaczyna się od wniosków i rekomendacji, potem pokazuje dane, z których one wynikają.</p>
+    <ol class="rp-toc">${items.map((x, i) => `<li><b>${String(i + 1).padStart(2, "0")}</b><span>${esc(x.t)}${x.k ? `<small>${esc(x.k)}</small>` : ""}</span></li>`).join("")}</ol>
+    <div class="rp-exec-sub">Jak czytać liczby</div>
+    <div class="rp-read"><div><b>Wydatki to szacunek</b>Liczone z zasięgu i wyświetleń reklam. Pokazują rząd wielkości i służą do porównań między markami, nie zastępują danych z kont.</div><div><b>Udział w głosie</b>Jaka część szacowanych wydatków lub wyświetleń wszystkich porównywanych marek przypada na daną markę.</div><div><b>Indeks aktywności 0–100</b>Łączy liczbę aktywnych reklam, tempo nowych kreacji, budżet i różnorodność. Im wyżej, tym intensywniejsze działania.</div></div>`;
+  const first = secs[0]; first.parentNode.insertBefore(el, first);
+}
 function generatePdf(){
   const card = $("pdfCard");
   const o = {
@@ -4561,6 +4774,7 @@ function generatePdf(){
   store.set(PDF_KEY, JSON.stringify(prefs));
 
   $("report").innerHTML = buildReport(o);
+  try { rpToc(o); } catch(e){}
   const root = document.documentElement, prevTheme = root.getAttribute("data-theme"), prevTitle = document.title;
   root.setAttribute("data-theme", "light");
   document.title = `RivalCore - raport - ${o.client || main.pageName} - ${iso(todayUTC)}`.replace(/[\\/:*?"<>|]/g, "");
@@ -4579,7 +4793,7 @@ function buildReport(o){
   const main = sel.find(r => r.isMain) || sel[0];
   const dateLong = new Date().toLocaleDateString("pl-PL", {day: "numeric", month: "long", year: "numeric"});
   const fl = filterLabel();
-  const top = `<div class="rp-top"><span>${esc(o.title)}</span><span>${o.client ? esc(o.client) + " · " : ""}${dateLong}</span></div>`;
+  const top = `<div class="rp-top"><span class="rp-tl">${bdLogoSvg()}<i></i><b>RivalCore</b></span><span>${esc(o.title)}${o.client ? " · " + esc(o.client) : ""} · ${dateLong}</span></div>`;
   const has = k => o.secs.has(k);
   const pages = [];
 
@@ -4617,6 +4831,7 @@ function buildReport(o){
     </section>`);
   }
 
+  const tocAt = pages.length;
   if (has("exec") && sel.length > 1){ const ep = execPdfPage(sel, top); if (ep) pages.push(ep); }
 
   if (has("summary") || has("recs")){
@@ -4641,9 +4856,8 @@ function buildReport(o){
     sel.forEach((r, i) => {
       const topics = bt.filter(([k]) => k !== "social" || (r.polLoaded && r.pol && r.pol.n)).filter(([k]) => k !== "changes" || (r.changes && !r.changes.first));
       if (!topics.length) return;
-      pages.push(`<section class="rp-page">${top}
-        <div class="rp-brandhead">${brandHead(r, i)}</div>
-        ${topics.map(([k, l], j) => `<div class="rp-topic ${j ? "rp-newpage" : ""}"><div class="rp-kicker">${esc(r.pageName)}</div><h2 class="rp-h2">${l}</h2>${brandPanel(k, r, i, true)}</div>`).join("")}
+      pages.push(`<section class="rp-page" data-toc="${esc(r.pageName)}" data-tock="Profil marki · ${topics.length} ${topics.length === 1 ? "temat" : topics.length < 5 ? "tematy" : "tematów"}">
+        ${topics.map(([k, l], j) => `<div class="rp-topic ${j ? "rp-newpage" : ""}">${top}<div class="rp-kicker">${esc(r.pageName)}${r.isMain ? " · Twoja marka" : " · konkurent"}</div><h2 class="rp-h">${l}</h2>${j ? "" : `<div class="rp-brandhead">${brandHead(r, i)}</div>`}${brandPanel(k, r, i, true)}</div>`).join("")}
       </section>`);
     });
   }
@@ -5908,7 +6122,7 @@ regionChanged();
 // ================================================================ RivalCore 20 · moduły Meta + Google
 (() => {
 "use strict";
-const RCV = "23.0";
+const RCV = "24.0";
 const E = id => document.getElementById(id);
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const NF = new Intl.NumberFormat("pl-PL", {maximumFractionDigits: 0});
