@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,300&family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<!-- XLSX ładowany przez loadLib z listą zapasowych CDN-ów (patrz LIBS) — jeden zablokowany CDN nie może zabić eksportu do Excela -->
 <style>
 /* =====================================================================
    RivalCore (BeDigital) — system wizualny
@@ -379,6 +379,9 @@ details.sec > summary > span:first-child{flex:1}
 .rp-cover-kpis > div{border:1px solid rgba(255,255,255,.14);border-radius:0;padding:5mm 4mm;background:rgba(43,43,43,.72)}
 .rp-cover-kpis .v{font-size:18pt;font-weight:500;letter-spacing:-.03em;color:var(--text)}
 .rp-cover-kpis .l{font-size:6.8pt;color:var(--muted);margin-top:1.5mm;text-transform:uppercase;letter-spacing:.08em}
+.chbadge{display:inline-block;vertical-align:middle;margin-left:8px;padding:2px 8px;border:1px solid var(--line);border-radius:999px;font:600 11px var(--mono);letter-spacing:.06em;color:var(--muted);text-transform:uppercase}
+.rp-exec-sub .rp-basis{float:right;font-size:6.8pt;font-weight:400;text-transform:none;letter-spacing:.02em;color:var(--muted);opacity:.9}
+.rp-cover-kpis .rp-kch{display:inline-block;margin-top:.8mm;font-size:6.2pt;letter-spacing:.04em;text-transform:none;color:var(--muted);opacity:.85}
 .rp-cover-brands{margin-top:9mm}
 .rp-cover .rp-label{display:flex;align-items:center;gap:2.5mm;font-family:var(--sans);letter-spacing:.14em;color:var(--muted)}
 .rp-cover .rp-label::before{content:"";width:8mm;height:.3mm;background:currentColor}
@@ -957,6 +960,11 @@ header h1{font-weight:300;letter-spacing:-.025em}
 .gsplit > *{min-width:0}
 .gch{width:100%;height:auto;display:block}
 .gch text{fill:var(--muted);font:400 10.5px var(--mono)}
+.gmeta .warnpill{background:color-mix(in srgb,var(--warn) 16%,transparent);color:var(--fg);border-color:color-mix(in srgb,var(--warn) 45%,transparent);font-weight:600}
+.ch-c.nd{background:repeating-linear-gradient(45deg,transparent,transparent 2px,color-mix(in srgb,var(--muted) 55%,transparent) 2px,color-mix(in srgb,var(--muted) 55%,transparent) 3.5px);opacity:.5}
+.gch text.nd{font:600 10px var(--mono);fill:var(--muted);letter-spacing:.03em;paint-order:stroke;stroke:var(--bg);stroke-width:3px;stroke-linejoin:round}
+.leg .nodatalg{color:var(--muted)}
+.leg .nodatalg i{background:repeating-linear-gradient(45deg,transparent,transparent 2px,var(--muted) 2px,var(--muted) 3.4px);opacity:.75}
 .gch .gl{stroke:var(--line);stroke-width:1}
 .leg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--muted);margin-top:6px}
 .leg i{display:inline-block;width:9px;height:9px;border-radius:1px;margin-right:6px;vertical-align:-1px}
@@ -4299,7 +4307,7 @@ function scoreCard(r, i){
     <div class="rp-sc-h"><span><span class="dot" style="background:${color(i)}"></span><b>${esc(r.pageName)}</b>${r.isMain ? '<span class="tag">Twoja marka</span>' : ""}</span><span class="idxchip"${WHY.index(r)}>${r.idx.index}<small>/100</small></span></div>
     <div class="rp-sc-g">
       <div${WHY.aktywne(r)}><b>${fmt(s.aktywne)}</b><span>aktywne reklamy</span></div>
-      <div${WHY.kosztMies(r)}><b>~${fmtK(s.miesSr)} zł</b><span>szac. koszt / mies.</span></div>
+      <div${WHY.kosztMies(r)}><b>~${fmtK(s.miesSr)} zł</b><span>szac. koszt / mies. (prognoza)</span></div>
       ${s.okres ? `<div${WHY.pmetric(r, "Nowe reklamy w okresie", "nowe")}><b>${fmt(s.okres.nowe)}${s.okresPrev && !s.prevStale ? ` <small class="${s.okres.nowe >= s.okresPrev.nowe ? "up" : "down"}">${s.okresPrev.nowe ? (s.okres.nowe >= s.okresPrev.nowe ? "+" : "") + Math.round((s.okres.nowe - s.okresPrev.nowe) / s.okresPrev.nowe * 100) + "%" : ""}</small>` : ""}</b><span>nowe w okresie</span></div>` : `<div${W("d", "Nowe reklamy w 30 dni", [`Reklamy z datą startu w ostatnich 30 dniach${s.ref < todayUTC ? " (do końca okresu)" : ""}: <b>${nd(s.n30)}</b>; 30 dni wcześniej: ${nd(s.p30)}.`], SRC_META)}><b>${nd(s.n30)}</b><span>nowe w 30 dni</span></div>`}
       <div${WHY.kill(r)}><b>${r.testing.killRate == null ? "—" : r.testing.killRate + "%"}</b><span>wyłączanych ≤7 dni</span></div>
       <div${WHY.wyswMies(r)}><b>~${fmtK(s.wyswMiesSr)}</b><span>szac. wyświetlenia / mies.</span></div>
@@ -4403,6 +4411,28 @@ function execPanel(list){
   </div>`;
 }
 const x5Strip = s => { const t = document.createElement("div"); t.innerHTML = s; return t.textContent.replace(/\s+/g, " ").trim(); };
+// dPL żyje w module Google (osobny <script>), a raport i deck budujemy tutaj — własny formatter daty.
+const rcDate = d => d ? d.slice(8, 10) + "." + d.slice(5, 7) + "." + d.slice(0, 4) : "—";
+// Jedno źródło liczb "Meta + Google" dla okładki, raportu i prezentacji.
+// Zwraca null, gdy nie ma analizy Google — wtedy wszystko, co pokazujemy, musi być podpisane "(Meta)".
+function rcCombo(sel){
+  try {
+    const g = window.RivalCoreG; if (!rcG() || !g || !g.RZ) return null;
+    if (!g.RZ.rows || !g.RZ.rows.length){ try { g.RZ.render(); } catch(e){} }
+    const rows = g.RZ.rows || []; if (!rows.length) return null;
+    const uids = new Set((sel || []).map(r => r.uid));
+    const use = uids.size ? rows.filter(r => !r.m || !r.m.ref || uids.has(r.m.ref.uid)) : rows;
+    if (!use.length || !use.some(r => r.g)) return null;
+    const S = k => use.reduce((a, r) => a + (+r[k] || 0), 0);
+    return {rows: use, cost: S("tot"), mc: S("mc"), gc: S("gc"), impr: S("totI"), mi: S("mi"), gi: S("gi"),
+      act: S("totA"), ma: S("ma"), ga: S("ga"),
+      cov: (g.G && g.G.meta && g.G.meta.cov) || null,
+      of: m => use.find(r => r.m && r.m.ref === m) || null};
+  } catch(e){ return null; }
+}
+// Dopisek kanału przy liczbach, które liczą tylko Metę — żeby w raporcie z dwoma kanałami
+// nigdy nie było liczby bez podpisu, skąd pochodzi.
+const rcMetaOnly = (txt = "") => rcG() ? (txt ? txt + " (Meta)" : " (Meta)") : txt;
 const rcG = () => { try { const g = window.RivalCoreG && window.RivalCoreG.G; return g && g.data && g.res && g.res.some(x => x.n) ? g : null; } catch(e){ return null; } };
 const rcNorm = s => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/ł/g, "l").replace(/[^a-z0-9]+/g, "");
 function execText(list){
@@ -4427,14 +4457,17 @@ function execPdfPage(sel, top){
   if (G){
     const gm = G.res.find(x => x.main) || G.res[0];
     if (gm && gm.n) gHtml = `<div class="rp-exec-sub">Google Ads — ${esc(gm.name)}</div>${G.heroCards(gm)}`;
-    const rows = sel.map((r, i) => { const g = G.res.find(x => rcNorm(x.name) === rcNorm(r.brand) || rcNorm(x.name) === rcNorm(r.pageName)); return {n: r.pageName, m: r.s.miesSr || 0, g: g ? g.costMoMid || 0 : null}; }).filter(x => x.g != null);
+    // jedna baza dla obu kanałów (średnia z okresu × 30 dni) — inaczej słupki mieszałyby prognozę Meta z historią Google
+    const cb = rcCombo(sel);
+    const rows = cb ? cb.rows.filter(x => x.g && x.m).map(x => ({n: x.name, m: x.mc || 0, g: x.gc || 0}))
+      : sel.map((r, i) => { const g = G.res.find(x => rcNorm(x.name) === rcNorm(r.brand) || rcNorm(x.name) === rcNorm(r.pageName)); return {n: r.pageName, m: r.s.miesSr || 0, g: g ? g.costMoMid || 0 : null}; }).filter(x => x.g != null);
     const mx = Math.max(...rows.map(x => x.m + x.g), 1);
-    if (rows.length) mix = `<div class="rp-exec-sub">Podział szacowanego budżetu: Meta i Google</div><div class="rp-mix">${rows.map(x => `<div><span>${esc(x.n)}</span><span class="bar"><i style="width:${(x.m / mx * 100).toFixed(1)}%;background:var(--c0)"></i><i style="width:${(x.g / mx * 100).toFixed(1)}%;background:var(--c1)"></i></span><span class="v"><b>~${fmtK(x.m + x.g)} zł</b> · Google ${x.m + x.g ? Math.round(x.g / (x.m + x.g) * 100) : 0}%</span></div>`).join("")}</div><div class="rp-mixleg"><span><i style="background:var(--c0)"></i>Meta</span><span><i style="background:var(--c1)"></i>Google</span></div>`;
+    if (rows.length) mix = `<div class="rp-exec-sub">Podział szacowanego budżetu: Meta i Google <span class="rp-basis">średnia z okresu × 30 dni${cb && cb.cov && cb.cov.gap ? ` · dane Google do ${rcDate(cb.cov.date)}` : ""}</span></div><div class="rp-mix">${rows.map(x => `<div><span>${esc(x.n)}</span><span class="bar"><i style="width:${(x.m / mx * 100).toFixed(1)}%;background:var(--c0)"></i><i style="width:${(x.g / mx * 100).toFixed(1)}%;background:var(--c1)"></i></span><span class="v"><b>~${fmtK(x.m + x.g)} zł</b> · Google ${x.m + x.g ? Math.round(x.g / (x.m + x.g) * 100) : 0}%</span></div>`).join("")}</div><div class="rp-mixleg"><span><i style="background:var(--c0)"></i>Meta</span><span><i style="background:var(--c1)"></i>Google</span></div>`;
   }
   return `<section class="rp-page rp-exec">${top}
     <div class="rp-kicker">Dla zarządu · jedna strona</div><h2 class="rp-h">Raport w skrócie</h2>
     <p class="x5-verdict">${x5Verdict(sel)}</p>
-    <div class="rp-exec-sub">Meta — ${esc(d.main.pageName)}</div>${x5Tiles(sel)}
+    <div class="rp-exec-sub">Meta — ${esc(d.main.pageName)}${G ? ` <span class="rp-basis">prognoza z dzisiejszego tempa emisji</span>` : ""}</div>${x5Tiles(sel)}
     ${gHtml}${mix}
     <div class="rp-exec-sub">Co zrobić najpierw</div>${nbaRows(topMoves(sel))}
     <div class="rp-exec-sub">Kto gdzie prowadzi (Meta)</div>${heatMap(sel)}
@@ -5358,7 +5391,7 @@ function renderAll(){
       ${results.length > 1 ? `<button class="t1 ${isCmp ? "on" : ""}" data-top="cmp"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M8 17v-6M13 17V7M18 17v-4"/></svg>Porównanie</button>` : ""}
       ${results.map((x, i) => `<button class="t1 ${x.uid === view.top ? "on" : ""}" data-top="${x.uid}"><span class="dot" style="background:${color(i)}"></span>${esc(x.pageName)}${x.isMain ? " ★" : ""}<span class="t1i">${x.idx.index}</span></button>`).join("")}
     </div>
-    ${isCmp ? `<div class="cmphead"><h2>Porównanie z konkurencją</h2><div class="sub">${results.length} ${results.length >= 2 && results.length <= 4 ? "marki" : "marek"} · emisja: ${esc(regionLabel(results[0].region))} · ${iso(todayUTC)}${filterLabel() ? ` · filtr: ${esc(filterLabel())}` : ""}</div>${asofWarn()}${periodWarn(results)}${limitWarn(results)}</div>` : ""}
+    ${isCmp ? `<div class="cmphead"><h2>Porównanie z konkurencją${rcG() ? " <span class=\"chbadge\">Meta</span>" : ""}</h2><div class="sub">${results.length} ${results.length >= 2 && results.length <= 4 ? "marki" : "marek"} · emisja: ${esc(regionLabel(results[0].region))} · ${iso(todayUTC)}${filterLabel() ? ` · filtr: ${esc(filterLabel())}` : ""}</div>${asofWarn()}${periodWarn(results)}${limitWarn(results)}</div>` : ""}
     ${isCmp ? brandFilter() : ""}
     <div class="tabs2" role="tablist">${tabs.map(([k, l]) => `<button class="t2 ${k === active ? "on" : ""}" data-tab="${k}">${l}${isCmp ? "" : badge(k, r)}</button>`).join("")}</div>
     <div id="resLegend">${marksLegend()}</div>
@@ -5645,7 +5678,14 @@ function openPdfPanel(){
 // Slajdy budujemy z natywnych obiektów PowerPointa: pola tekstowe, tabele i wykresy z dołączonymi danymi.
 // Nic nie jest obrazkiem, więc odbiorca może poprawić każdą liczbę, kolor i podpis.
 const DECK_KEY = "rivalcoreDeck";
-const DECK_LIB = "https://cdnjs.cloudflare.com/ajax/libs/pptxgenjs/3.12.0/pptxgen.bundle.js";
+// XLSX pobieramy w tle zaraz po starcie — eksport do Excela ma być natychmiastowy,
+// a gdy sieć zawiedzie, przycisk sam poda powód zamiast milczeć.
+let XLSX_P = null;
+const loadXlsx = () => (XLSX_P = XLSX_P && !XLSX_P.failed ? XLSX_P : loadLib("xlsx").catch(e => { XLSX_P.failed = true; throw e; }));
+try { setTimeout(() => { loadXlsx().catch(() => {}); }, 1200); } catch(e){}
+const DECK_LIB = ["https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js",
+                  "https://cdn.jsdelivr.net/gh/gitbrent/pptxgenjs@3.12.0/dist/pptxgen.bundle.js",
+                  "https://unpkg.com/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"];
 const loadPptx = () => { LIBS.pptx = LIBS.pptx || [DECK_LIB, () => window.PptxGenJS]; return loadLib("pptx"); };
 const DECK_GROUPS = [
   ["Rama prezentacji", [["cover", "Okładka"], ["agenda", "Agenda"], ["exec", "Najważniejsze liczby"], ["method", "Metodologia i zastrzeżenia"], ["end", "Slajd końcowy"]]],
@@ -5654,14 +5694,15 @@ const DECK_GROUPS = [
   ["Wnioski", [["recs", "Rekomendacje"]]]
 ];
 const DECK_ALL = DECK_GROUPS.flatMap(g => g[1].map(x => x[0]));
+const DECK_LABEL = {cover: "Okładka", agenda: "Agenda", exec: "Raport w skrócie", sov: "Udział w głosie", activity: "Aktywność", brands: "Marki w skrócie", timeline: "Oś czasu", channels: "Meta + Google", survive: "Co przeżywa", pricewar: "Wojna rabatowa", whitespace: "Mapa wolnych pól", brief: "Brief kreatywny", recs: "Rekomendacje", method: "Metodologia", end: "Zakończenie"};
 const DECK_ORDER = ["cover", "agenda", "exec", "sov", "activity", "brands", "timeline", "channels", "survive", "pricewar", "whitespace", "brief", "recs", "method", "end"];
 const DECK_DEF = ["cover", "agenda", "exec", "sov", "activity", "survive", "pricewar", "brief", "recs", "method", "end"];
 const DECK_SHORT = ["cover", "exec", "sov", "brief", "recs", "end"];
 const deckPrefs = () => { try { return JSON.parse(store.get(DECK_KEY) || "{}"); } catch(e){ return {}; } };
 
 const DTH = {
-  dark: {bg: "0D0D0D", card: "16181C", line: "2C2F35", text: "F1F1F1", muted: "A3A3A3", faint: "6B6B6B", accent: "4884E2", onDark: "F1F1F1"},
-  light: {bg: "FFFFFF", card: "F4F5F7", line: "DFE1E5", text: "121212", muted: "5F5F5F", faint: "8A8A8A", accent: "1F5FBF", onDark: "F1F1F1"}
+  dark: {bg: "0D0D0D", card: "16181C", line: "2C2F35", text: "F1F1F1", muted: "A3A3A3", faint: "6B6B6B", accent: "4884E2", onDark: "F1F1F1", warn: "E5B53B"},
+  light: {bg: "FFFFFF", card: "F4F5F7", line: "DFE1E5", text: "121212", muted: "5F5F5F", faint: "8A8A8A", accent: "1F5FBF", onDark: "F1F1F1", warn: "A66B00"}
 };
 const DSER = ["2D6FD6", "E0703F", "34C38F", "FF6B8B", "9D8CFF", "E5B53B", "3FC6DD", "8E8E96"];
 const DGOOD = "2E9E74", DBAD = "D9544C", DWARN = "C08A1E";
@@ -5682,6 +5723,9 @@ function deckCtx(){
 }
 
 // ---------- elementy wspólne slajdu
+// Slajdy liczone wyłącznie z danych Meta dostają dopisek w kickerze, gdy w decku jest też Google —
+// inaczej "Udział w głosie" w prezentacji z dwoma kanałami czyta się jako udział łączny.
+const dkMeta = (c, k) => c && c.G ? k + " · META" : k;
 function deckSlide(pptx, T, kicker, title, lead){
   const s = pptx.addSlide();
   s.background = {color: T.bg};
@@ -5695,13 +5739,21 @@ function deckSlide(pptx, T, kicker, title, lead){
 }
 function deckTiles(pptx, s, T, items, y, h = 1.12){
   const n = items.length, gap = 0.18, w = (CW - gap * (n - 1)) / n;
+  const tw = w - 0.36;
+  // ile wierszy zajmie tekst o tej szerokości (ok. 21 znaków na cal przy 9.5 pt)
+  const rows = (t, cpi) => Math.max(1, Math.ceil(String(t || "").length / Math.max(6, tw * cpi)));
+  const lRows = Math.max(...items.map(x => rows(x[1], 19)));
+  const sRows = Math.max(0, ...items.map(x => x[2] ? rows(x[2], 12) : 0));
+  const lH = lRows * 0.155, sH = sRows * 0.145;
+  h = Math.max(h, 0.1 + 0.46 + lH + (sH ? sH + 0.08 : 0.06));
   items.forEach(([v, l, sub], i) => {
     const x = MX + i * (w + gap);
     s.addShape(pptx.ShapeType.roundRect, {x, y, w, h, rectRadius: 0.06, fill: {color: T.card}, line: {color: T.line, width: 0.75}});
-    s.addText(String(v), {x: x + 0.18, y: y + 0.1, w: w - 0.36, h: 0.46, fontFace: DF, fontSize: 24, bold: true, color: T.text, valign: "top"});
-    s.addText(String(l), {x: x + 0.18, y: y + 0.58, w: w - 0.36, h: h - 0.66, fontFace: DF, fontSize: 9.5, color: T.muted, valign: "top", lineSpacingMultiple: 1.1});
-    if (sub) s.addText(String(sub), {x: x + 0.18, y: y + h - 0.3, w: w - 0.36, h: 0.24, fontFace: DM, fontSize: 8.5, color: T.faint});
+    s.addText(String(v), {x: x + 0.18, y: y + 0.1, w: tw, h: 0.46, fontFace: DF, fontSize: 24, bold: true, color: T.text, valign: "top"});
+    s.addText(String(l), {x: x + 0.18, y: y + 0.56, w: tw, h: lH + 0.04, fontFace: DF, fontSize: 9.5, color: T.muted, valign: "top", lineSpacingMultiple: 1.1});
+    if (sub) s.addText(String(sub), {x: x + 0.18, y: y + 0.58 + lH, w: tw, h: sH + 0.04, fontFace: DM, fontSize: 8.5, color: T.faint, valign: "top", lineSpacingMultiple: 1.1});
   });
+  return y + h;   // dolna krawędź — treść pod kafelkami ustawia się od niej
 }
 function deckBullets(s, T, lines, o = {}){
   if (!lines.length) return;
@@ -5747,7 +5799,7 @@ const DECK_BUILD = {
     const s = deckSlide(pptx, T, "Agenda", "Co zobaczysz w tej prezentacji");
     const labels = {exec: "Najważniejsze liczby", sov: "Udział w głosie — kto ile wydaje", activity: "Aktywność i świeżość kreacji", brands: "Marki w skrócie", timeline: "Oś czasu Twojej marki",
       channels: "Meta i Google — podział budżetu", survive: "Co przeżywa — argumenty, które działają najdłużej", pricewar: "Wojna rabatowa", whitespace: "Mapa wolnych pól", brief: "Brief kreatywny", recs: "Rekomendacje", method: "Metodologia i zastrzeżenia"};
-    const items = DECK_ORDER.filter(k => o.secs.has(k) && labels[k]);
+    const items = DECK_ORDER.filter(k => (o.built || o.secs).has(k) && labels[k]);
     const half = Math.ceil(items.length / 2);
     [items.slice(0, half), items.slice(half)].forEach((col, ci) => {
       if (!col.length) return;
@@ -5756,27 +5808,33 @@ const DECK_BUILD = {
     });
   },
   exec(pptx, T, c, o){
-    const list = c.list, tot = list.reduce((a, r) => a + (r.s.miesSr || 0), 0), act = list.reduce((a, r) => a + r.s.aktywne, 0);
+    const list = c.list, act = list.reduce((a, r) => a + r.s.aktywne, 0);
+    const cb = rcCombo(list), cbm = cb && cb.of(c.main);
+    const tot = cb ? cb.cost : list.reduce((a, r) => a + (r.s.miesSr || 0), 0);
+    const mine = cbm ? cbm.tot : c.main.s.miesSr;
     const rank = [...list].sort((a, b) => b.s.miesSr - a.s.miesSr), pos = rank.indexOf(c.main) + 1;
-    const lead = c.multi
-      ? `${c.main.pageName}: ${pos}. miejsce z ${list.length} marek pod względem szacowanego budżetu (${pct1(c.main.s.miesSr, tot)}% wydatków zestawu).`
-      : `${c.main.pageName}: ${plAds(c.main.s.aktywne)} i ok. ${zlK(c.main.s.miesSr)} szacowanego budżetu miesięcznie.`;
+    const lead = (c.multi
+      ? `${c.main.pageName}: ${pos}. miejsce z ${list.length} marek pod względem szacowanego budżetu (${pct1(mine, tot)}% wydatków zestawu).`
+      : `${c.main.pageName}: ${plAds(c.main.s.aktywne)} i ok. ${zlK(mine)} szacowanego budżetu miesięcznie.`)
+      + (cb ? " Liczby obejmują Meta i Google Ads razem." : "");
     const s = deckSlide(pptx, T, "Raport w skrócie", "Najważniejsze liczby", lead);
-    deckTiles(pptx, s, T, [
-      [fmt(act), "aktywnych reklam w zestawie", c.multi ? list.length + " marek" : c.main.pageName],
-      ["~" + zlK(tot), "łączny szacowany budżet / mies.", "widełki " + fmtKR(list.reduce((a, r) => a + r.s.miesMin, 0), list.reduce((a, r) => a + r.s.miesMax, 0)) + " zł"],
-      [fmt(list.reduce((a, r) => a + (r.s.n30 || 0), 0)), "nowych kreacji w 30 dni", "tempo odświeżania"],
-      [c.main.idx.index + "/100", "indeks aktywności Twojej marki", c.multi ? "lider: " + cutD([...list].sort((a, b) => b.idx.index - a.idx.index)[0].pageName, 22) : ""]
+    const tb = deckTiles(pptx, s, T, [
+      [fmt(cb ? cb.act : act), "aktywnych reklam w zestawie", cb ? `Meta ${fmt(cb.ma || 0)} · Google ${fmt(cb.ga || 0)}` : (c.multi ? list.length + " marek" : c.main.pageName)],
+      ["~" + zlK(tot), cb ? "łączny budżet / mies." : "łączny szacowany budżet / mies.",
+        cb ? `Meta ${fmtK(cb.mc)} + Google ${zlK(cb.gc)}` : "widełki " + fmtKR(list.reduce((a, r) => a + r.s.miesMin, 0), list.reduce((a, r) => a + r.s.miesMax, 0)) + " zł"],
+      [fmt(list.reduce((a, r) => a + (r.s.n30 || 0), 0)), "nowych kreacji w 30 dni", c.G ? "tempo odświeżania · Meta" : "tempo odświeżania"],
+      [c.main.idx.index + "/100", "indeks aktywności Twojej marki", (c.multi ? "lider: " + cutD([...list].sort((a, b) => b.idx.index - a.idx.index)[0].pageName, 22) : c.main.pageName) + (c.G ? " · Meta" : "")]
     ], 1.82);
     const ins = liList(insights(list)).slice(0, 4);
-    deckBullets(s, T, ins, {y: 3.2, h: 3.0, fontSize: 13.5});
-    s.addNotes("Budżet to szacunek: zasięg × częstotliwość × CPM z założeń w narzędziu. Porównuj rzędy wielkości i proporcje między markami, nie dokładne kwoty.");
+    if (c.G) s.addText("Z danych Meta:", {x: MX, y: tb + 0.22, w: CW, h: 0.26, fontFace: DM, fontSize: 9.5, color: T.muted, charSpacing: 1.1});
+    deckBullets(s, T, ins, {y: tb + (c.G ? 0.56 : 0.3), h: H16 - 0.9 - (tb + (c.G ? 0.56 : 0.3)), fontSize: 13.5});
+    s.addNotes("Budżet to szacunek: zasięg × częstotliwość × CPM z założeń w narzędziu. Porównuj rzędy wielkości i proporcje między markami, nie dokładne kwoty." + (cb ? " Kwoty łączą Meta i Google jako średnią z analizowanego okresu przeliczoną na 30 dni." : ""));
   },
   sov(pptx, T, c, o){
     if (!c.multi) return;
     const list = [...c.list].sort((a, b) => b.s.miesSr - a.s.miesSr), tot = list.reduce((a, r) => a + r.s.miesSr, 0);
     const top = list[0], ch = [...list].reverse();
-    const s = deckSlide(pptx, T, "Udział w głosie", "Kto ile wydaje na reklamy", tot ? `${top.pageName} odpowiada za ok. ${pct1(top.s.miesSr, tot)}% szacowanych wydatków w tym zestawie marek.` : "");
+    const s = deckSlide(pptx, T, dkMeta(c, "Udział w głosie"), "Kto ile wydaje na reklamy", (tot ? `${top.pageName} odpowiada za ok. ${pct1(top.s.miesSr, tot)}% szacowanych wydatków w tym zestawie marek.` : "") + (c.G ? " Wykres liczy tylko Metę — udział łączny z Google jest na slajdzie „Meta + Google”." : ""));
     deckChart(pptx, s, T, pptx.ChartType.bar, [{name: "Szac. budżet / mies. (zł)", labels: ch.map(r => cutD(r.pageName, 26)), values: ch.map(r => Math.round(r.s.miesSr))}], {
       y: 1.95, w: CW * 0.62, h: 4.3, barDir: "bar", barGapWidthPct: 45, showValue: true, dataLabelPosition: "outEnd", dataLabelFormatCode: '#,##0 "zł"', catAxisLabelFontSize: 10, chartColors: ch.map(r => r.isMain ? "2D6FD6" : "8E8E96")
     });
@@ -5790,7 +5848,7 @@ const DECK_BUILD = {
   activity(pptx, T, c, o){
     const list = [...c.list].sort((a, b) => b.s.aktywne - a.s.aktywne);
     const fresh = list.filter(r => r.s.aktywne).sort((a, b) => (b.s.n30 / Math.max(b.s.aktywne, 1)) - (a.s.n30 / Math.max(a.s.aktywne, 1)))[0];
-    const s = deckSlide(pptx, T, "Aktywność", "Ile reklam działa i jak często się zmieniają",
+    const s = deckSlide(pptx, T, dkMeta(c, "Aktywność"), "Ile reklam działa i jak często się zmieniają",
       fresh ? `Najszybciej odświeża kreacje ${fresh.pageName}: ${fmt(fresh.s.n30)} nowych reklam w 30 dni przy ${fmt(fresh.s.aktywne)} aktywnych.` : "");
     deckChart(pptx, s, T, pptx.ChartType.bar, [
       {name: "Aktywne reklamy", labels: list.map(r => cutD(r.pageName, 20)), values: list.map(r => r.s.aktywne)},
@@ -5803,7 +5861,7 @@ const DECK_BUILD = {
   },
   brands(pptx, T, c, o){
     const list = [...c.list].sort((a, b) => b.idx.index - a.idx.index);
-    const s = deckSlide(pptx, T, "Marki w skrócie", "Wszystkie marki na jednej tabeli");
+    const s = deckSlide(pptx, T, dkMeta(c, "Marki w skrócie"), "Wszystkie marki na jednej tabeli");
     deckTable(pptx, s, T, [{t: "Marka"}, {t: "Indeks", a: "right"}, {t: "Aktywne", a: "right"}, {t: "Wszystkie", a: "right"}, {t: "Szac. budżet / mies.", a: "right"}, {t: "Nowe 30 dni", a: "right"}, {t: "Evergreeny", a: "right"}, {t: "% z ofertą", a: "right"}, {t: "% wideo", a: "right"}],
       list.map(r => [{t: cutD(r.pageName, 34) + (r.isMain ? "  ★" : ""), b: r.isMain}, {t: r.idx.index + "/100", a: "right", b: true}, {t: fmt(r.s.aktywne), a: "right"}, {t: fmt(r.s.lacznie), a: "right"},
         {t: "~" + zlK(r.s.miesSr), a: "right"}, {t: fmt(r.s.n30 == null ? "—" : r.s.n30), a: "right"}, {t: fmt(r.s.evergreeny || 0), a: "right"}, {t: r.s.zOfertaProc == null ? "—" : r.s.zOfertaProc + "%", a: "right"}, {t: r.s.wideo == null ? "—" : r.s.wideo + "%", a: "right"}]),
@@ -5816,7 +5874,7 @@ const DECK_BUILD = {
     let t; try { t = brandTimeline(c.main); } catch(e){ return; }
     if (!t || !t.wk.length) return;
     const ev = t.events.slice(-4);
-    const s = deckSlide(pptx, T, cutD(c.main.pageName, 40), "Oś czasu: starty reklam i szacowany budżet",
+    const s = deckSlide(pptx, T, dkMeta(c, cutD(c.main.pageName, 40)), "Oś czasu: starty reklam i szacowany budżet",
       t.k4 != null ? `Ostatnie 4 pełne tygodnie: ok. ${zlK(t.k4)} tygodniowo${t.p4 ? ` (${t.k4 >= t.p4 ? "+" : "−"}${Math.abs(Math.round((t.k4 - t.p4) / t.p4 * 100))}% wobec poprzednich czterech)` : ""}.` : "");
     const labels = t.wk.map(w => t.dm(w.a));
     s.addChart([
@@ -5852,7 +5910,10 @@ const DECK_BUILD = {
       .map(x => `${cutD(x.r.name, 24)}: udział Google ${pct1(x.s0, 1)}% → ${pct1(x.s1, 1)}% (${x.d >= 0 ? "+" : "−"}${Math.abs(Math.round(x.d * 100))} pp)`);
     s.addText(moves.length ? moves.map(t => ({text: t, options: {breakLine: true, bullet: {code: "2013"}}})) : [{text: "Brak marek z danymi w obu kanałach."}],
       {x: x2, y: 2.35, w: w2, h: 2.8, fontFace: DF, fontSize: 11.5, color: T.text, lineSpacingMultiple: 1.3, paraSpaceAfter: 6, valign: "top"});
-    s.addText("Porównanie pierwszych i ostatnich tygodni okresu. Oba budżety to szacunki z różnych modeli — wiarygodny jest kierunek zmiany, nie dokładny procent.", {x: x2, y: 5.2, w: w2, h: 1.0, fontFace: DF, fontSize: 9.5, color: T.faint, lineSpacingMultiple: 1.2, valign: "top"});
+    const cov = c.G && c.G.meta ? c.G.meta.cov : null;
+    s.addText("Porównanie pierwszych i ostatnich tygodni okresu. Oba budżety to szacunki z różnych modeli — wiarygodny jest kierunek zmiany, nie dokładny procent." + (cov && cov.gap ? ` Dane Google kończą się ${rcDate(cov.date)} — późniejsze tygodnie to brak danych, nie zerowe wydatki, i nie wchodzą do porównania.` : ""),
+      {x: x2, y: 5.0, w: w2, h: 1.25, fontFace: DF, fontSize: 9.5, color: T.faint, lineSpacingMultiple: 1.2, valign: "top"});
+    if (cov && cov.gap) s.addText(`Dane Google do ${rcDate(cov.date)}`, {x: MX, y: 1.62, w: CW * 0.6, h: 0.26, fontFace: DM, fontSize: 9, color: T.warn || T.muted, bold: true});
   },
   survive(pptx, T, c, o){
     const list = c.list, sv = list.map(r => { try { return IX.survive(r); } catch(e){ return null; } });
@@ -5860,7 +5921,7 @@ const DECK_BUILD = {
     const T0 = sv.find(Boolean).T, base = sv[0];
     const args = base.args.filter(a => list.some((r, i) => sv[i] && sv[i].args.find(x => x.k === a.k && x.n > 0))).slice(0, 10);
     const best = base.args.filter(a => a.rate != null && a.lift != null).sort((a, b) => b.lift - a.lift)[0];
-    const s = deckSlide(pptx, T, "Co przeżywa", `Argumenty, które żyją najdłużej (≥${T0} dni emisji)`,
+    const s = deckSlide(pptx, T, dkMeta(c, "Co przeżywa"), `Argumenty, które żyją najdłużej (≥${T0} dni emisji)`,
       best ? `${best.l}: ${pct1(best.rate, 100)}% reklam działa co najmniej ${T0} dni, przy ${pct1(base.base.rate, 100)}% średnio dla marki.` : "");
     const cols = list.filter((r, i) => sv[i] && sv[i].args.some(a => a.n > 0)).slice(0, 4);
     const ci = r => list.indexOf(r);
@@ -5882,7 +5943,7 @@ const DECK_BUILD = {
     if (!ws.some(w => w.wk.some(k => k.disc))) return;
     const dm = t => { const d = new Date(t); return String(d.getUTCDate()).padStart(2, "0") + "." + String(d.getUTCMonth() + 1).padStart(2, "0"); };
     const now = ws.map((w, i) => [i, w.now]).filter(x => x[1] && x[1].disc).sort((a, b) => b[1].max - a[1].max)[0];
-    const s = deckSlide(pptx, T, "Wojna rabatowa", "Kto i kiedy tnie ceny",
+    const s = deckSlide(pptx, T, dkMeta(c, "Wojna rabatowa"), "Kto i kiedy tnie ceny",
       now ? `W ostatnim tygodniu najgłębiej tnie ${c.list[now[0]].pageName}: do −${now[1].max}% w ${pct1(now[1].share, 100)}% aktywnych reklam.` : "W ostatnim tygodniu żadna marka nie prowadzi wyraźnej promocji.");
     deckChart(pptx, s, T, pptx.ChartType.line, c.list.slice(0, 6).map((r, i) => ({name: cutD(r.pageName, 22), labels: weeks.map(dm), values: ws[i].wk.map(k => Math.round(k.share))})),
       {y: 1.9, h: 3.5, showLegend: true, legendPos: "t", lineSize: 2.25, lineSmooth: false, catAxisLabelRotate: 300, catAxisLabelFontSize: 8, valAxisMaxVal: 100, valAxisMinVal: 0, valAxisLabelFormatCode: '0"%"'});
@@ -5894,7 +5955,7 @@ const DECK_BUILD = {
     let m; try { m = IX.fieldMap(c.list); } catch(e){ return; }
     if (!m || !m.total || !m.holesM || !m.holesM.length) return;
     const h0 = m.holesM[0];
-    const s = deckSlide(pptx, T, "Mapa wolnych pól", "Gdzie konkurencja nie mówi nic",
+    const s = deckSlide(pptx, T, dkMeta(c, "Mapa wolnych pól"), "Gdzie konkurencja nie mówi nic",
       `Największe wolne pole: ${h0.l} w grupie ${h0.who} — ${h0.pTxt} zasięgu przy ${pct1(h0.overall, 100)}% w całej kategorii.`);
     deckTable(pptx, s, T, [{t: "Argument"}, {t: "Grupa odbiorców"}, {t: "W tej grupie", a: "right"}, {t: "W kategorii", a: "right"}, {t: "Udział grupy w zasięgu", a: "right"}],
       m.holesM.slice(0, 7).map(h => [{t: h.l, b: true}, {t: h.who}, {t: h.pTxt, a: "right", color: DBAD, b: true}, {t: pct1(h.overall, 100) + "%", a: "right"}, {t: pct1(h.share, 100) + "%", a: "right", color: T.muted}]),
@@ -5910,7 +5971,7 @@ const DECK_BUILD = {
   brief(pptx, T, c, o){
     let b; try { b = IX.briefData(c.list); } catch(e){ return; }
     if (!b || b.base.rate == null) return;
-    const s = deckSlide(pptx, T, "Brief kreatywny", "Na co stawiać, na co uważać",
+    const s = deckSlide(pptx, T, dkMeta(c, "Brief kreatywny"), "Na co stawiać, na co uważać",
       `Podstawa: ${fmt(b.n)} reklam ${c.multi ? "konkurencji" : "marki"} · próg „żyje długo”: ${b.T} dni.`);
     const colW = (CW - 0.4) / 2;
     [["STAWIAJ NA", b.win, DGOOD, 0], ["UWAŻAJ", b.lose, DWARN, 1]].forEach(([label, arr, col, ci]) => {
@@ -5960,6 +6021,8 @@ const DECK_BUILD = {
       "Długa emisja reklamy to poszlaka, że się opłaca, nie dowód skuteczności. Krótka emisja często oznacza akcję czasową albo test, nie słabą kreację.",
       "Meta usuwa reklamy komercyjne ok. roku po zakończeniu emisji, więc starsze okresy są niepełne."
     ];
+    const cv = c.G && c.G.meta ? c.G.meta.cov : null;
+    if (cv && cv.gap) li.splice(2, 0, `Dane Google kończą się ${rcDate(cv.date)} — Centrum przejrzystości nie raportuje nowszych wyświetleń dla tych marek. Końcówka wykresów Google to brak danych, a nie zerowe wydatki konkurencji; wykresy Meta sięgają dalej, bo jej dane są świeższe.`);
     deckBullets(s, T, li, {y: 1.75, h: 4.9, fontSize: 12.5, lineSpacingMultiple: 1.25});
   },
   end(pptx, T, c, o){
@@ -5996,17 +6059,30 @@ async function generateDeck(){
     pptx.layout = "RC169";
     pptx.author = o.author || "RivalCore"; pptx.company = "BeDigital"; pptx.subject = "Analiza reklam konkurencji";
     pptx.title = o.title;
-    let n = 0;
+    // Próbny przebieg: część slajdów nie powstaje przy ubogich danych (np. brak wolnych pól).
+    // Agenda nie może obiecywać stron, których w pliku nie będzie.
+    const built = new Set();
+    for (const k of DECK_ORDER){
+      if (!o.secs.has(k) || !DECK_BUILD[k]) continue;
+      try {
+        const px = new Lib(); px.defineLayout({name: "RC169", width: W16, height: H16}); px.layout = "RC169";
+        DECK_BUILD[k](px, T, c, o);
+        if (!px.slides || px.slides.length) built.add(k);
+      } catch(e){ built.add(k); }     // błąd zgłosimy we właściwym przebiegu
+    }
+    o.built = built;
+    let n = 0; const bad = [];
     for (const k of DECK_ORDER){
       if (!o.secs.has(k) || !DECK_BUILD[k]) continue;
       const before = pptx.slides ? pptx.slides.length : 0;
-      try { DECK_BUILD[k](pptx, T, c, o); } catch(e){ console.warn("slajd " + k, e); }
+      // błąd w jednym slajdzie nie może po cichu zostawić pustej strony w pliku dla klienta
+      try { DECK_BUILD[k](pptx, T, c, o); } catch(e){ console.warn("slajd " + k, e); bad.push(DECK_LABEL[k] || k); }
       if (!pptx.slides || pptx.slides.length > before) n++;
     }
     if (!n) throw new Error("nie udało się zbudować żadnego slajdu");
     const nm = `rivalcore_prezentacja_${slug(o.client || c.main.pageName)}_${iso(todayUTC)}.pptx`;
     await pptx.writeFile({fileName: nm});
-    setStatus(`Prezentacja gotowa: ${n} slajdów (${nm}).`);
+    setStatus(`Prezentacja gotowa: ${n} ${plPL(n, "slajd", "slajdy", "slajdów")} (${nm}).` + (bad.length ? ` Uwaga: ${bad.length === 1 ? "slajd" : "slajdy"} „${bad.join("”, „")}” ${bad.length === 1 ? "zbudował się" : "zbudowały się"} niekompletnie — sprawdź ${bad.length === 1 ? "go" : "je"} przed wysłaniem do klienta.` : ""), bad.length > 0);
     card.classList.add("hidden");
   } catch(e){
     setStatus("Nie udało się zbudować prezentacji: " + (e && e.message ? e.message : e), true);
@@ -6118,6 +6194,14 @@ function buildReport(o){
   if (has("cover")){
     const det = (document.querySelector("header .detective") || {outerHTML: ""}).outerHTML.replace('class="detective"', 'class="detective rp-det"');
     const kp = main.s;
+    // Okładka powstała w czasach, gdy narzędzie znało tylko Metę. Gdy jest analiza Google,
+    // pokazujemy sumę obu kanałów i rozbicie; gdy jej nie ma — podpisujemy liczby jako Meta.
+    const cb = rcCombo(sel), cbm = cb && cb.of(main);
+    const mny = v => v >= 1e6 ? (v / 1e6).toFixed(1).replace(".", ",") + " mln" : v >= 1e4 ? Math.round(v / 1e3) + " tys." : fmt(Math.round(v));
+    const kCost = cbm ? cbm.tot : kp.miesSr, kAct = cbm ? cbm.totA : kp.aktywne, kImpr = cbm ? cbm.totI : kp.wyswMiesSr;
+    const sub2 = cbm ? `Meta ${fmt(cbm.ma || 0)} · Google ${fmt(cbm.ga || 0)}` : rcG() ? "tylko Meta — marki nie ma w zestawieniu Google" : "";
+    const sub3 = cbm ? `Meta ${mny(cbm.mc)} + Google ${mny(cbm.gc)} zł` : rcG() ? "tylko Meta · prognoza" : "";
+    const sub4 = cbm ? `Meta ${fmtK(cbm.mi)} · Google ${fmtK(cbm.gi)}` : rcG() ? "tylko Meta" : "";
     pages.push(`<section class="rp-cover${o.cover === "light" ? " rp-cover--light" : ""}">
       <div class="rp-cover-top">
         <div><svg class="rp-bdlogo" viewBox="${BD_LOGO_VB}" role="img" aria-label="BeDigital"><use href="#bdLogo"/></svg><span class="rp-claim">expect more</span></div>
@@ -6133,10 +6217,10 @@ function buildReport(o){
         ${det}
       </div>
       <div class="rp-cover-kpis">
-        <div><div class="v">${main.idx.index}<small>/100</small></div><div class="l">indeks aktywności<br>${esc(main.pageName)}</div></div>
-        <div><div class="v">${fmt(kp.aktywne)}</div><div class="l">aktywne reklamy</div></div>
-        <div><div class="v">~${kp.miesSr >= 1e6 ? (kp.miesSr / 1e6).toFixed(1).replace(".", ",") + " mln" : kp.miesSr >= 1e4 ? Math.round(kp.miesSr / 1e3) + " tys." : fmt(kp.miesSr)} zł</div><div class="l">szacowany koszt miesięczny</div></div>
-        <div><div class="v">~${fmtK(kp.wyswMiesSr)}</div><div class="l">szac. wyświetlenia / mies.</div></div>
+        <div><div class="v">${main.idx.index}<small>/100</small></div><div class="l">indeks aktywności${rcG() ? " (Meta)" : ""}<br>${esc(main.pageName)}</div></div>
+        <div><div class="v">${fmt(kAct)}</div><div class="l">aktywne reklamy${sub2 ? `<br><span class="rp-kch">${esc(sub2)}</span>` : ""}</div></div>
+        <div><div class="v">~${mny(kCost)} zł</div><div class="l">szacowany koszt miesięczny${sub3 ? `<br><span class="rp-kch">${esc(sub3)}</span>` : ""}</div></div>
+        <div><div class="v">~${fmtK(kImpr)}</div><div class="l">szac. wyświetlenia / mies.${sub4 ? `<br><span class="rp-kch">${esc(sub4)}</span>` : ""}</div></div>
       </div>
       <div class="rp-cover-brands">
         <div class="rp-label">Marki w raporcie</div>
@@ -6144,7 +6228,7 @@ function buildReport(o){
       </div>
       <div class="rp-cover-foot">
         <div>${o.author ? `<b>Przygotował(a):</b> ${esc(o.author)}` : ""}${o.client ? `${o.author ? "<br>" : ""}<b>Dla:</b> ${esc(o.client)}` : ""}</div>
-        <div style="text-align:right">Źródło danych: Meta Ad Library API${rcG() ? " · Google Ads Transparency Center" : ""}<br>Stan na ${iso(todayUTC)}</div>
+        <div style="text-align:right">Źródło danych: Meta Ad Library API${rcG() ? " · Google Ads Transparency Center" : ""}<br>Stan na ${iso(todayUTC)}${cbm ? " · budżet: średnia z okresu" : ""}${cb && cb.cov && cb.cov.gap ? `<br>Dane Google do ${rcDate(cb.cov.date)}` : ""}</div>
       </div>
     </section>`);
   }
@@ -6164,7 +6248,7 @@ function buildReport(o){
 
   if (sel.length > 1){
     for (const [k, l] of CMP_TABS) if (k !== "recs" && has("cmp_" + k))
-      pages.push(`<section class="rp-page">${top}<div class="rp-kicker">Porównanie marek</div><h2 class="rp-h">${l}</h2>${cmpPanel(k, sel)}</section>`);
+      pages.push(`<section class="rp-page">${top}<div class="rp-kicker">Porównanie marek${rcG() ? " · Meta (Facebook i Instagram)" : ""}</div><h2 class="rp-h">${l}</h2>${cmpPanel(k, sel)}</section>`);
   }
 
   googlePdfPages(has, top).forEach(pg => pages.push(pg));
@@ -6175,7 +6259,7 @@ function buildReport(o){
       const topics = bt.filter(([k]) => k !== "social" || (r.polLoaded && r.pol && r.pol.n)).filter(([k]) => k !== "changes" || (r.changes && !r.changes.first));
       if (!topics.length) return;
       pages.push(`<section class="rp-page" data-toc="${esc(r.pageName)}" data-tock="Profil marki · ${topics.length} ${topics.length === 1 ? "temat" : topics.length < 5 ? "tematy" : "tematów"}">
-        ${topics.map(([k, l], j) => `<div class="rp-topic ${j ? "rp-newpage" : ""}">${top}<div class="rp-kicker">${esc(r.pageName)}${r.isMain ? " · Twoja marka" : " · konkurent"}</div><h2 class="rp-h">${l}</h2>${j ? "" : `<div class="rp-brandhead">${brandHead(r, i)}</div>`}${brandPanel(k, r, i, true)}</div>`).join("")}
+        ${topics.map(([k, l], j) => `<div class="rp-topic ${j ? "rp-newpage" : ""}">${top}<div class="rp-kicker">${esc(r.pageName)}${r.isMain ? " · Twoja marka" : " · konkurent"}${rcG() ? " · Meta" : ""}</div><h2 class="rp-h">${l}</h2>${j ? "" : `<div class="rp-brandhead">${brandHead(r, i)}</div>`}${brandPanel(k, r, i, true)}</div>`).join("")}
       </section>`);
     });
   }
@@ -6327,18 +6411,29 @@ function exportXlsx(asData = false){
 
 // ================================================================ pakiet do strategii: PNG wykresów + dane (Excel, CSV) + opis
 const LIBS = {
-  img: ["https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js", () => window.htmlToImage],
-  zip: ["https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js", () => window.JSZip]
+  img: [["https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js",
+         "https://unpkg.com/html-to-image@1.11.11/dist/html-to-image.js"], () => window.htmlToImage],
+  xlsx: [["https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js",
+          "https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js",
+          "https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js"], () => window.XLSX],
+  zip: [["https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js",
+         "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js",
+         "https://unpkg.com/jszip@3.10.1/dist/jszip.min.js"], () => window.JSZip]
 };
+// Każda biblioteka ma listę adresów (CDN-y zapasowe). Próbujemy po kolei;
+// błąd zgłaszamy tylko wtedy, gdy padną wszystkie — jeden zablokowany CDN nie psuje eksportu.
 function loadLib(k){
-  const [url, ok] = LIBS[k];
+  const [src, ok] = LIBS[k];
+  const urls = Array.isArray(src) ? src.slice() : [src];
   if (ok()) return Promise.resolve(ok());
-  return new Promise((res, rej) => {
+  const one = url => new Promise((res, rej) => {
     const sc = document.createElement("script"); sc.src = url; sc.async = true;
-    sc.onload = () => ok() ? res(ok()) : rej(new Error("biblioteka nie załadowała się"));
-    sc.onerror = () => rej(new Error("nie udało się pobrać biblioteki (" + url.split("/")[2] + ") — sprawdź połączenie z internetem"));
+    sc.onload = () => ok() ? res(ok()) : rej(new Error("empty:" + url));
+    sc.onerror = () => rej(new Error("net:" + url));
     document.head.appendChild(sc);
   });
+  return urls.reduce((chain, url) => chain.catch(() => one(url)), Promise.reject())
+    .catch(() => { throw new Error("nie udało się pobrać biblioteki (" + urls.map(u => u.split("/")[2]).join(", ") + ") — sprawdź połączenie z internetem lub blokady sieciowe"); });
 }
 const KIND = {d: "czyste dane z Meta API", c: "obliczenia na danych", p: "szacunek / poszlaki", x: "interpretacja"};
 const slug = t => String(t || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/ł/g, "l").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60) || "wykres";
@@ -6571,6 +6666,7 @@ async function buildStratZip(){
     const facts = strategyFacts(results);
     if ($("sCsv").checked){ zip.file(`${root}/dane/fakty-do-strategii.csv`, toCsv(STRAT_HEAD, facts)); files.push(["dane/fakty-do-strategii.csv", "wszystkie", "Fakty do strategii: marka · wskaźnik · wartość · pochodzenie", "mieszane (kolumna Pochodzenie)"]); }
     if ($("sXlsx").checked){
+      try { await loadXlsx(); } catch(e){}
       const x = exportXlsx(true);
       if (x){ zip.file(`${root}/dane/${x.name}.${x.ext}`, x.data); files.push([`dane/${x.name}.${x.ext}`, "wszystkie", x.ext === "xlsx" ? "Pełne dane z analizy (wszystkie arkusze) + Fakty do strategii" : "Podsumowanie (CSV — Excel niedostępny)", "mieszane"]); }
     }
@@ -7399,7 +7495,10 @@ function setPeriod(s){
 })();
 // ================================================================ podpięcia
 $("go").onclick = run;
-$("xlsx").onclick = () => exportXlsx();
+$("xlsx").onclick = async () => {
+  try { await loadXlsx(); } catch(e){ setStatus("Excel niedostępny (" + e.message + "). Pobieram dane jako CSV.", true); }
+  exportXlsx();
+};
 $("strat").onclick = openStratPanel;
 $("pdf").onclick = openPdfPanel;
 $("deck").onclick = openDeckPanel;
@@ -7443,7 +7542,7 @@ regionChanged();
 // ================================================================ RivalCore 20 · moduły Meta + Google
 (() => {
 "use strict";
-const RCV = "25.0";
+const RCV = "25.3";
 const E = id => document.getElementById(id);
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const NF = new Intl.NumberFormat("pl-PL", {maximumFractionDigits: 0});
@@ -7490,7 +7589,8 @@ function lineChart(series, o = {}){
   const W = 640, H = o.h || 220, L = 64, R = 12, T = 12, B = 26;
   const xs = o.labels || []; const nX = xs.length;
   if (!nX) return `<div class="hint">Brak danych do wykresu.</div>`;
-  const maxY = Math.max(1, ...series.flatMap(s => s.values.map(v => +v || 0))) * 1.08;
+  const VV = series.map(s => s.values.map(v => v == null || (typeof v === "number" && !isFinite(v)) ? null : +v || 0));
+  const maxY = Math.max(1, ...VV.flat().filter(v => v != null)) * 1.08;
   const X = i => L + (nX === 1 ? (W - L - R) / 2 : i * (W - L - R) / (nX - 1));
   const Y = v => T + (H - T - B) * (1 - (v || 0) / maxY);
   const yf = o.yFmt || (maxY < 12 ? n1 : kk);
@@ -7499,14 +7599,34 @@ function lineChart(series, o = {}){
     g += `<line class="gl" x1="${L}" x2="${W - R}" y1="${y}" y2="${y}"/><text x="${L - 6}" y="${y + 3}" text-anchor="end">${esc(yf(v))}</text>`; }
   const step = Math.max(1, Math.ceil(nX / 8));
   xs.forEach((x, i) => { if ((i % step === 0 && nX - 1 - i >= step * 0.6) || i === nX - 1) g += `<text x="${X(i)}" y="${H - 8}" text-anchor="middle">${esc(x)}</text>`; });
-  series.forEach(s => {
-    const pts = s.values.map((v, i) => `${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join(" ");
-    if (s.area) g += `<polygon points="${X(0)},${Y(0)} ${pts} ${X(nX - 1)},${Y(0)}" fill="${s.color}" opacity=".10"/>`;
-    g += `<polyline points="${pts}" fill="none" stroke="${s.color}" stroke-width="${s.w || 1.8}"${s.dash ? ' stroke-dasharray="4 4"' : ""} stroke-linejoin="round"/>`;
-    const li = s.values.length - 1; if (li >= 0 && !s.dash) g += `<circle cx="${X(li)}" cy="${Y(s.values[li])}" r="3" fill="${s.color}"/>`;
+  // pas "brak danych" — rysowany pod liniami, żeby od razu było widać, że to dziura w danych, a nie zero
+  const bd = o.band && o.band.from != null && o.band.from >= 0 && o.band.from < nX - 1 ? o.band : null;
+  let defs = "";
+  if (bd){
+    const uid = "rcnd" + (lineChart.n = (lineChart.n || 0) + 1);
+    const x0 = X(bd.from), x1 = W - R;
+    defs = `<defs><pattern id="${uid}" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="7" height="7" fill="var(--muted)" opacity=".06"/><line x1="0" y1="0" x2="0" y2="7" stroke="var(--muted)" stroke-width="1.4" opacity=".2"/></pattern></defs>`;
+    g += `<rect x="${x0.toFixed(1)}" y="${T}" width="${(x1 - x0).toFixed(1)}" height="${(H - T - B).toFixed(1)}" fill="url(#${uid})"/>`
+      + `<line x1="${x0.toFixed(1)}" x2="${x0.toFixed(1)}" y1="${T}" y2="${H - B}" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3" opacity=".7"/>`
+      + `<text class="nd" x="${Math.min((x0 + x1) / 2, W - R - 4).toFixed(1)}" y="${T + 11}" text-anchor="middle">${esc(bd.label || "brak danych")}</text>`;
+  }
+  series.forEach((s, si) => {
+    const v = VV[si];
+    // null = brak danych: linia jest przerwana, a nie sprowadzona do zera
+    const segs = []; let cur = [];
+    v.forEach((y, i) => { if (y == null){ if (cur.length) segs.push(cur); cur = []; } else cur.push(i); });
+    if (cur.length) segs.push(cur);
+    segs.forEach(seg => {
+      const pts = seg.map(i => `${X(i).toFixed(1)},${Y(v[i]).toFixed(1)}`).join(" ");
+      if (seg.length === 1){ g += `<circle cx="${X(seg[0]).toFixed(1)}" cy="${Y(v[seg[0]]).toFixed(1)}" r="2.2" fill="${s.color}"/>`; return; }
+      if (s.area) g += `<polygon points="${X(seg[0]).toFixed(1)},${Y(0)} ${pts} ${X(seg[seg.length - 1]).toFixed(1)},${Y(0)}" fill="${s.color}" opacity=".10"/>`;
+      g += `<polyline points="${pts}" fill="none" stroke="${s.color}" stroke-width="${s.w || 1.8}"${s.dash ? ' stroke-dasharray="4 4"' : ""} stroke-linejoin="round"/>`;
+    });
+    const li = v.reduce((a, y, i) => y != null ? i : a, -1);
+    if (li >= 0 && !s.dash) g += `<circle cx="${X(li).toFixed(1)}" cy="${Y(v[li]).toFixed(1)}" r="3" fill="${s.color}"/>`;
   });
-  const leg = series.length > 1 || o.legend ? `<div class="leg">${series.map(s => `<span><i style="background:${s.color}${s.dash ? ";opacity:.5" : ""}"></i>${esc(s.name)}</span>`).join("")}</div>` : "";
-  return `<svg class="gch" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.title || "wykres")}">${g}</svg>${leg}`;
+  const leg = series.length > 1 || o.legend || bd ? `<div class="leg">${series.map(s => `<span><i style="background:${s.color}${s.dash ? ";opacity:.5" : ""}"></i>${esc(s.name)}</span>`).join("")}${bd ? `<span class="nodatalg"><i></i>${esc(bd.legend || "brak danych — nie zero")}</span>` : ""}</div>` : "";
+  return `<svg class="gch" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.title || "wykres")}">${defs}${g}</svg>${leg}`;
 }
 function hbars(items, o = {}){
   if (!items.length) return `<div class="hint">Brak danych.</div>`;
@@ -7524,7 +7644,7 @@ function sortableTable(id, cols, rows, o = {}){
   const rs = rows.slice();
   if (st.k){ const c = cols.find(c => c.k === st.k); const g = c && c.v ? c.v : r => r[st.k];
     rs.sort((a, b) => { const x = g(a), y = g(b); if (typeof x === "string" || typeof y === "string") return st.d * String(x).localeCompare(String(y), "pl"); return st.d * ((+x || 0) - (+y || 0)); }); }
-  return `<div class="gtw"><table class="gt" data-tid="${id}"><thead><tr>${cols.map(c => `<th${c.n ? ' class="n"' : ""} data-sort="${c.k}">${esc(c.t)}${st.k === c.k ? (st.d < 0 ? " ↓" : " ↑") : ""}</th>`).join("")}</tr></thead><tbody>${
+  return `<div class="gtw"><table class="gt" data-tid="${id}"><thead><tr>${cols.map(c => `<th${c.n ? ' class="n"' : ""} data-sort="${c.k}"${c.ti ? ` title="${esc(c.ti)}"` : ""}>${esc(c.t)}${st.k === c.k ? (st.d < 0 ? " ↓" : " ↑") : ""}</th>`).join("")}</tr></thead><tbody>${
     rs.map(r => `<tr${o.rowCls ? ` class="${o.rowCls(r)}"` : ""}>${cols.map(c => `<td${c.n ? ' class="n"' : ""}>${c.h ? c.h(r) : esc(c.f ? c.f(r[c.k], r) : r[c.k])}</td>`).join("")}</tr>`).join("") || `<tr><td colspan="${cols.length}" class="hint">Brak wierszy.</td></tr>`}</tbody></table></div>`;
 }
 sortableTable.st = {};
@@ -7856,7 +7976,7 @@ WHERE rs.last_shown >= @since AND rs.first_shown <= @until AND c.advertiser_id I
     const sk = [...new Set(R.flatMap(r => r.surfImpr.map(x => x[0])))];
     sk.forEach(k => { const t = sum(R, r => (r.surfImpr.find(x => x[0] === k) || [0, 0])[1]); R.forEach(r => { r.sovSurf = r.sovSurf || {}; r.sovSurf[k] = t ? (r.surfImpr.find(x => x[0] === k) || [0, 0])[1] / t : null; }); });
     if (prevW){ const pt = sum(R, r => r.prev ? r.prev.impr : 0); R.forEach(r => { r.prevSov = pt && r.prev ? r.prev.impr / pt : null; }); }
-    this.meta = {asof, start, pDays, prevW, hz};
+    this.meta = {asof, start, pDays, prevW, hz, cov: gCoverage(R)};
     RZ.render(); CH.draw();
   },
   render(){
@@ -7869,8 +7989,9 @@ WHERE rs.last_shown >= @since AND rs.first_shown <= @until AND c.advertiser_id I
     const regLbl = D.region === "EEA" ? "cały EOG" : (COUNTRY_PL[D.region] || D.region);
     const head = `<div class="gres-head"><div><div class="kicker-s">Google Ads · Centrum przejrzystości</div><h2>${isCmp ? "Porównanie marek" : esc(r.name)}<span class="sub"> · ${esc(regLbl)}</span></h2></div>
       <div class="row"><button class="ghost mini" data-gx="xlsx" type="button">Excel</button><button class="ghost mini" data-gx="md" type="button">Plik dla AI</button><button class="ghost mini" data-gx="json" type="button">Zapisz analizę</button></div></div>
-      <div class="gmeta"><span>stan danych ${dPL(M.asof)}</span><span>okres ${dPL(M.start)} – ${dPL(M.asof)} · ${M.pDays} dni</span>${M.prevW ? `<span>porównanie: ${dPL(M.prevW.s)} – ${dPL(M.prevW.e)}</span>` : `<span>bez okresu porównawczego</span>`}<span>${esc(D.src)}</span>${D.bytes ? `<span>${n1(D.bytes / 1e9)} GB z limitu BigQuery</span>` : ""}</div>
+      <div class="gmeta"><span>stan danych ${dPL(M.asof)}</span>${M.cov && M.cov.gap ? `<span class="warnpill">wykresy: dane do ${dPL(M.cov.date)}</span>` : ""}<span>okres ${dPL(M.start)} – ${dPL(M.asof)} · ${M.pDays} dni</span>${M.prevW ? `<span>porównanie: ${dPL(M.prevW.s)} – ${dPL(M.prevW.e)}</span>` : `<span>bez okresu porównawczego</span>`}<span>${esc(D.src)}</span>${D.bytes ? `<span>${n1(D.bytes / 1e9)} GB z limitu BigQuery</span>` : ""}</div>
       ${gHorizonNote(M.hz)}
+      ${gCovNote(M.cov)}
       <div class="tabs1" style="margin-top:14px">${R.length > 1 ? `<button type="button" class="t1${isCmp ? " on" : ""}" data-gv="cmp">Porównanie</button>` : ""}${R.map((x, i) => `<button type="button" class="t1${!isCmp && r === x ? " on" : ""}" data-gv="${i}"><i class="sw" style="background:${x.color}"></i>${esc(x.name)}<span class="t1i">${x.index}</span></button>`).join("")}</div>
       <div class="tabs2">${tabs.map(([k, l]) => `<button type="button" class="t2${this[key] === k ? " on" : ""}" data-gtab="${k}">${l}</button>`).join("")}</div>`;
     const body = isCmp ? this.cmpTab(this.tabC) : this.brandTab(r, this.tabB);
@@ -7950,8 +8071,11 @@ WHERE rs.last_shown >= @since AND rs.first_shown <= @until AND c.advertiser_id I
         <div class="blk" data-k="p"><h3>Udział w szacowanych wydatkach</h3>${hbars(R.map(x => ({name: x.name, v: x.sovCost || 0, color: x.color})), {fmt: v => pc(v)})}</div></div>
         <div class="blk" data-k="c"><h3>Udział w wyświetleniach wg formatu</h3>${sortableTable("gsovf", [{k: "name", t: "Marka", h: sw}, ...FMTS.map(k => ({k: "s_" + k, t: FMT_PL[k], n: 1, v: x => x.sovFmt[k] || 0, h: x => `${pc(x.sovFmt[k], 0)} <small class="sub">${kk(x.fmtImpr[k])}</small>`}))], R, {rowCls: x => x.main ? "me" : ""})}
           <div class="hint">Udział marki w wyświetleniach danego formatu wśród analizowanych marek. Tekst ≈ wyszukiwarka, wideo ≈ YouTube.</div></div>
-        <div class="blk" data-k="d"><h3>Wyświetlenia tydzień po tygodniu</h3>${lineChart(R.map(x => ({name: x.name, color: x.color, values: x.weekImpr})), {labels: R[0] ? R[0].weekLabels : [], legend: true, h: 240})}</div>
-        <div class="blk" data-k="c"><h3>Udział w wyświetleniach miesiąc po miesiącu</h3>${(() => { const ml = R[0] ? R[0].monthLabels : []; const tot = ml.map((_, i) => sum(R, x => x.monthImpr[i])); return stackBars(ml.map((m, i) => ({name: monLbl(m), vals: Object.fromEntries(R.map(x => [x.name, tot[i] ? x.monthImpr[i] / tot[i] : 0]))})), R.map(x => x.name), {right: (row) => kk(tot[ml.findIndex(m => monLbl(m) === row.name)])}); })()}</div>
+        <div class="blk" data-k="d"><h3>Wyświetlenia tydzień po tygodniu</h3>${(() => { const cv = this.meta.cov, dt = R[0] ? R[0].weekDates : []; const ms = R.map(x => covWeek(x.weekImpr, dt, cv)); return lineChart(R.map((x, i) => ({name: x.name, color: x.color, values: ms[i].values})), {labels: R[0] ? R[0].weekLabels : [], legend: true, h: 240, band: ms[0] && ms[0].band}); })()}</div>
+        <div class="blk" data-k="c"><h3>Udział w wyświetleniach miesiąc po miesiącu</h3>${(() => { const ml = R[0] ? R[0].monthLabels : []; const cv = this.meta.cov; const inData = i => { if (!cv || !cv.gap) return true; const [y, mm] = ml[i].split("-").map(Number); return addD(mm === 12 ? `${y + 1}-01-01` : `${y}-${String(mm + 1).padStart(2, "0")}-01`, -1) <= cv.date; };
+          const keep = ml.map((_, i) => i).filter(inData); const tot = ml.map((_, i) => sum(R, x => x.monthImpr[i]));
+          return stackBars(keep.map(i => ({name: monLbl(ml[i]), vals: Object.fromEntries(R.map(x => [x.name, tot[i] ? x.monthImpr[i] / tot[i] : 0]))})), R.map(x => x.name), {right: (row) => kk(tot[ml.findIndex(m => monLbl(m) === row.name)])})
+            + (keep.length < ml.length ? `<div class="hint">Miesiące po ${dPL(cv.date)} pominięto — Google nie raportuje dla nich wyświetleń (to brak danych, nie zerowa emisja).</div>` : ""); })()}</div>
         <div class="blk" data-k="p"><h3>Szacowany budżet miesięczny i struktura</h3>${sortableTable("gcost", [{k: "name", t: "Marka", h: sw}, {k: "costMoMid", t: "Najbardziej prawdop.", n: 1, f: v => kk(v) + " zł"}, {k: "costMoLo", t: "Od", n: 1, f: v => kk(v) + " zł"}, {k: "costMoHi", t: "Do", n: 1, f: v => kk(v) + " zł"},
           {k: "costDay", t: "Dziennie", n: 1, f: v => kk(v) + " zł"}, {k: "cost30", t: "Ost. 30 dni", n: 1, f: v => kk(v) + " zł"}, {k: "sovCost", t: "Udział", n: 1, f: v => pc(v)}], R, {sort: "costMoMid", rowCls: x => x.main ? "me" : ""})}
           <h3 style="margin-top:16px">Koszt miesięczny wg formatu</h3>${stackBars(R.map(x => ({name: x.name, vals: x.fmtCostMo})), FMTS, {labels: FMT_PL, right: x => kk(sum(Object.values(x.vals))) + " zł"})}
@@ -7990,8 +8114,9 @@ WHERE rs.last_shown >= @since AND rs.first_shown <= @until AND c.advertiser_id I
     }
     if (t === "cal"){
       const weeks = R[0] ? R[0].weekLabels : [];
-      return `<div class="blk" data-k="d"><h3>Nowe kreacje tydzień po tygodniu</h3>${lineChart(R.map(x => ({name: x.name, color: x.color, values: x.weekStarts})), {labels: weeks, legend: true, h: 240})}</div>
-        <div class="blk" data-k="d"><h3>Aktywne kreacje w kolejnych tygodniach</h3>${lineChart(R.map(x => ({name: x.name, color: x.color, values: x.weekActive})), {labels: weeks, legend: true, h: 240})}</div>
+      const cvD = R[0] ? R[0].weekDates : [], cvM = (a) => covWeek(a, cvD, this.meta.cov);
+      return `<div class="blk" data-k="d"><h3>Nowe kreacje tydzień po tygodniu</h3>${lineChart(R.map(x => ({name: x.name, color: x.color, values: cvM(x.weekStarts).values})), {labels: weeks, legend: true, h: 240, band: cvM(R[0] ? R[0].weekStarts : []).band})}</div>
+        <div class="blk" data-k="d"><h3>Aktywne kreacje w kolejnych tygodniach</h3>${lineChart(R.map(x => ({name: x.name, color: x.color, values: cvM(x.weekActive).values})), {labels: weeks, legend: true, h: 240, band: cvM(R[0] ? R[0].weekActive : []).band})}</div>
         <div class="gsplit"><div class="blk" data-k="c"><h3>Ulubiony dzień startu</h3>${sortableTable("gwd", [{k: "name", t: "Marka", h: sw}, {k: "wd", t: "Dzień", v: x => x.favDay, h: x => x.favDay == null ? "—" : WD_PL[x.favDay]}, {k: "wdp", t: "Udział", n: 1, v: x => x.favDayPct, h: x => pc(x.favDayPct, 0)}], R, {})}</div>
         <div class="blk" data-k="p"><h3>Fale startów (≥3 nowe kreacje w dniu)</h3>${sortableTable("gwav", [{k: "name", t: "Marka", h: sw}, {k: "wv", t: "Liczba fal", n: 1, v: x => x.waves.length, h: x => n0(x.waves.length)}, {k: "last", t: "Ostatnia fala", h: x => x.waves[0] ? `${dPL(x.waves[0][0])} · ${x.waves[0][1]} kr.` : "—"}], R, {})}</div></div>
         <div class="blk" data-k="c"><h3>Regularność emisji</h3>${hbars(R.map(x => ({name: x.name, v: x.regularity, color: x.color})), {fmt: v => pc(v, 0) + " tygodni"})}<div class="hint">Odsetek tygodni okresu, w których marka miała choć jedną aktywną kreację.</div></div>`;
@@ -8031,8 +8156,8 @@ WHERE rs.last_shown >= @since AND rs.first_shown <= @until AND c.advertiser_id I
       return note + `<div class="see" data-k="x"><span>${ICON_BULB}</span><div><b>W skrócie</b><ul class="lines" style="margin-top:6px">${lines.map(x => `<li>${x}</li>`).join("")}</ul></div></div>
         <div class="blk" data-k="c"><h3>Kluczowe liczby</h3>${kpis}</div>
         ${vs ? `<div class="blk" data-k="c"><h3>${esc(r.name)} na tle konkurencji</h3>${vs}</div>` : ""}
-        <div class="gsplit"><div class="blk" data-k="d"><h3>Wyświetlenia tydzień po tygodniu</h3>${lineChart([{name: r.name, color: r.color, values: r.weekImpr, area: true}], {labels: r.weekLabels})}</div>
-        <div class="blk" data-k="d"><h3>Aktywne i nowe kreacje tydzień po tygodniu</h3>${lineChart([{name: "aktywne", color: r.color, values: r.weekActive, area: true}, {name: "nowe", color: "var(--c7)", values: r.weekStarts, dash: true}], {labels: r.weekLabels})}</div></div>
+        <div class="gsplit"><div class="blk" data-k="d"><h3>Wyświetlenia tydzień po tygodniu</h3>${lineChart([{name: r.name, color: r.color, values: covWeek(r.weekImpr, r.weekDates, this.meta.cov).values, area: true}], {labels: r.weekLabels, band: covWeek(r.weekImpr, r.weekDates, this.meta.cov).band})}</div>
+        <div class="blk" data-k="d"><h3>Aktywne i nowe kreacje tydzień po tygodniu</h3>${lineChart([{name: "aktywne", color: r.color, values: covWeek(r.weekActive, r.weekDates, this.meta.cov).values, area: true}, {name: "nowe", color: "var(--c7)", values: covWeek(r.weekStarts, r.weekDates, this.meta.cov).values, dash: true}], {labels: r.weekLabels, band: covWeek(r.weekActive, r.weekDates, this.meta.cov).band})}</div></div>
         <div class="blk" data-k="d"><h3>Największe kreacje w okresie (wg wyświetleń)</h3>${sortableTable("gbt" + r.idx, crCols, r.rows.slice().sort((x, y) => (y.pImprMid || 0) - (x.pImprMid || 0)).slice(0, 10), {sort: "pImprMid"})}</div>`;
     }
     if (t === "bud"){
@@ -8046,7 +8171,7 @@ WHERE rs.last_shown >= @since AND rs.first_shown <= @until AND c.advertiser_id I
           <div class="bk"><span class="bl">Efektywny CPM</span><span class="bv">${n1(r.imprMid ? r.costMid / r.imprMid * 1000 : null)} zł</span><span class="bs">średnia ważona formatami</span></div></div></div>
         <div class="gsplit"><div class="blk" data-k="p"><h3>Koszt miesięczny wg formatu</h3>${hbars(FMTS.map((k, i) => ({name: FMT_PL[k], v: r.fmtCostMo[k], color: COLORS[i]})), {fmt: v => kk(v) + " zł"})}</div>
         <div class="blk" data-k="c"><h3>Udział w wyświetleniach formatu (na tle konkurencji)</h3>${hbars(FMTS.map((k, i) => ({name: FMT_PL[k], v: r.sovFmt[k] || 0, color: COLORS[i]})), {fmt: v => pc(v, 0)})}</div></div>
-        <div class="blk" data-k="d"><h3>Wyświetlenia miesiąc po miesiącu</h3>${lineChart([{name: r.name, color: r.color, values: r.monthImpr, area: true}], {labels: r.monthLabels.map(monLbl)})}</div>
+        <div class="blk" data-k="d"><h3>Wyświetlenia miesiąc po miesiącu</h3>${(() => { const mk = covMask(r.monthImpr, r.monthLabels, this.meta.cov, i => { const [y, m] = r.monthLabels[i].split("-").map(Number); return addD(m === 12 ? `${y + 1}-01-01` : `${y}-${String(m + 1).padStart(2, "0")}-01`, -1); }); return lineChart([{name: r.name, color: r.color, values: mk.values, area: true}], {labels: r.monthLabels.map(monLbl), band: mk.band}); })()}</div>
         <div class="hint">Koszt = wyświetlenia (zakresy Google) ÷ 1000 × CPM: tekst ${c.TEXT.join("–")} zł, grafika ${c.IMAGE.join("–")} zł, wideo ${c.VIDEO.join("–")} zł. „Od–do” to dolna granica wyświetleń × niższy CPM i górna × wyższy. Google nie publikuje wydatków — to szacunek do porównań.${r.openHi ? ` ${n0(r.openHi)} kreacji ma otwarty górny zakres wyświetleń (liczone dolną wartością).` : ""}</div>`;
     }
     if (t === "cre"){
@@ -8068,7 +8193,7 @@ WHERE rs.last_shown >= @since AND rs.first_shown <= @until AND c.advertiser_id I
         <div class="blk" data-k="d"><h3>Tematy reklam (wg Google)</h3>${r.topics.length ? hbars(r.topics.slice(0, 10).map(([k, v], i) => ({name: k, v, color: COLORS[(i + 3) % 8]})), {fmt: v => n0(v)}) : `<div class="hint">Google nie przypisał tematów.</div>`}</div></div>`;
     }
     if (t === "cal"){
-      return `<div class="blk" data-k="d"><h3>Nowe i aktywne kreacje tydzień po tygodniu</h3>${lineChart([{name: "aktywne", color: r.color, values: r.weekActive, area: true}, {name: "nowe", color: "var(--c1)", values: r.weekStarts}], {labels: r.weekLabels, h: 240})}</div>
+      return `<div class="blk" data-k="d"><h3>Nowe i aktywne kreacje tydzień po tygodniu</h3>${lineChart([{name: "aktywne", color: r.color, values: covWeek(r.weekActive, r.weekDates, this.meta.cov).values, area: true}, {name: "nowe", color: "var(--c1)", values: covWeek(r.weekStarts, r.weekDates, this.meta.cov).values}], {labels: r.weekLabels, h: 240, band: covWeek(r.weekActive, r.weekDates, this.meta.cov).band})}</div>
         <div class="gsplit"><div class="blk" data-k="c"><h3>Dzień tygodnia startu</h3>${hbars(WD_PL.map((d, i) => ({name: d, v: r.wdays[i], color: i === r.favDay ? r.color : "var(--c7)"})), {fmt: v => n0(v)})}</div>
         <div class="blk" data-k="p"><h3>Fale startów (≥3 nowe kreacje w dniu)</h3>${r.waves.length ? `<ul class="lines">${r.waves.slice(0, 12).map(w => `<li>${dPL(w[0])} · <b>${w[1]}</b> nowych kreacji</li>`).join("")}</ul>` : `<div class="hint">Brak dni z co najmniej 3 nowymi kreacjami.</div>`}</div></div>
         <div class="hint">Emisja w ${pc(r.regularity, 0)} tygodni okresu.</div>`;
@@ -8080,7 +8205,7 @@ WHERE rs.last_shown >= @since AND rs.first_shown <= @until AND c.advertiser_id I
     return "";
   },
   xlsx(){
-    if (typeof XLSX === "undefined"){ status("gStatus", "Biblioteka Excel się nie wczytała (cdnjs).", true); return; }
+    if (typeof XLSX === "undefined"){ status("gStatus", "Pobieram bibliotekę Excela…"); loadXlsx().then(() => this.xlsx(), e => status("gStatus", "Nie udało się pobrać biblioteki Excela: " + e.message, true)); return; }
     const wb = XLSX.utils.book_new(); const M = this.meta; const r2 = v => v == null || !isFinite(v) ? "" : Math.round(v * 100) / 100; const p1 = v => v == null || !isFinite(v) ? "" : +(v * 100).toFixed(1);
     const cmp = [["Marka","Twoja marka","Indeks aktywności","Kreacje w okresie","Aktywne (7 dni)","Nowe w okresie","Nowe 30 dni","Wyświetlenia min","Wyświetlenia max","Wyświetlenia środek","Wyświetlenia / mies.","Wyświetlenia ost. 30 dni","Udział w wyświetleniach %","Udział tekst %","Udział grafika %","Udział wideo %","Koszt/mies. min zł","Koszt/mies. max zł","Koszt/mies. środek zł","Koszt dziennie zł","Koszt ost. 30 dni zł","Udział w wydatkach %","Tekst (kreacje)","Grafika (kreacje)","Wideo (kreacje)","Wyłączane ≤7 dni %","Mediana życia (dni)","Wyświetlenia na kreację","Kraje EOG","ID kont"]]
       .concat(this.res.map(r => [r.name, r.main ? "tak" : "", r.index, r.n, r.active, r.newP, r.new30, Math.round(r.imprLo), Math.round(r.imprHi), Math.round(r.imprMid), Math.round(r.imprMo), Math.round(r.impr30), p1(r.sovImpr), p1(r.sovFmt.TEXT), p1(r.sovFmt.IMAGE), p1(r.sovFmt.VIDEO),
@@ -8097,12 +8222,13 @@ WHERE rs.last_shown >= @since AND rs.first_shown <= @until AND c.advertiser_id I
     this.res.forEach(r => r.rows.forEach(x => cr.push([r.name, x.aid, x.aname, x.cid, FMT_PL[x.fmt] || x.fmt, x.topic, x.first, x.last, x.dur, x.active ? "tak" : "nie", x.lo == null ? "" : x.lo, x.hi == null || x.hi === Infinity ? "" : x.hi, Math.round(x.pImprLo || 0), Math.round(x.pImprHi || 0), (x.surfList || []).map(s => SURF_PL[s] || s).join(", "), x.url])));
     XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(cr), "Kreacje");
     const c = this.cpm();
-    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["Zakres danych",""],["Źródło","Google Ads Transparency Center (BigQuery: bigquery-public-data.google_ads_transparency_center)"],["Kraj", this.data.region],["Okres", `${M.start} – ${M.asof} (${M.pDays} dni)`],["Okres porównawczy", M.prevW ? `${M.prevW.s} – ${M.prevW.e}` : "brak"],["Stan danych", M.asof],["CPM tekst zł", c.TEXT.join("–")],["CPM grafika zł", c.IMAGE.join("–")],["CPM wideo zł", c.VIDEO.join("–")],["Uwaga","Koszt to szacunek: wyświetlenia × CPM z założeń. Google nie publikuje wydatków reklam komercyjnych."]]), "Zakres danych");
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["Zakres danych",""],["Źródło","Google Ads Transparency Center (BigQuery: bigquery-public-data.google_ads_transparency_center)"],["Kraj", this.data.region],["Okres", `${M.start} – ${M.asof} (${M.pDays} dni)`],["Okres porównawczy", M.prevW ? `${M.prevW.s} – ${M.prevW.e}` : "brak"],["Stan danych", M.asof],["Dane na wykresach kompletne do", M.cov && M.cov.gap ? M.cov.date : M.asof],["Uwaga o końcówce wykresów", M.cov && M.cov.gap ? `Po ${M.cov.date} Transparency Center nie raportuje wyświetleń dla tych marek. Ostatnie ${M.cov.weeks} tyg. na wykresach to brak danych, a nie zerowe wydatki.` : "brak przerwy w danych"],["CPM tekst zł", c.TEXT.join("–")],["CPM grafika zł", c.IMAGE.join("–")],["CPM wideo zł", c.VIDEO.join("–")],["Uwaga","Koszt to szacunek: wyświetlenia × CPM z założeń. Google nie publikuje wydatków reklam komercyjnych."]]), "Zakres danych");
     XLSX.writeFile(wb, `rivalcore_google_${this.data.region}_${isoD(Date.now())}.xlsx`);
   },
   md(){
     const M = this.meta; const L = [];
     L.push(`# RivalCore · reklamy konkurencji w Google (${this.data.region})`, "", `Okres: ${M.start} – ${M.asof}${M.prevW ? `; porównanie z ${M.prevW.s} – ${M.prevW.e}` : ""}. Źródło: Google Ads Transparency Center (oficjalny zbiór Google w BigQuery). Koszt to szacunek (wyświetlenia × CPM z założeń), a nie wydatki.`, "",
+      ...(M.cov && M.cov.gap ? [`> **Uwaga przy czytaniu wykresów:** dane Google kończą się ${M.cov.date}. Ostatnie ${M.cov.weeks} tyg. to brak danych, a nie zerowe wydatki konkurencji — na wykresach ten odcinek jest zakreskowany, a linie urwane.`, ""] : []),
       "## Polecenie dla AI", "Przeanalizuj obecność marek w reklamach Google na podstawie wyłącznie poniższych danych. Odróżniaj dane Google (liczby kreacji, daty, zakresy wyświetleń, formaty) od szacunków (koszt, indeks). Ułóż odpowiedź: analiza → hipotezy → problemy i szanse → rekomendacje dla Twojej marki. Hipotezy oznacz jako hipotezy.", "",
       "## Marki", "| Marka | Indeks | Kreacje | Aktywne 7 dni | Nowe w okresie | Wyświetlenia (zakres) | Zmiana okres do okresu | Udział w wyśw. | Udział tekst / grafika / wideo | Koszt/mies. (szac.) |", "|---|---|---|---|---|---|---|---|---|---|");
     this.res.forEach(r => L.push(`| ${r.name}${r.main ? " (Twoja marka)" : ""} | ${r.index} | ${r.n} | ${r.active} | ${r.newP} | ${Math.round(r.imprLo)}–${Math.round(r.imprHi)} | ${r.dImpr == null ? "—" : (r.dImpr * 100).toFixed(0) + "%"} | ${r.sovImpr == null ? "—" : (r.sovImpr * 100).toFixed(1) + "%"} | ${FMTS.map(k => r.sovFmt[k] == null ? "—" : (r.sovFmt[k] * 100).toFixed(0) + "%").join(" / ")} | ${Math.round(r.costMoLo)}–${Math.round(r.costMoHi)} zł |`));
@@ -8167,6 +8293,43 @@ function gHorizon(rows, maxLast, until){
   out.tail = daysBetween(out.safe, maxLast);
   if (out.tail){ out.ahead = rec.filter(r => r.last > out.safe).length; out.newTail = rows.filter(r => r.first > out.safe).length; out.lagToday = Math.max(0, daysBetween(out.safe, isoD(Date.now()))); }
   return out;
+}
+// Granica danych Google. Transparency Center potrafi przestać raportować wyświetlenia na długo
+// przed ostatnią datą w zbiorze: serie tygodniowe spadają wtedy do zera i wyglądają jak wyłączone
+// kampanie. Szukamy urwiska na SUMIE wszystkich marek (jedna marka może naprawdę przestać emitować,
+// ale żeby cały zestaw spadł do zera w tym samym tygodniu, musi to być koniec danych).
+function gCoverage(R){
+  const out = {gap: false, idx: null, date: null, weeks: 0, from: null};
+  const w0 = (R || []).find(r => r.weekImpr && r.weekImpr.length && r.weekDates);
+  if (!w0) return out;
+  const nW = w0.weekImpr.length; if (nW < 6) return out;
+  const A = Array.from({length: nW}, (_, i) => sum(R, r => (r.weekImpr && r.weekImpr[i]) || 0));
+  const pos = A.filter(v => v > 0).sort((a, b) => a - b);
+  if (pos.length < 4) return out;
+  const thr = pos[Math.floor(pos.length / 2)] * 0.15;   // 15% typowego tygodnia = praktycznie zero
+  let last = -1; for (let i = nW - 1; i >= 0; i--) if (A[i] >= thr){ last = i; break; }
+  const tail = nW - 1 - last;
+  if (last < 2 || tail < 2) return out;                  // za krótki ogon = zwykłe wahanie, nie urwisko
+  out.gap = true; out.idx = last; out.weeks = tail;
+  out.date = addD(w0.weekDates[last], 6); out.from = w0.weekDates[last + 1];
+  return out;
+}
+// Przycina serię do ostatniego okresu, który mieści się w danych, i zwraca pas "brak danych".
+// endOf(i) = ostatni dzień okresu i.
+function covMask(values, dates, cov, endOf){
+  if (!cov || !cov.gap || !dates || !dates.length) return {values, band: null};
+  let last = -1; for (let i = 0; i < dates.length; i++) if (endOf(i) <= cov.date) last = i;
+  if (last < 0 || last >= dates.length - 1) return {values, band: null};
+  return {values: values.map((v, i) => i > last ? null : v), band: {from: last, label: "brak danych Google"}};
+}
+const covWeek = (values, dates, cov) => covMask(values, dates, cov, i => addD(dates[i], 6));
+function gCovNote(cov, where){
+  if (!cov || !cov.gap) return "";
+  return `<div class="ix-flag warn" data-k="d"><b>Uwaga przy czytaniu wykresów: dane Google kończą się ${dPL(cov.date)}.</b>
+    Po tej dacie Transparency Center nie raportuje wyświetleń dla analizowanych marek, więc ostatnie ${n0(cov.weeks)} ${plPL(cov.weeks, "tydzień", "tygodnie", "tygodni")} to
+    <b>brak danych, a nie zerowe wydatki</b>. Na wykresach ten odcinek jest zakreskowany na szaro, a linie Google${where === "rz" ? ' i „Razem”' : ""} są tam urwane celowo —
+    nie ciągniemy ich po zerze, bo sugerowałoby to, że konkurencja wyłączyła reklamy.
+    ${where === "rz" ? "Linia Meta biegnie dalej, bo dane Meta są świeższe — to różnica w dostępności danych, nie w wydatkach." : "Wszystkie liczby w tabelach liczone są do tej daty."}</div>`;
 }
 function gHorizonNote(hz){
   if (!hz || hz.past) return "";
@@ -8268,7 +8431,7 @@ function metaResults(){
   return arr.filter(r => r && r.s).map(r => { const s = r.s; const per = s.okres && s.okres.days;
     const mo = per ? s.okres.koszt / s.okres.days * 30 : s.miesSr;
     const pp = s.okresPrev && !s.prevStale && s.okresPrev.days ? s.okresPrev : null;
-    return {ref: r, brand: r.brand || r.pageName, name: r.pageName || r.brand, isMain: !!r.isMain, active: s.aktywne, total: s.lacznie, costMo: +mo || 0, imprMo: (per ? s.okres.wysw / s.okres.days * 30 : s.wyswMiesSr) || 0,
+    return {ref: r, brand: r.brand || r.pageName, name: r.pageName || r.brand, isMain: !!r.isMain, active: s.aktywne, total: s.lacznie, costMo: +mo || 0, costMoFc: +s.miesSr || 0, costBasis: per ? "okres" : "prognoza", imprMo: (per ? s.okres.wysw / s.okres.days * 30 : s.wyswMiesSr) || 0,
       prevCostMo: pp ? pp.koszt / pp.days * 30 : null, prevImprMo: pp ? pp.wysw / pp.days * 30 : null, dir: r.dir, trend: r.trend, index: r.idx ? r.idx.index : null,
       video: s.wideo, offer: s.zOfertaProc, n30: s.n30, lo: s.miesMin, hi: s.miesMax}; });
 }
@@ -8288,6 +8451,9 @@ const RZ = {
     m.filter(x => !usedMeta.has(x.brand)).forEach(mr => rows.push({name: mr.brand, main: mr.isMain, g: null, m: mr, mk: mr.brand}));
     rows.forEach((r, i) => { r.color = COLORS[i % 8];
       r.mc = r.m ? r.m.costMo : 0; r.gc = r.g ? r.g.costMoMid : 0; r.tot = r.mc + r.gc;
+      // mcFc = ta sama liczba, którą pokazuje zakładka Meta (prognoza z dzisiejszego tempa emisji).
+      // W tym zestawieniu świadomie liczymy średnią z okresu, bo tylko taką bazę ma Google.
+      r.mcFc = r.m && r.m.costBasis === "okres" && r.m.costMoFc && Math.abs(r.m.costMoFc - r.mc) / Math.max(r.mc, 1) > 0.05 ? r.m.costMoFc : null;
       r.mi = r.m ? r.m.imprMo : 0; r.gi = r.g ? r.g.imprMo : 0; r.totI = r.mi + r.gi;
       r.ma = r.m ? r.m.active : null; r.ga = r.g ? r.g.active : null; r.totA = (r.ma || 0) + (r.ga || 0);
       r.gShare = r.tot ? r.gc / r.tot : null; r.ecpm = r.totI ? r.tot / r.totI * 1000 : null;
@@ -8322,26 +8488,37 @@ const RZ = {
     // wspólna oś czasu: tygodniowy szacowany koszt Meta i Google w tych samych oknach (kończą się na dniu, do którego dane Google są kompletne)
     const tl = (typeof metaWeekly === "function" ? rows.filter(r => r.g && r.m && r.m.ref && r.g.weekCost && r.g.weekCost.length >= 4) : []).map(r => {
       let mw = []; try { mw = metaWeekly(r.m.ref, r.g.weekDates.map(d => ({a: dnum(d), b: dnum(d) + 6 * DAY}))); } catch(e){ return null; }
-      const mC = mw.map(x => Math.round(x.cost)), gC = r.g.weekCost.map(v => Math.round(v)), n = gC.length, k = n >= 8 ? 4 : Math.floor(n / 2);
+      const mC = mw.map(x => Math.round(x.cost)), gC = r.g.weekCost.map(v => Math.round(v));
+      // koniec porównania: ostatni tydzień z danymi Google (inaczej "ostatnie 4 tyg." wypadłyby w dziurze)
+      const cvI = G.meta.cov && G.meta.cov.gap ? covWeek(gC, r.g.weekDates, G.meta.cov).values.reduce((a, v, i) => v != null ? i : a, -1) : gC.length - 1;
+      const n = cvI + 1, k = n >= 8 ? 4 : Math.max(1, Math.floor(n / 2));
+      if (n < 4) return null;
       const sh = (a, b) => { const G0 = sum(gC.slice(a, b), v => v), M0 = sum(mC.slice(a, b), v => v); return G0 + M0 ? G0 / (G0 + M0) : null; };
       const s0 = sh(0, k), s1 = sh(n - k, n);
-      return {r, labels: r.g.weekLabels, dates: r.g.weekDates, mC, gC, share: gC.map((v, i) => v + mC[i] ? v / (v + mC[i]) : null), s0, s1, k, d: s0 != null && s1 != null ? s1 - s0 : null};
+      const cm = covWeek(gC, r.g.weekDates, G.meta.cov), band = cm.band, gCut = cm.values;
+      // "Razem" urywamy razem z Google — suma, w której brakuje jednego kanału, nie jest sumą
+      const tCut = mC.map((v, i) => gCut[i] == null ? null : v + gC[i]);
+      return {r, labels: r.g.weekLabels, dates: r.g.weekDates, mC, gC, gCut, tCut, band, share: gC.map((v, i) => gCut[i] == null ? null : (v + mC[i] ? v / (v + mC[i]) : null)),
+              noData: gC.map((v, i) => gCut[i] == null), s0, s1, k, d: s0 != null && s1 != null ? s1 - s0 : null};
     }).filter(Boolean).sort((a, b) => (b.r.main ? 1 : 0) - (a.r.main ? 1 : 0) || b.r.tot - a.r.tot);
-    tl.filter(t => t.d != null && Math.abs(t.d) >= 0.1).forEach(t => ins.push(`<b>${esc(t.r.name)}</b> przesuwa budżet do ${t.d > 0 ? "Google" : "Meta"}: udział Google z ${pc(t.s0, 0)} (pierwsze ${t.k} tyg.) do ${pc(t.s1, 0)} (ostatnie ${t.k} tyg.).`));
+    tl.filter(t => t.d != null && Math.abs(t.d) >= 0.1).forEach(t => ins.push(`<b>${esc(t.r.name)}</b> przesuwa budżet do ${t.d > 0 ? "Google" : "Meta"}: udział Google z ${pc(t.s0, 0)} (pierwsze ${t.k} tyg.) do ${pc(t.s1, 0)} (ostatnie ${t.k} tyg. z danymi w obu kanałach).`));
+    if (G.meta.cov && G.meta.cov.gap && tl.length) ins.push(`Dane Google kończą się ${dPL(G.meta.cov.date)} — końcówka wykresów to brak danych, nie spadek wydatków konkurencji.`);
     const zlK = v => kk(v) + " zł";
-    const tlHtml = tl.length ? `<div class="blk" data-k="p"><h3>Meta i Google na jednej osi czasu — szacowany koszt tygodniowo</h3><div class="gsplit">${tl.slice(0, 6).map(t => `<div><div class="hint" style="margin:0 0 4px"><i class="sw" style="background:${t.r.color}"></i><b>${esc(t.r.name)}</b></div>${lineChart([{name: "Meta", color: "var(--c0)", values: t.mC, area: true}, {name: "Google", color: "var(--c1)", values: t.gC}, {name: "Razem", color: "var(--muted)", values: t.mC.map((v, i) => v + t.gC[i]), dash: true}], {labels: t.labels, legend: true, h: 200, yFmt: zlK})}</div>`).join("")}</div>
-        <div class="hint">Te same tygodnie dla obu kanałów; oś kończy się ${dPL(G.meta.asof)}, czyli na dniu, do którego dane Google są kompletne.${tl.length > 6 ? ` Pokazano 6 z ${tl.length} marek — komplet w Excelu.` : ""}</div></div>
+    const tlHtml = tl.length ? `<div class="blk" data-k="p"><h3>Meta i Google na jednej osi czasu — szacowany koszt tygodniowo</h3>${gCovNote(G.meta.cov, "rz")}<div class="gsplit">${tl.slice(0, 6).map(t => `<div><div class="hint" style="margin:0 0 4px"><i class="sw" style="background:${t.r.color}"></i><b>${esc(t.r.name)}</b></div>${lineChart([{name: "Meta", color: "var(--c0)", values: t.mC, area: true}, {name: "Google", color: "var(--c1)", values: t.gCut}, {name: "Razem", color: "var(--muted)", values: t.tCut, dash: true}], {labels: t.labels, legend: true, h: 200, yFmt: zlK, band: t.band})}</div>`).join("")}</div>
+        <div class="hint">Te same tygodnie dla obu kanałów; oś kończy się ${dPL(G.meta.asof)}.${G.meta.cov && G.meta.cov.gap ? ` <b>Szary, zakreskowany obszar od ${dPL(G.meta.cov.from)} to brak danych Google, a nie zerowe wydatki</b> — linia Google i „Razem” są tam urwane, linia Meta biegnie dalej, bo dane Meta są świeższe.` : ""}${tl.length > 6 ? ` Pokazano 6 z ${tl.length} marek — komplet w Excelu.` : ""}</div></div>
       <div class="blk" data-k="p"><h3>Podział budżetu między kanały w czasie</h3>${tl.map(t => `<div class="ch-row"><div class="ch-n"><i class="sw" style="background:${t.r.color}"></i>${esc(t.r.name)}</div>
-          <div><div class="ch-strip">${t.share.map((v, i) => v == null ? `<div class="ch-c na" title="Tydzień od ${t.labels[i]}: brak emisji"></div>` : `<div class="ch-c" title="Tydzień od ${t.labels[i]}: Google ${pc(v, 0)} (${kk(t.gC[i])} zł) · Meta ${pc(1 - v, 0)} (${kk(t.mC[i])} zł)"><span style="height:${(v * 100).toFixed(1)}%"></span><span style="height:${((1 - v) * 100).toFixed(1)}%"></span></div>`).join("")}</div><div class="ch-ax"><span>${t.labels[0]}</span><span>${t.labels[t.labels.length - 1]}</span></div></div>
+          <div><div class="ch-strip">${t.share.map((v, i) => v == null ? `<div class="ch-c ${t.noData[i] ? "nd" : "na"}" title="Tydzień od ${t.labels[i]}: ${t.noData[i] ? "brak danych Google — nie wiadomo, jak wyglądał podział" : "brak emisji w obu kanałach"}"></div>` : `<div class="ch-c" title="Tydzień od ${t.labels[i]}: Google ${pc(v, 0)} (${kk(t.gC[i])} zł) · Meta ${pc(1 - v, 0)} (${kk(t.mC[i])} zł)"><span style="height:${(v * 100).toFixed(1)}%"></span><span style="height:${((1 - v) * 100).toFixed(1)}%"></span></div>`).join("")}</div><div class="ch-ax"><span>${t.labels[0]}</span><span>${t.labels[t.labels.length - 1]}</span></div></div>
           <div class="ch-t">${t.d == null ? "—" : `Google ${pc(t.s0, 0)} → <b>${pc(t.s1, 0)}</b><br><span class="sub">${t.d >= 0 ? "+" : "−"}${Math.abs(Math.round(t.d * 100))} pp · pierwsze i ostatnie ${t.k} tyg.</span>`}</div></div>`).join("")}
-        <div class="leg"><span><i style="background:var(--c1)"></i>Google</span><span><i style="background:var(--c0)"></i>Meta</span></div>
-        <div class="hint">Jeden słupek = jeden tydzień, wysokość koloru = udział kanału w szacowanym koszcie marki. Oba koszty to szacunki z różnych modeli (Meta: zasięg × częstotliwość × CPM; Google: wyświetlenia × CPM formatu), więc wiarygodny jest kierunek zmiany, a nie dokładny procent. Skalibrowanie CPM w ustawieniach zmienia poziom, nie trend.</div></div>` : (rows.some(r => r.g && r.m) ? "" : `<div class="hint" style="margin-top:14px">Oś czasu Meta + Google pojawi się, gdy co najmniej jedna marka będzie dopasowana w obu kanałach (dopasowanie niżej).</div>`);
+        <div class="leg"><span><i style="background:var(--c1)"></i>Google</span><span><i style="background:var(--c0)"></i>Meta</span>${G.meta.cov && G.meta.cov.gap ? `<span class="nodatalg"><i></i>brak danych Google — nie zero</span>` : ""}</div>
+        <div class="hint">Jeden słupek = jeden tydzień, wysokość koloru = udział kanału w szacowanym koszcie marki.${G.meta.cov && G.meta.cov.gap ? ` <b>Zakreskowane słupki od ${dPL(G.meta.cov.from)} to brak danych Google</b> — nie rysujemy ich jako „100% Meta”, bo nie wiadomo, ile marka wydała wtedy w Google.` : ""} Oba koszty to szacunki z różnych modeli (Meta: zasięg × częstotliwość × CPM; Google: wyświetlenia × CPM formatu), więc wiarygodny jest kierunek zmiany, a nie dokładny procent. Skalibrowanie CPM w ustawieniach zmienia poziom, nie trend.</div></div>` : (rows.some(r => r.g && r.m) ? "" : `<div class="hint" style="margin-top:14px">Oś czasu Meta + Google pojawi się, gdy co najmniej jedna marka będzie dopasowana w obu kanałach (dopasowanie niżej).</div>`);
     this.tl = tl;
     const order = {"Wysoki": 0, "Średni": 1, "Niski": 2}; recs.sort((a, b) => order[a[0]] - order[b[0]]);
     const swn = r => `<i class="sw" style="background:${r.color}"></i>${esc(r.name)}`;
     const cols = [
       {k: "name", t: "Marka", h: swn},
-      {k: "mc", t: "Meta / mies.", n: 1, f: v => v ? kk(v) + " zł" : "—"}, {k: "gc", t: "Google / mies.", n: 1, f: v => v ? kk(v) + " zł" : "—"},
+      {k: "mc", t: "Meta / mies.", n: 1, ti: "Średnia z analizowanego okresu przeliczona na 30 dni. Zakładka Meta pokazuje prognozę z dzisiejszego tempa emisji, dlatego liczby mogą się różnić (najedź na wartość).",
+        h: r => r.mc ? `<span title="średnia z okresu: ${kk(r.mc)} zł / mies.${r.mcFc ? `\nprognoza z zakładki Meta: ${kk(r.mcFc)} zł / mies.` : ""}">${kk(r.mc)} zł</span>` : "—"},
+      {k: "gc", t: "Google / mies.", n: 1, ti: "Średnia z analizowanego okresu przeliczona na 30 dni — Google udostępnia tylko dane narastające, więc prognozy nie da się policzyć.", f: v => v ? kk(v) + " zł" : "—"},
       {k: "tot", t: "Razem", n: 1, h: r => `${r.tot ? kk(r.tot) + " zł" : "—"}${r.ptot ? " " + deltaHtml(r.tot, r.ptot) : ""}`}, {k: "sov", t: "Udział w głosie", n: 1, f: v => pc(v)},
       {k: "sovM", t: "Udział w Meta", n: 1, f: v => pc(v, 0)}, {k: "sovG", t: "Udział w Google", n: 1, f: v => pc(v, 0)},
       {k: "totI", t: "Wyświetlenia / mies.", n: 1, f: kk}, {k: "totA", t: "Aktywne reklamy", n: 1, h: r => `${n0(r.totA)} <small class="sub">${r.ma == null ? "—" : n0(r.ma)} + ${r.ga == null ? "—" : n0(r.ga)}</small>`},
@@ -8349,7 +8526,7 @@ const RZ = {
       {k: "gShare", t: "Meta | Google", h: r => r.gShare == null ? "—" : `<span class="mixbar" title="Meta ${pc(1 - r.gShare, 0)} · Google ${pc(r.gShare, 0)}"><span style="width:${((1 - r.gShare) * 100).toFixed(1)}%;background:var(--c0)"></span><span style="width:${(r.gShare * 100).toFixed(1)}%;background:var(--c1)"></span></span>`}];
     const mapUi = `<details class="adv" style="margin-top:14px"><summary><span class="adv-t">Dopasowanie marek Google → Meta</span><span class="adv-sum"><span>${rows.filter(r => r.m && r.g).length} z ${g.length} dopasowane</span></span></summary><div class="adv-body"><div class="grid" style="margin-top:12px">${g.map(gr => `<div><label>${esc(gr.name)} (Google)</label><select data-rzmap="${esc(gr.name)}"><option value="">— brak w Meta —</option>${m.map(x => `<option${(this.map[gr.name] !== undefined ? this.map[gr.name] : auto(gr.name)) === x.brand ? " selected" : ""}>${esc(x.brand)}</option>`).join("")}</select></div>`).join("")}</div></div></details>`;
     const hero = me ? `<div class="blk" data-k="p"><h3>Twoja marka w obu kanałach: ${esc(me.name)}</h3><div class="bigk">
-        <div class="bk"><span class="bl">Szac. budżet / mies.</span><span class="bv">~${kk(me.tot)} zł</span><span class="bs">${me.ptot ? deltaHtml(me.tot, me.ptot) + " · " : ""}Meta ${kk(me.mc)} + Google ${kk(me.gc)} zł</span></div>
+        <div class="bk"><span class="bl">Szac. budżet / mies.</span><span class="bv">~${kk(me.tot)} zł</span><span class="bs">${me.ptot ? deltaHtml(me.tot, me.ptot) + " · " : ""}Meta ${kk(me.mc)} + Google ${kk(me.gc)} zł · średnia z okresu</span></div>
         <div class="bk"><span class="bl">Udział w głosie</span><span class="bv">${pc(me.sov, 0)}</span><span class="bs">${rank.indexOf(me) + 1}. miejsce z ${rows.length} marek</span></div>
         <div class="bk"><span class="bl">Wyświetlenia / mies.</span><span class="bv">~${kk(me.totI)}</span><span class="bs">${pc(me.sovI, 0)} wszystkich wyświetleń zestawu</span></div>
         <div class="bk"><span class="bl">Aktywne reklamy</span><span class="bv">${n0(me.totA)}</span><span class="bs">Meta ${me.ma == null ? "—" : n0(me.ma)} · Google ${me.ga == null ? "—" : n0(me.ga)}</span></div>
@@ -8357,12 +8534,13 @@ const RZ = {
       </div></div>` : "";
     out.innerHTML = `<div class="rz">
       <div class="gres-head"><div><div class="kicker-s">Meta + Google · wszystkie kanały</div><h2>Udział w głosie i budżet w kanałach</h2></div><button class="ghost mini" id="rzX" type="button">Pobierz Excel</button></div>
-      <div class="gmeta"><span>Meta: ${m.length} marek</span><span>Google: ${g.length} marek · ${esc(G.data.region)} · stan ${dPL(G.meta.asof)}</span><span>budżet: szacunek miesięczny</span></div>
+      <div class="gmeta"><span>Meta: ${m.length} marek</span><span>Google: ${g.length} marek · ${esc(G.data.region)} · stan ${dPL(G.meta.asof)}${G.meta.cov && G.meta.cov.gap ? ` · dane do ${dPL(G.meta.cov.date)}` : ""}</span><span>budżet: średnia z okresu × 30 dni</span></div>
       <div class="see" data-k="x" style="margin-top:14px"><span>${ICON_BULB}</span><div><b>Najważniejsze w skrócie</b><ul class="lines" style="margin-top:6px">${ins.map(x => `<li>${x}</li>`).join("") || "<li>Za mało danych do wniosków.</li>"}</ul></div></div>
       ${hero}
       ${recs.length ? `<div class="blk" data-k="x"><h3>Rekomendacje (reguły RivalCore)</h3><div class="recs">${recs.map(([p, a, d]) => `<div class="rec" style="border-left-color:${p === "Wysoki" ? "var(--bad)" : p === "Średni" ? "var(--warn)" : "var(--accent)"}"><div class="rh"><span class="rprio" style="background:${p === "Wysoki" ? "var(--bad)" : p === "Średni" ? "var(--warn)" : "var(--accent)"}">${p}</span><span class="ra">${a}</span></div><div class="rd">${d}</div></div>`).join("")}</div></div>` : ""}
       <div class="blk" data-k="p"><h3>Marki w obu kanałach</h3>${sortableTable("rzt", cols, rows, {sort: "tot", rowCls: r => r.main ? "me" : ""})}
-        <div class="leg"><span><i style="background:var(--c0)"></i>Meta</span><span><i style="background:var(--c1)"></i>Google</span></div></div>
+        <div class="leg"><span><i style="background:var(--c0)"></i>Meta</span><span><i style="background:var(--c1)"></i>Google</span></div>
+        <div class="hint">Budżety w tej tabeli to <b>średnia z analizowanego okresu</b> przeliczona na 30 dni — jedyna baza, jaką da się policzyć dla Google (Transparency Center podaje wyświetlenia narastająco, bez dziennego tempa). Zakładka <b>Meta</b> pokazuje obok tego <b>prognozę</b>: dzisiejszy zasięg dzienny aktywnych reklam × 30 dni. Dlatego marka, która właśnie przyspieszyła, ma na zakładce Meta wyższą liczbę niż tutaj, a marka wygaszająca emisję — niższą. Obie są poprawne, mierzą różne rzeczy: tamta „ile wyda, jeśli nic nie zmieni”, ta „ile wydawała w okresie”. Najedź na wartość w kolumnie Meta, żeby zobaczyć obie.</div></div>
       ${tlHtml}
       <div class="three">
         <div class="blk" data-k="p"><h3>Łączny udział w głosie</h3>${hbars(rows.map(r => ({name: r.name, v: r.sov || 0, color: r.color})), {fmt: v => pc(v)})}</div>
@@ -8375,7 +8553,9 @@ const RZ = {
       ${mapUi}</div>`;
     this.rows = rows;
     out.querySelectorAll("[data-rzmap]").forEach(s => s.onchange = () => { this.map[s.dataset.rzmap] = s.value; store.set("rzMap", this.map); this.render(); });
-    const x = E("rzX"); if (x) x.onclick = () => { if (typeof XLSX === "undefined") return; const wb = XLSX.utils.book_new(); const p1 = v => v == null || !isFinite(v) ? "" : +(v * 100).toFixed(1);
+    const x = E("rzX"); if (x) x.onclick = async () => {
+      // dotąd przycisk po cichu nic nie robił, gdy biblioteka się nie wczytała
+      if (typeof XLSX === "undefined"){ try { await loadXlsx(); } catch(e){ status("gStatus", "Nie udało się pobrać biblioteki Excela: " + e.message, true); return; } } const wb = XLSX.utils.book_new(); const p1 = v => v == null || !isFinite(v) ? "" : +(v * 100).toFixed(1);
       XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["Marka","Twoja marka","Meta: aktywne reklamy","Meta: koszt/mies. zł","Meta: wyświetlenia/mies.","Google: aktywne kreacje","Google: koszt/mies. zł","Google: wyświetlenia/mies.","Razem koszt zł","Razem koszt poprz. okres zł","Razem wyświetlenia/mies.","Udział w głosie %","Udział w Meta %","Udział w Google %","Udział Google w budżecie %","Efektywny CPM zł"]]
         .concat(rows.map(r => [r.name, r.main ? "tak" : "", r.ma == null ? "" : r.ma, Math.round(r.mc), Math.round(r.mi), r.ga == null ? "" : r.ga, Math.round(r.gc), Math.round(r.gi), Math.round(r.tot), r.ptot == null ? "" : Math.round(r.ptot), Math.round(r.totI), p1(r.sov), p1(r.sovM), p1(r.sovG), p1(r.gShare), r.ecpm == null ? "" : Math.round(r.ecpm * 100) / 100]))), "Meta + Google");
       XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([["Priorytet","Obszar","Rekomendacja"]].concat(recs.map(([p, a, d]) => [p, a, d.replace(/<[^>]+>/g, "")]))), "Rekomendacje");
