@@ -1,13 +1,16 @@
 https://biedronm.github.io/rivalcore/#konkurencja
 
+https://biedronm.github.io/rivalcore/#konkurencja
+
 # RivalCore — README
 
 RivalCore to wewnętrzne narzędzie do analizy reklam marek i konkurencji z Biblioteki Reklam Meta (Facebook, Instagram, Messenger, Audience Network) i z Centrum przejrzystości reklam Google (Search, YouTube, sieć reklamowa), a od wersji 20 także wyników kont Google Ads naszych klientów. Jeden plik HTML — bez instalacji, bez serwera, bez opłat. Otwierasz w przeglądarce, wklejasz token, wpisujesz marki i dostajesz analizę z wykresami, raport PDF, prezentację PowerPoint, Excel oraz plik dla AI.
 
-**Aktualna wersja: 25.0 (12 listopada 2026).** Plik narzędzia nazywa się `index.html` (repozytorium `biedronm/rivalcore`, adres `https://biedronm.github.io/rivalcore/`). Wygląd ekranu, raportów PDF, prezentacji i grafik PNG jest zgodny z identyfikacją wizualną BeDigital.
+**Aktualna wersja: 25.4 (12 listopada 2026).** Plik narzędzia nazywa się `index.html` (repozytorium `biedronm/rivalcore`, adres `https://biedronm.github.io/rivalcore/`). Wygląd ekranu, raportów PDF, prezentacji i grafik PNG jest zgodny z identyfikacją wizualną BeDigital.
 
 ## Spis treści
 
+- [Co nowego? Wersja 25.4 · spójne budżety Meta + Google](#co-nowego-wersja-254--spójne-budżety-meta--google)
 - [Co nowego? Wersja 25.0 · warstwa „co z tego wynika”](#co-nowego-wersja-250--warstwa-co-z-tego-wynika)
 - [Co nowego? Wersja 24.0 · nowy raport PDF](#co-nowego-wersja-240--nowy-raport-pdf)
 - [Co nowego? Wersja 23.0 · wyniki kont i kalibracja Google](#co-nowego-wersja-230--wyniki-kont-i-kalibracja-google)
@@ -27,6 +30,24 @@ RivalCore to wewnętrzne narzędzie do analizy reklam marek i konkurencji z Bibl
 - [11. Rozwiązywanie problemów](#11-rozwiązywanie-problemów)
 - [12. Prywatność i bezpieczeństwo](#12-prywatność-i-bezpieczeństwo)
 - [13. Najczęstsze pytania (FAQ)](#13-najczęstsze-pytania-faq)
+
+## Co nowego? Wersja 25.4 · spójne budżety Meta + Google
+
+Do tej pory budżet Meta w zakładce **Meta + Google** różnił się od „Budżetu / mies.” w zakładce **Meta** (np. H&M: 2,7 mln vs 4,4 mln zł). Powód: zestawienie kanałów liczyło Metę jako średnią z całego okresu, a zakładka Meta — z dzisiejszego tempa emisji. Teraz ta sama marka ma tę samą liczbę wszędzie.
+
+| Kolumna w „Meta + Google” | Skąd liczba |
+|---|---|
+| Meta / mies. | dokładnie „Budżet / mies.” z zakładki Meta (aktywne reklamy × dzisiejsze tempo emisji × 30 dni) |
+| Google / mies. | dokładnie „Koszt / mies.” z zakładki Google (średnia z okresu × 30 dni — Google podaje tylko dane narastające) |
+| Razem, udziały w głosie, efektywny CPM | suma dwóch kolumn wyżej |
+| Wyświetlenia Meta / mies. | jak w zakładce Meta |
+| Zmiana okres do okresu (strzałki, „ofensywa”, ±25%) | nadal średnie z okresów — tylko tak da się uczciwie porównać z poprzednim okresem; średnią z okresu widać w dymku przy kwocie Meta |
+
+- Te same liczby trafiają do raportu PDF (strona „Raport w skrócie”, okładka), prezentacji PPTX i arkusza Excel „Meta + Google”.
+- **Nazwy marek** w zestawieniu kanałów są takie jak w zakładce Meta („H&M”, a nie nazwa reklamodawcy Google „HM”).
+- **Automatyczne dopasowanie marek Google → Meta** ignoruje spacje i znaki: „HM” łączy się z „H&M”, „REPORTER wear” z „REPORTERwear”. Wcześniej takie pary rozpadały się na dwa wiersze z zerem w jednym kanale. Gdy dopasowanie i tak jest złe, popraw je w „Dopasowanie marek Google → Meta”.
+
+„Razem” sumuje dwie różne bazy (Meta z bieżącego tempa, Google ze średniej okresu) — opisy kolumn mówią to wprost. Przy okresie 30 dni różnica jest niewielka; przy długim okresie i marce, która niedawno mocno przyspieszyła lub zwolniła, Meta i Google mogą opisywać inny moment.
 
 ## Co nowego? Wersja 25.0 · warstwa „co z tego wynika”
 
@@ -130,7 +151,7 @@ RivalCore analizuje dwa kanały: Metę i Google. Pasek u góry ma trzy moduły:
 
 - Obszar emisji i okres są wspólne dla obu kanałów. Dla Google: jeśli w obszarze jest Polska, bierze PL; jeden kraj EOG — ten kraj; kilka krajów albo „Cały świat” — łącznie EOG.
 - Źródło Google: publiczny zbiór `bigquery-public-data.google_ads_transparency_center` (tabela `creative_stats`). Obejmuje reklamodawców z reklamami w EOG i Turcji.
-- Meta + Google: tabela aktywnych reklam i szacowanego kosztu w każdym kanale, łączny udział w głosie, podział budżetu, a od wersji 25 także wspólna oś czasu i trend podziału kanałów.
+- Meta + Google: tabela aktywnych reklam i szacowanego kosztu w każdym kanale, łączny udział w głosie, podział budżetu, a od wersji 25 także wspólna oś czasu i trend podziału kanałów. Od wersji 25.4 kwoty w tej tabeli są identyczne z zakładkami Meta i Google.
 
 ## 1. Pierwsze uruchomienie (token Meta)
 
@@ -452,6 +473,8 @@ Jeden plik `.zip`: wykresy jako PNG (z logo i podpisem źródła), `dane/fakty-d
 | „API nie jest włączone w projekcie” | Włącz BigQuery API i Google Sheets API (krok A2) |
 | „Brak uprawnienia do uruchamiania zapytań” | Sprawdź ID projektu (nie nazwę) albo nadaj rolę Użytkownik zadań BigQuery |
 | „Przekroczony limit BigQuery” | Wyczerpany 1 TB w miesiącu. Podepnij płatności albo korzystaj z „Zapisz analizę” |
+| Budżet Meta w „Meta + Google” inny niż w zakładce Meta | Wersja starsza niż 25.4 — podmień `index.html`. Od 25.4 obie liczby są identyczne |
+| Ta sama marka w „Meta + Google” w dwóch wierszach (zero w jednym kanale) | Popraw parę w „Dopasowanie marek Google → Meta” pod tabelą |
 | Ostatnie tygodnie Google wyglądają na nagły spadek | Sprawdź baner „Dane Google kompletne do …”; jeśli korekta jest wyłączona, włącz ją w „Google: ustawienia” |
 | Arkusz: „nie ma zakładek RivalCore” | Skrypt nie zapisał danych. Sprawdź `SHEET_URL` i uruchom skrypt ręcznie |
 | Arkusz: 403 / 404 | Konto, którym się logujesz, nie ma dostępu do arkusza |
