@@ -4457,12 +4457,12 @@ function execPdfPage(sel, top){
   if (G){
     const gm = G.res.find(x => x.main) || G.res[0];
     if (gm && gm.n) gHtml = `<div class="rp-exec-sub">Google Ads — ${esc(gm.name)}</div>${G.heroCards(gm)}`;
-    // jedna baza dla obu kanałów (średnia z okresu × 30 dni) — inaczej słupki mieszałyby prognozę Meta z historią Google
+    // te same liczby co w zakładkach kanałów: Meta = „Budżet / mies.” z zakładki Meta, Google = „Koszt / mies.” z zakładki Google
     const cb = rcCombo(sel);
     const rows = cb ? cb.rows.filter(x => x.g && x.m).map(x => ({n: x.name, m: x.mc || 0, g: x.gc || 0}))
       : sel.map((r, i) => { const g = G.res.find(x => rcNorm(x.name) === rcNorm(r.brand) || rcNorm(x.name) === rcNorm(r.pageName)); return {n: r.pageName, m: r.s.miesSr || 0, g: g ? g.costMoMid || 0 : null}; }).filter(x => x.g != null);
     const mx = Math.max(...rows.map(x => x.m + x.g), 1);
-    if (rows.length) mix = `<div class="rp-exec-sub">Podział szacowanego budżetu: Meta i Google <span class="rp-basis">średnia z okresu × 30 dni${cb && cb.cov && cb.cov.gap ? ` · dane Google do ${rcDate(cb.cov.date)}` : ""}</span></div><div class="rp-mix">${rows.map(x => `<div><span>${esc(x.n)}</span><span class="bar"><i style="width:${(x.m / mx * 100).toFixed(1)}%;background:var(--c0)"></i><i style="width:${(x.g / mx * 100).toFixed(1)}%;background:var(--c1)"></i></span><span class="v"><b>~${fmtK(x.m + x.g)} zł</b> · Google ${x.m + x.g ? Math.round(x.g / (x.m + x.g) * 100) : 0}%</span></div>`).join("")}</div><div class="rp-mixleg"><span><i style="background:var(--c0)"></i>Meta</span><span><i style="background:var(--c1)"></i>Google</span></div>`;
+    if (rows.length) mix = `<div class="rp-exec-sub">Podział szacowanego budżetu: Meta i Google <span class="rp-basis">Meta: tempo emisji × 30 dni · Google: średnia z okresu × 30 dni${cb && cb.cov && cb.cov.gap ? ` · dane Google do ${rcDate(cb.cov.date)}` : ""}</span></div><div class="rp-mix">${rows.map(x => `<div><span>${esc(x.n)}</span><span class="bar"><i style="width:${(x.m / mx * 100).toFixed(1)}%;background:var(--c0)"></i><i style="width:${(x.g / mx * 100).toFixed(1)}%;background:var(--c1)"></i></span><span class="v"><b>~${fmtK(x.m + x.g)} zł</b> · Google ${x.m + x.g ? Math.round(x.g / (x.m + x.g) * 100) : 0}%</span></div>`).join("")}</div><div class="rp-mixleg"><span><i style="background:var(--c0)"></i>Meta</span><span><i style="background:var(--c1)"></i>Google</span></div>`;
   }
   return `<section class="rp-page rp-exec">${top}
     <div class="rp-kicker">Dla zarządu · jedna strona</div><h2 class="rp-h">Raport w skrócie</h2>
@@ -6228,7 +6228,7 @@ function buildReport(o){
       </div>
       <div class="rp-cover-foot">
         <div>${o.author ? `<b>Przygotował(a):</b> ${esc(o.author)}` : ""}${o.client ? `${o.author ? "<br>" : ""}<b>Dla:</b> ${esc(o.client)}` : ""}</div>
-        <div style="text-align:right">Źródło danych: Meta Ad Library API${rcG() ? " · Google Ads Transparency Center" : ""}<br>Stan na ${iso(todayUTC)}${cbm ? " · budżet: średnia z okresu" : ""}${cb && cb.cov && cb.cov.gap ? `<br>Dane Google do ${rcDate(cb.cov.date)}` : ""}</div>
+        <div style="text-align:right">Źródło danych: Meta Ad Library API${rcG() ? " · Google Ads Transparency Center" : ""}<br>Stan na ${iso(todayUTC)}${cbm ? " · budżet: Meta jak w zakładce Meta, Google średnia z okresu" : ""}${cb && cb.cov && cb.cov.gap ? `<br>Dane Google do ${rcDate(cb.cov.date)}` : ""}</div>
       </div>
     </section>`);
   }
@@ -8431,7 +8431,7 @@ function metaResults(){
   return arr.filter(r => r && r.s).map(r => { const s = r.s; const per = s.okres && s.okres.days;
     const mo = per ? s.okres.koszt / s.okres.days * 30 : s.miesSr;
     const pp = s.okresPrev && !s.prevStale && s.okresPrev.days ? s.okresPrev : null;
-    return {ref: r, brand: r.brand || r.pageName, name: r.pageName || r.brand, isMain: !!r.isMain, active: s.aktywne, total: s.lacznie, costMo: +mo || 0, costMoFc: +s.miesSr || 0, costBasis: per ? "okres" : "prognoza", imprMo: (per ? s.okres.wysw / s.okres.days * 30 : s.wyswMiesSr) || 0,
+    return {ref: r, brand: r.brand || r.pageName, name: r.pageName || r.brand, isMain: !!r.isMain, active: s.aktywne, total: s.lacznie, costMo: +mo || 0, costMoFc: +s.miesSr || 0, costBasis: per ? "okres" : "prognoza", imprMo: (per ? s.okres.wysw / s.okres.days * 30 : s.wyswMiesSr) || 0, imprMoFc: +s.wyswMiesSr || 0,
       prevCostMo: pp ? pp.koszt / pp.days * 30 : null, prevImprMo: pp ? pp.wysw / pp.days * 30 : null, dir: r.dir, trend: r.trend, index: r.idx ? r.idx.index : null,
       video: s.wideo, offer: s.zOfertaProc, n30: s.n30, lo: s.miesMin, hi: s.miesMax}; });
 }
@@ -8443,23 +8443,24 @@ const RZ = {
     const out = E("rzOut"); if (!out) return;
     const m = metaResults(), g = G.res || [];
     if (!m.length || !g.length){ out.innerHTML = `<div class="gempty">${!m.length && !g.length ? "Włącz oba źródła w „Źródłach danych” i kliknij „Analizuj · Meta + Google”, a tu pojawi się porównanie kanałów." : `Masz tylko analizę ${m.length ? "Meta" : "Google"}. Włącz też źródło ${m.length ? "Google Ads" : "Meta"} i uruchom analizę, żeby porównać kanały.`}</div>`; return; }
-    const auto = gname => { const k = normName(gname); const hit = m.find(x => normName(x.brand) === k) || m.find(x => normName(x.name) === k) || m.find(x => normName(x.brand).includes(k) || k.includes(normName(x.brand))); return hit ? hit.brand : ""; };
+    const auto = gname => { const k = normName(gname); const hit = m.find(x => normName(x.brand) === k) || m.find(x => normName(x.name) === k) || m.find(x => normName(x.brand).includes(k) || k.includes(normName(x.brand)))
+        || (() => { const c = v => normName(v).replace(/[^\p{L}\p{N}]+/gu, ""), kc = c(gname); return kc ? m.find(x => c(x.brand) === kc || c(x.name) === kc) : null; })(); return hit ? hit.brand : ""; };
     const rows = [];
     const usedMeta = new Set();
     g.forEach(gr => { const mk = this.map[gr.name] !== undefined ? this.map[gr.name] : auto(gr.name); const mr = m.find(x => x.brand === mk); if (mr) usedMeta.add(mr.brand);
-      rows.push({name: gr.name, main: gr.main || (mr && mr.isMain), g: gr, m: mr || null, mk}); });
-    m.filter(x => !usedMeta.has(x.brand)).forEach(mr => rows.push({name: mr.brand, main: mr.isMain, g: null, m: mr, mk: mr.brand}));
+      rows.push({name: mr ? (mr.name || mr.brand) : gr.name, gname: gr.name, main: gr.main || (mr && mr.isMain), g: gr, m: mr || null, mk}); });
+    m.filter(x => !usedMeta.has(x.brand)).forEach(mr => rows.push({name: mr.name || mr.brand, main: mr.isMain, g: null, m: mr, mk: mr.brand}));
     rows.forEach((r, i) => { r.color = COLORS[i % 8];
-      r.mc = r.m ? r.m.costMo : 0; r.gc = r.g ? r.g.costMoMid : 0; r.tot = r.mc + r.gc;
-      // mcFc = ta sama liczba, którą pokazuje zakładka Meta (prognoza z dzisiejszego tempa emisji).
-      // W tym zestawieniu świadomie liczymy średnią z okresu, bo tylko taką bazę ma Google.
-      r.mcFc = r.m && r.m.costBasis === "okres" && r.m.costMoFc && Math.abs(r.m.costMoFc - r.mc) / Math.max(r.mc, 1) > 0.05 ? r.m.costMoFc : null;
-      r.mi = r.m ? r.m.imprMo : 0; r.gi = r.g ? r.g.imprMo : 0; r.totI = r.mi + r.gi;
+      // Meta / mies. = ta sama liczba co „Budżet / mies.” w zakładce Meta, Google / mies. = ta sama co w zakładce Google.
+      // Średnia Meta z okresu (r.mcP) służy wyłącznie do porównań okres do okresu (ta sama baza co okres poprzedni).
+      r.mc = r.m ? (r.m.costMoFc || r.m.costMo) : 0; r.gc = r.g ? r.g.costMoMid : 0; r.tot = r.mc + r.gc;
+      r.mcP = r.m ? r.m.costMo : 0; r.totP = r.mcP + r.gc;
+      r.mi = r.m ? (r.m.imprMoFc || r.m.imprMo) : 0; r.gi = r.g ? r.g.imprMo : 0; r.totI = r.mi + r.gi;
       r.ma = r.m ? r.m.active : null; r.ga = r.g ? r.g.active : null; r.totA = (r.ma || 0) + (r.ga || 0);
       r.gShare = r.tot ? r.gc / r.tot : null; r.ecpm = r.totI ? r.tot / r.totI * 1000 : null;
       r.pm = r.m ? r.m.prevCostMo : null; r.pg = r.g && r.g.prev ? r.g.prev.costMo : null;
       r.ptot = r.pm != null && r.pg != null ? r.pm + r.pg : null;
-      r.mDir = r.m ? (r.m.prevCostMo ? (r.mc - r.m.prevCostMo) / r.m.prevCostMo : null) : null; r.gDir = r.g ? r.g.dCost : null; });
+      r.mDir = r.m ? (r.m.prevCostMo ? (r.mcP - r.m.prevCostMo) / r.m.prevCostMo : null) : null; r.gDir = r.g ? r.g.dCost : null; });
     const T = sum(rows, r => r.tot) || 0, TI = sum(rows, r => r.totI) || 0, TM = sum(rows, r => r.mc) || 0, TG = sum(rows, r => r.gc) || 0;
     rows.forEach(r => { r.sov = T ? r.tot / T : null; r.sovI = TI ? r.totI / TI : null; r.sovM = TM ? r.mc / TM : null; r.sovG = TG ? r.gc / TG : null; });
     const rank = rows.slice().sort((a, b) => b.tot - a.tot);
@@ -8469,7 +8470,7 @@ const RZ = {
     const lead = rank[0]; if (lead && lead.tot) ins.push(`Największy łączny szacowany budżet: <b>${esc(lead.name)}</b>, ok. ${kk(lead.tot)} zł miesięcznie (${pc(lead.sov)} udziału w obu kanałach; Meta ${pc(1 - lead.gShare, 0)} / Google ${pc(lead.gShare, 0)}).`);
     if (me && me.tot) ins.push(`Twoja marka: ${rank.indexOf(me) + 1}. miejsce z ${rows.length}, ${pc(me.sov)} łącznego udziału w głosie (Meta ${pc(me.sovM, 0)}, Google ${pc(me.sovG, 0)} udziału w kanale).`);
     rows.filter(r => r.m && r.g && r.tot).forEach(r => { if (r.gShare >= 0.7) ins.push(`<b>${esc(r.name)}</b> inwestuje głównie w Google: ok. ${pc(r.gShare, 0)} szacowanego budżetu.`); else if (r.gShare <= 0.3) ins.push(`<b>${esc(r.name)}</b> stawia głównie na Metę: ok. ${pc(1 - r.gShare, 0)} szacowanego budżetu.`); });
-    rows.filter(r => r.ptot && r.tot && Math.abs((r.tot - r.ptot) / r.ptot) >= 0.25).forEach(r => ins.push(`<b>${esc(r.name)}</b>: łączny szacowany budżet okres do okresu ${r.tot > r.ptot ? "+" : "−"}${pc(Math.abs((r.tot - r.ptot) / r.ptot), 0)} (${kk(r.ptot)} → ${kk(r.tot)} zł/mies.).`));
+    rows.filter(r => r.ptot && r.totP && Math.abs((r.totP - r.ptot) / r.ptot) >= 0.25).forEach(r => ins.push(`<b>${esc(r.name)}</b>: łączny szacowany budżet okres do okresu ${r.totP > r.ptot ? "+" : "−"}${pc(Math.abs((r.totP - r.ptot) / r.ptot), 0)} (${kk(r.ptot)} → ${kk(r.totP)} zł/mies., średnie z okresów).`));
     rows.filter(r => !r.m || !r.g).forEach(r => ins.push(`<b>${esc(r.name)}</b>: brak danych z ${!r.m ? "Meta" : "Google"} w tej sesji${!r.m ? " albo nie dopasowano marki (popraw dopasowanie niżej)" : ""}.`));
     if (me){
       const avgG = avg(r => r.gShare);
@@ -8516,17 +8517,17 @@ const RZ = {
     const swn = r => `<i class="sw" style="background:${r.color}"></i>${esc(r.name)}`;
     const cols = [
       {k: "name", t: "Marka", h: swn},
-      {k: "mc", t: "Meta / mies.", n: 1, ti: "Średnia z analizowanego okresu przeliczona na 30 dni. Zakładka Meta pokazuje prognozę z dzisiejszego tempa emisji, dlatego liczby mogą się różnić (najedź na wartość).",
-        h: r => r.mc ? `<span title="średnia z okresu: ${kk(r.mc)} zł / mies.${r.mcFc ? `\nprognoza z zakładki Meta: ${kk(r.mcFc)} zł / mies.` : ""}">${kk(r.mc)} zł</span>` : "—"},
-      {k: "gc", t: "Google / mies.", n: 1, ti: "Średnia z analizowanego okresu przeliczona na 30 dni — Google udostępnia tylko dane narastające, więc prognozy nie da się policzyć.", f: v => v ? kk(v) + " zł" : "—"},
-      {k: "tot", t: "Razem", n: 1, h: r => `${r.tot ? kk(r.tot) + " zł" : "—"}${r.ptot ? " " + deltaHtml(r.tot, r.ptot) : ""}`}, {k: "sov", t: "Udział w głosie", n: 1, f: v => pc(v)},
+      {k: "mc", t: "Meta / mies.", n: 1, ti: "Ta sama liczba co „Budżet / mies.” w zakładce Meta: aktywne reklamy × dzisiejsze tempo emisji × 30 dni.",
+        h: r => r.mc ? `<span title="jak w zakładce Meta: ${kk(r.mc)} zł / mies.${r.mcP && Math.abs(r.mcP - r.mc) / Math.max(r.mc, 1) > 0.05 ? `\nśrednia z okresu (do porównań okres do okresu): ${kk(r.mcP)} zł / mies.` : ""}">${kk(r.mc)} zł</span>` : "—"},
+      {k: "gc", t: "Google / mies.", n: 1, ti: "Ta sama liczba co „Koszt / mies.” w zakładce Google: średnia z analizowanego okresu przeliczona na 30 dni (Google udostępnia tylko dane narastające).", f: v => v ? kk(v) + " zł" : "—"},
+      {k: "tot", t: "Razem", n: 1, h: r => `${r.tot ? kk(r.tot) + " zł" : "—"}${r.ptot && r.totP ? " " + deltaHtml(r.totP, r.ptot) : ""}`}, {k: "sov", t: "Udział w głosie", n: 1, f: v => pc(v)},
       {k: "sovM", t: "Udział w Meta", n: 1, f: v => pc(v, 0)}, {k: "sovG", t: "Udział w Google", n: 1, f: v => pc(v, 0)},
       {k: "totI", t: "Wyświetlenia / mies.", n: 1, f: kk}, {k: "totA", t: "Aktywne reklamy", n: 1, h: r => `${n0(r.totA)} <small class="sub">${r.ma == null ? "—" : n0(r.ma)} + ${r.ga == null ? "—" : n0(r.ga)}</small>`},
       {k: "ecpm", t: "Efektywny CPM", n: 1, f: v => v == null ? "—" : n1(v) + " zł"},
       {k: "gShare", t: "Meta | Google", h: r => r.gShare == null ? "—" : `<span class="mixbar" title="Meta ${pc(1 - r.gShare, 0)} · Google ${pc(r.gShare, 0)}"><span style="width:${((1 - r.gShare) * 100).toFixed(1)}%;background:var(--c0)"></span><span style="width:${(r.gShare * 100).toFixed(1)}%;background:var(--c1)"></span></span>`}];
     const mapUi = `<details class="adv" style="margin-top:14px"><summary><span class="adv-t">Dopasowanie marek Google → Meta</span><span class="adv-sum"><span>${rows.filter(r => r.m && r.g).length} z ${g.length} dopasowane</span></span></summary><div class="adv-body"><div class="grid" style="margin-top:12px">${g.map(gr => `<div><label>${esc(gr.name)} (Google)</label><select data-rzmap="${esc(gr.name)}"><option value="">— brak w Meta —</option>${m.map(x => `<option${(this.map[gr.name] !== undefined ? this.map[gr.name] : auto(gr.name)) === x.brand ? " selected" : ""}>${esc(x.brand)}</option>`).join("")}</select></div>`).join("")}</div></div></details>`;
     const hero = me ? `<div class="blk" data-k="p"><h3>Twoja marka w obu kanałach: ${esc(me.name)}</h3><div class="bigk">
-        <div class="bk"><span class="bl">Szac. budżet / mies.</span><span class="bv">~${kk(me.tot)} zł</span><span class="bs">${me.ptot ? deltaHtml(me.tot, me.ptot) + " · " : ""}Meta ${kk(me.mc)} + Google ${kk(me.gc)} zł · średnia z okresu</span></div>
+        <div class="bk"><span class="bl">Szac. budżet / mies.</span><span class="bv">~${kk(me.tot)} zł</span><span class="bs">${me.ptot && me.totP ? deltaHtml(me.totP, me.ptot) + " · " : ""}Meta ${kk(me.mc)} + Google ${kk(me.gc)} zł · jak w zakładkach kanałów</span></div>
         <div class="bk"><span class="bl">Udział w głosie</span><span class="bv">${pc(me.sov, 0)}</span><span class="bs">${rank.indexOf(me) + 1}. miejsce z ${rows.length} marek</span></div>
         <div class="bk"><span class="bl">Wyświetlenia / mies.</span><span class="bv">~${kk(me.totI)}</span><span class="bs">${pc(me.sovI, 0)} wszystkich wyświetleń zestawu</span></div>
         <div class="bk"><span class="bl">Aktywne reklamy</span><span class="bv">${n0(me.totA)}</span><span class="bs">Meta ${me.ma == null ? "—" : n0(me.ma)} · Google ${me.ga == null ? "—" : n0(me.ga)}</span></div>
@@ -8534,7 +8535,7 @@ const RZ = {
       </div></div>` : "";
     out.innerHTML = `<div class="rz">
       <div class="gres-head"><div><div class="kicker-s">Meta + Google · wszystkie kanały</div><h2>Udział w głosie i budżet w kanałach</h2></div><button class="ghost mini" id="rzX" type="button">Pobierz Excel</button></div>
-      <div class="gmeta"><span>Meta: ${m.length} marek</span><span>Google: ${g.length} marek · ${esc(G.data.region)} · stan ${dPL(G.meta.asof)}${G.meta.cov && G.meta.cov.gap ? ` · dane do ${dPL(G.meta.cov.date)}` : ""}</span><span>budżet: średnia z okresu × 30 dni</span></div>
+      <div class="gmeta"><span>Meta: ${m.length} marek</span><span>Google: ${g.length} marek · ${esc(G.data.region)} · stan ${dPL(G.meta.asof)}${G.meta.cov && G.meta.cov.gap ? ` · dane do ${dPL(G.meta.cov.date)}` : ""}</span><span>budżet: Meta jak w zakładce Meta (tempo emisji × 30 dni), Google jak w zakładce Google (średnia z okresu × 30 dni)</span></div>
       <div class="see" data-k="x" style="margin-top:14px"><span>${ICON_BULB}</span><div><b>Najważniejsze w skrócie</b><ul class="lines" style="margin-top:6px">${ins.map(x => `<li>${x}</li>`).join("") || "<li>Za mało danych do wniosków.</li>"}</ul></div></div>
       ${hero}
       ${recs.length ? `<div class="blk" data-k="x"><h3>Rekomendacje (reguły RivalCore)</h3><div class="recs">${recs.map(([p, a, d]) => `<div class="rec" style="border-left-color:${p === "Wysoki" ? "var(--bad)" : p === "Średni" ? "var(--warn)" : "var(--accent)"}"><div class="rh"><span class="rprio" style="background:${p === "Wysoki" ? "var(--bad)" : p === "Średni" ? "var(--warn)" : "var(--accent)"}">${p}</span><span class="ra">${a}</span></div><div class="rd">${d}</div></div>`).join("")}</div></div>` : ""}
