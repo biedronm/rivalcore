@@ -5384,6 +5384,7 @@ function renderAll(){
   $("filtersCard").classList.toggle("hidden", !any);
   $("fMediaWrap").classList.toggle("hidden", !results.some(r => r.mediaLoaded));
   if (!any){ card.classList.add("hidden"); card.innerHTML = ""; $("pdfCard").classList.add("hidden"); $("deckCard").classList.add("hidden"); $("aiCard").classList.add("hidden"); $("stratCard").classList.add("hidden"); return; }
+  refreshOpenPanels();
   if (results.length < 2 && view.top === "cmp") view.top = results[0].uid;
   if (view.top !== "cmp" && !results.some(r => r.uid === view.top)) view.top = results.length > 1 ? "cmp" : results[0].uid;
   const isCmp = view.top === "cmp";
@@ -5632,6 +5633,18 @@ const PDF_EXEC = ["cover", "exec", "recs", "method", "g_rz"];
 const pdfPrefs = () => { try { return JSON.parse(store.get(PDF_KEY) || "{}"); } catch(e){ return {}; } };
 let pdfLogo = null;
 
+// Każda analiza nadaje markom nowe uid. Panele (raport, prezentacja, pakiet, plik dla AI) budują listy
+// marek z uid, więc panel otwarty przed ponowną analizą wskazywał na marki, których już nie ma —
+// i raport wychodził pusty albo wywracał się na main.s. Stąd znacznik zestawu i odświeżanie paneli.
+const uidStamp = () => results.map(r => r.uid).join(",");
+function refreshOpenPanels(){
+  const map = [["pdfCard", openPdfPanel], ["deckCard", openDeckPanel], ["stratCard", openStratPanel], ["aiCard", openAiPanel]];
+  for (const [id, open] of map){
+    const c = $(id); if (!c || c.classList.contains("hidden")) continue;
+    if (c.dataset.uids === uidStamp()) continue;
+    try { open(); } catch(e){ c.classList.add("hidden"); }
+  }
+}
 function openPdfPanel(){
   const card = $("pdfCard"), p = pdfPrefs();
   const main = results.find(r => r.isMain) || results[0];
@@ -5681,6 +5694,7 @@ function openPdfPanel(){
   };
   $("pdfGo").onclick = generatePdf;
   $("pdfHtml").onclick = exportReportHtml;
+  card.dataset.uids = uidStamp();
   card.scrollIntoView({behavior: "smooth", block: "start"});
 }
 
@@ -6128,6 +6142,7 @@ function openDeckPanel(){
     <div class="row" style="margin-top:16px"><button id="deckGo" type="button">Pobierz .pptx</button><span class="hint" id="deckEst"></span></div>
     <div class="hint">Slajdy używają czcionki Montserrat (identyfikacja BeDigital) — jeśli nie masz jej zainstalowanej, PowerPoint podmieni ją na domyślną. Prezentacja uwzględnia aktualne filtry, założenia kosztu i Twoje ręczne korekty rabatów i argumentów. Notatki prelegenta zawierają zastrzeżenia do liczb.</div>`;
   card.classList.remove("hidden");
+  card.dataset.uids = uidStamp();   // zestaw marek, dla którego panel powstał
   const est = () => { const n = deckEstimate([...card.querySelectorAll("input[data-dsec]:checked")].map(cb => cb.dataset.dsec)); $("deckEst").textContent = `${n} ${n === 1 ? "slajd" : n < 5 ? "slajdy" : "slajdów"}`; };
   const setSecs = l => { card.querySelectorAll("input[data-dsec]").forEach(cb => { if (!cb.disabled) cb.checked = l.includes(cb.dataset.dsec); }); est(); };
   card.querySelectorAll("input").forEach(i => i.addEventListener("change", est)); est();
@@ -6173,6 +6188,14 @@ function pdfOpts(){
   };
   if (!o.brands.length){ setStatus("Zaznacz co najmniej jedną markę do raportu.", true); return null; }
   if (!o.secs.size){ setStatus("Zaznacz co najmniej jedną sekcję raportu.", true); return null; }
+  // panel mógł pochodzić sprzed ponownej analizy — wtedy jego uid nie pasują do aktualnych wyników
+  const known = o.brands.filter(u => results.some(r => r.uid === u));
+  if (!known.length){
+    openPdfPanel();
+    setStatus("Panel raportu pochodził sprzed ostatniej analizy — odświeżyłem listę marek. Sprawdź zaznaczenia i kliknij ponownie.", true);
+    return null;
+  }
+  o.brands = known;
   const main = results.find(r => r.isMain) || results[0];
   const prefs = {author: o.author, client: o.client, lastBrand: main.pageName, sections: [...o.secs], cover: o.cover, v22: 1};
   if (o.logo && o.logo.length < 400000) prefs.logo = o.logo;
@@ -6199,17 +6222,25 @@ function generatePdf(){
 
 // Raport jako jeden plik .html do wysłania klientowi: ta sama treść co w PDF, ale bez okna drukowania.
 // Plik jest samodzielny — style aplikacji idą w środku, wykresy są inline'owym SVG, logo to data URL.
-function exportReportHtml(){
-  const o = pdfOpts(); if (!o) return;
-  const main = results.find(r => r.isMain) || results[0];
-  let body;
-  // renderujemy tak samo jak do PDF (razem ze spisem treści), a dopiero potem przepisujemy gotowy HTML
-  try { $("report").innerHTML = buildReport(o); try { rpToc(o); } catch(e){} body = $("report").innerHTML; }
-  catch(e){ return setStatus("Nie udało się zbudować raportu: " + e.message, true); }
-  const css = [...document.querySelectorAll("style")].map(x => x.textContent).join("\n");
-  const fonts = (document.querySelector('link[href*="fonts.googleapis.com/css2"]') || {}).href || "";
-  const title = `RivalCore — raport — ${o.client || main.pageName} — ${iso(todayUTC)}`;
-  const standalone = `
+async function exportReportHtml(){
+  const btn = $("pdfHtml"); if (btn) btn.disabled = true;
+  const fail = m => { setStatus("Raport HTML: " + m, true); if (btn) btn.disabled = false; };
+  try {
+    const o = pdfOpts(); if (!o){ if (btn) btn.disabled = false; return; }
+    const main = results.find(r => r.isMain) || results[0];
+    setStatus("Buduję raport HTML…");
+    await new Promise(r => setTimeout(r, 30));          // oddaj klatkę, żeby status zdążył się pokazać
+
+    let body;
+    try { $("report").innerHTML = buildReport(o); } catch(e){ return fail("nie udało się zbudować treści (" + e.message + ")"); }
+    try { rpToc(o); } catch(e){}
+    body = $("report").innerHTML;
+    if (!body || body.length < 500) return fail("treść raportu wyszła pusta — zaznacz sekcje i marki, potem spróbuj ponownie");
+
+    const css = [...document.querySelectorAll("style")].map(x => x.textContent).join("\n");
+    const fonts = (document.querySelector('link[href*="fonts.googleapis.com/css2"]') || {}).href || "";
+    const title = `RivalCore — raport — ${o.client || main.pageName} — ${iso(todayUTC)}`;
+    const standalone = `
 /* ---- tryb samodzielnego pliku: na ekranie pokazujemy strony jak kartki, w druku nic nie zmieniamy ---- */
 @media screen{
   html,body{background:#ececed;margin:0;padding:0}
@@ -6217,7 +6248,6 @@ function exportReportHtml(){
   .rp-page,.rp-cover{width:210mm;max-width:100%;min-height:297mm;box-sizing:border-box;margin:0 auto 18px;
     box-shadow:0 2px 18px rgba(0,0,0,.14);border-radius:2px;overflow:hidden}
   .rp-page{padding:13mm 13mm 15mm;background:#fff}
-  /* okładka ma własne tło (ciemne albo jasne) — nie nadpisujemy go, tak jak w druku idzie bez marginesów */
   .rp-cover{padding:0;display:flex;flex-direction:column}
   .rcbar{position:sticky;top:0;z-index:50;display:flex;gap:10px;align-items:center;flex-wrap:wrap;
     padding:10px 16px;background:#111;color:#fff;font:500 13px/1.3 Montserrat,system-ui,sans-serif}
@@ -6230,7 +6260,7 @@ function exportReportHtml(){
   @media (max-width:800px){ .rp-page,.rp-cover{min-height:0;padding:16px} #report{padding:12px 8px 40px} }
 }
 @media print{ .rcbar{display:none!important} #report{display:block} }`;
-  const doc = `<!doctype html>
+    const doc = `<!doctype html>
 <html lang="pl" data-theme="light">
 <head>
 <meta charset="utf-8">
@@ -6248,16 +6278,30 @@ ${fonts ? `<link rel="preconnect" href="https://fonts.googleapis.com"><link rel=
 <div id="report">${body}</div>
 </body>
 </html>`;
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(new Blob([doc], {type: "text/html;charset=utf-8"}));
-  a.download = `raport_${slug(o.client || main.pageName)}_${iso(todayUTC)}.html`; a.click();
-  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
-  setStatus(`Zapisano raport HTML (${(doc.length / 1024 / 1024).toFixed(1)} MB). Plik jest samodzielny — wyślij go klientowi, otworzy się w każdej przeglądarce.`);
+
+    const mb = doc.length / 1048576;
+    const name = `raport_${slug(o.client || main.pageName)}_${iso(todayUTC)}.html`;
+    let url;
+    try { url = URL.createObjectURL(new Blob([doc], {type: "text/html;charset=utf-8"})); }
+    catch(e){ return fail("plik wyszedł za duży dla przeglądarki (" + mb.toFixed(1) + " MB). Odznacz część sekcji albo marek i spróbuj ponownie."); }
+
+    // kotwica MUSI być w dokumencie — część przeglądarek ignoruje klik w element poza DOM
+    const a = document.createElement("a");
+    a.href = url; a.download = name; a.rel = "noopener"; a.style.display = "none";
+    document.body.appendChild(a); a.click();
+    setTimeout(() => { a.remove(); URL.revokeObjectURL(url); }, 20000);
+    setStatus(`Zapisano raport HTML: ${name} (${mb.toFixed(1)} MB). Plik jest samodzielny — wyślij go klientowi, otworzy się w każdej przeglądarce.`);
+    if (btn) btn.disabled = false;
+  } catch(e){
+    fail((e && e.message ? e.message : String(e)) + ". Jeśli to się powtarza, zrób zrzut tego komunikatu.");
+    console.error("exportReportHtml", e);
+  }
 }
 
 function buildReport(o){
   const sel = results.filter(r => o.brands.includes(r.uid));
   const main = sel.find(r => r.isMain) || sel[0];
+  if (!main) throw new Error("żadna z zaznaczonych marek nie jest już w wynikach — uruchom analizę albo otwórz panel raportu na nowo");
   const dateLong = new Date().toLocaleDateString("pl-PL", {day: "numeric", month: "long", year: "numeric"});
   const fl = filterLabel();
   const top = `<div class="rp-top"><span class="rp-tl">${bdLogoSvg()}<i></i><b>RivalCore</b></span><span>${esc(o.title)}${o.client ? " · " + esc(o.client) : ""} · ${dateLong}</span></div>`;
@@ -6658,6 +6702,7 @@ function openStratPanel(){
     </div>
     <div class="hint" id="stratStatus"></div>`;
   card.classList.remove("hidden");
+  card.dataset.uids = uidStamp();   // zestaw marek, dla którego panel powstał
   $("sTheme").value = p.theme || "light"; $("sScale").value = String(p.scale || 2); $("sCap").value = p.caption === false ? "0" : "1";
   const est = () => {
     const nb = multi ? card.querySelectorAll("input[data-sbr]:checked").length : 1;
@@ -7049,6 +7094,7 @@ function openAiPanel(){
     <div class="row" style="margin-top:16px"><button id="aiGo">Pobierz plik .md</button><button class="ghost" id="aiCopy">Kopiuj do schowka</button><button class="ghost" id="aiPrev">Podgląd</button><span class="hint" id="aiSize" style="margin:0"></span></div>
     <textarea id="aiPreview" class="hidden" readonly style="margin-top:12px;min-height:320px;font:12px/1.45 ui-monospace,Menlo,Consolas,monospace"></textarea>`;
   card.classList.remove("hidden");
+  card.dataset.uids = uidStamp();   // zestaw marek, dla którego panel powstał
   const upd = () => { const md = buildAiMd(aiOpts()); const kb = new Blob([md]).size / 1024; $("aiSize").textContent = `${kb.toFixed(0)} KB · ok. ${fmt(Math.round(md.length / 3.6))} tokenów${md.length > 350000 ? " — duży plik: zmniejsz liczbę tekstów reklam" : ""}`; if (!$("aiPreview").classList.contains("hidden")) $("aiPreview").value = md; };
   card.querySelectorAll("input,select").forEach(i => i.addEventListener("change", upd));
   card.querySelectorAll("[data-preset]").forEach(b => b.onclick = () => { const l = AI_PRESETS[b.dataset.preset]; card.querySelectorAll("input[data-focus]").forEach(cb => { if (!cb.disabled) cb.checked = l.includes(cb.dataset.focus); }); upd(); });
@@ -7615,7 +7661,7 @@ regionChanged();
 // ================================================================ RivalCore 20 · moduły Meta + Google
 (() => {
 "use strict";
-const RCV = "25.5";
+const RCV = "25.6";
 const E = id => document.getElementById(id);
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const NF = new Intl.NumberFormat("pl-PL", {maximumFractionDigits: 0});
@@ -8049,7 +8095,8 @@ WHERE rs.last_shown >= @since AND rs.first_shown <= @until AND c.advertiser_id I
     const sk = [...new Set(R.flatMap(r => r.surfImpr.map(x => x[0])))];
     sk.forEach(k => { const t = sum(R, r => (r.surfImpr.find(x => x[0] === k) || [0, 0])[1]); R.forEach(r => { r.sovSurf = r.sovSurf || {}; r.sovSurf[k] = t ? (r.surfImpr.find(x => x[0] === k) || [0, 0])[1] / t : null; }); });
     if (prevW){ const pt = sum(R, r => r.prev ? r.prev.impr : 0); R.forEach(r => { r.prevSov = pt && r.prev ? r.prev.impr / pt : null; }); }
-    this.meta = {asof, start, pDays, prevW, hz, cov: gCoverage(R)};
+    let cov = null; try { cov = gCoverage(R); } catch(e){ console.warn("gCoverage", e); }
+    this.meta = {asof, start, pDays, prevW, hz, cov};
     RZ.render(); CH.draw();
   },
   render(){
@@ -8390,7 +8437,7 @@ function gCoverage(R){
 // Przycina serię do ostatniego okresu, który mieści się w danych, i zwraca pas "brak danych".
 // endOf(i) = ostatni dzień okresu i.
 function covMask(values, dates, cov, endOf){
-  if (!cov || !cov.gap || !dates || !dates.length) return {values, band: null};
+  if (!cov || !cov.gap || !dates || !dates.length || !Array.isArray(values)) return {values, band: null};
   let last = -1; for (let i = 0; i < dates.length; i++) if (endOf(i) <= cov.date) last = i;
   if (last < 0 || last >= dates.length - 1) return {values, band: null};
   return {values: values.map((v, i) => i > last ? null : v), band: {from: last, label: "brak danych Google"}};
