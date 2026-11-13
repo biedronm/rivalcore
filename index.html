@@ -5655,7 +5655,8 @@ function openPdfPanel(){
     <div class="row" style="margin:14px 0 4px"><b style="margin-right:6px">Zawartość:</b><button class="ghost mini" id="pdfFull">Pełny raport</button><button class="ghost mini" id="pdfShort">Skrót dla klienta</button><button class="ghost mini" id="pdfExec" title="Okładka, raport w skrócie, rekomendacje, kanały razem, metodologia">Dla zarządu</button><button class="ghost mini" id="pdfNone">Odznacz wszystko</button></div>
     ${PDF_GROUPS.map(([g, items]) => `<h3>${g}</h3><div class="optgrid">${items.map(([k, label]) => `<label class="check" style="margin:0"><input type="checkbox" data-sec="${k}" ${secs.includes(k) ? "checked" : ""} ${k.startsWith("cmp_") && results.length < 2 ? "disabled" : ""}><span>${label}</span></label>`).join("")}</div>`).join("")}
     ${results.length > 1 ? `<h3>Marki w raporcie</h3><div class="optgrid">${results.map((r, i) => `<label class="check" style="margin:0"><input type="checkbox" data-brand="${r.uid}" checked><span><span class="dot" style="background:${color(i)}"></span>${esc(r.pageName)}</span></label>`).join("")}</div>` : ""}
-    <div class="row" style="margin-top:16px"><button id="pdfGo">Pobierz PDF</button><span class="hint" id="pdfEst"></span></div>
+    <div class="row" style="margin-top:16px"><button id="pdfGo">Pobierz PDF</button><button class="ghost" id="pdfHtml" type="button">Raport HTML</button><span class="hint" id="pdfEst"></span></div>
+    <div class="hint" style="margin-top:6px">PDF otwiera okno drukowania. <b>Raport HTML</b> zapisuje jeden plik <code>.html</code>, który klient otwiera w przeglądarce — ten sam raport, bez drukowania, z własnym przyciskiem „Zapisz jako PDF”.</div>
     <div class="hint">Otworzy się okno drukowania — jako drukarkę wybierz <b>„Zapisz jako PDF”</b>. Raport uwzględnia aktualne filtry, założenia kosztu i oznaczenia „Lupy detektywa” włączone na górze strony${activeMarks().length ? ` (teraz: ${activeMarks().map(k => MARKS[k][0].toLowerCase()).join(", ")})` : " (teraz wyłączone)"}. Najlepiej wygląda w Chrome lub Edge.</div>`;
   card.classList.remove("hidden");
   const est = () => { const s = [...card.querySelectorAll("input[data-sec]:checked")].map(c => c.dataset.sec); const nb = results.length > 1 ? card.querySelectorAll("input[data-brand]:checked").length : 1;
@@ -5679,6 +5680,7 @@ function openPdfPanel(){
     rd.readAsDataURL(file);
   };
   $("pdfGo").onclick = generatePdf;
+  $("pdfHtml").onclick = exportReportHtml;
   card.scrollIntoView({behavior: "smooth", block: "start"});
 }
 
@@ -6160,7 +6162,8 @@ function rpToc(o){
     <div class="rp-read"><div><b>Wydatki to szacunek</b>Liczone z zasięgu i wyświetleń reklam. Pokazują rząd wielkości i służą do porównań między markami, nie zastępują danych z kont.</div><div><b>Udział w głosie</b>Jaka część szacowanych wydatków lub wyświetleń wszystkich porównywanych marek przypada na daną markę.</div><div><b>Indeks aktywności 0–100</b>Łączy liczbę aktywnych reklam, tempo nowych kreacji, budżet i różnorodność. Im wyżej, tym intensywniejsze działania.</div></div>`;
   const first = secs[0]; first.parentNode.insertBefore(el, first);
 }
-function generatePdf(){
+// ustawienia z panelu raportu — wspólne dla PDF i eksportu HTML
+function pdfOpts(){
   const card = $("pdfCard");
   const o = {
     title: $("pdfTitle").value.trim() || "Raport reklam Meta",
@@ -6168,13 +6171,17 @@ function generatePdf(){
     secs: new Set([...card.querySelectorAll("input[data-sec]:checked")].map(cb => cb.dataset.sec)),
     brands: results.length > 1 ? [...card.querySelectorAll("input[data-brand]:checked")].map(cb => +cb.dataset.brand) : results.map(r => r.uid)
   };
-  if (!o.brands.length) return setStatus("Zaznacz co najmniej jedną markę do raportu.", true);
-  if (!o.secs.size) return setStatus("Zaznacz co najmniej jedną sekcję raportu.", true);
+  if (!o.brands.length){ setStatus("Zaznacz co najmniej jedną markę do raportu.", true); return null; }
+  if (!o.secs.size){ setStatus("Zaznacz co najmniej jedną sekcję raportu.", true); return null; }
   const main = results.find(r => r.isMain) || results[0];
   const prefs = {author: o.author, client: o.client, lastBrand: main.pageName, sections: [...o.secs], cover: o.cover, v22: 1};
   if (o.logo && o.logo.length < 400000) prefs.logo = o.logo;
   store.set(PDF_KEY, JSON.stringify(prefs));
-
+  return o;
+}
+function generatePdf(){
+  const o = pdfOpts(); if (!o) return;
+  const main = results.find(r => r.isMain) || results[0];
   $("report").innerHTML = buildReport(o);
   try { rpToc(o); } catch(e){}
   const root = document.documentElement, prevTheme = root.getAttribute("data-theme"), prevTitle = document.title;
@@ -6188,6 +6195,64 @@ function generatePdf(){
   window.addEventListener("afterprint", restore);
   const imgs = [...$("report").querySelectorAll("img")].map(im => im.complete ? null : new Promise(r => { im.onload = im.onerror = r; })).filter(Boolean);
   Promise.all([document.fonts ? document.fonts.ready : null, ...imgs]).then(() => setTimeout(() => window.print(), 150));
+}
+
+// Raport jako jeden plik .html do wysłania klientowi: ta sama treść co w PDF, ale bez okna drukowania.
+// Plik jest samodzielny — style aplikacji idą w środku, wykresy są inline'owym SVG, logo to data URL.
+function exportReportHtml(){
+  const o = pdfOpts(); if (!o) return;
+  const main = results.find(r => r.isMain) || results[0];
+  let body;
+  // renderujemy tak samo jak do PDF (razem ze spisem treści), a dopiero potem przepisujemy gotowy HTML
+  try { $("report").innerHTML = buildReport(o); try { rpToc(o); } catch(e){} body = $("report").innerHTML; }
+  catch(e){ return setStatus("Nie udało się zbudować raportu: " + e.message, true); }
+  const css = [...document.querySelectorAll("style")].map(x => x.textContent).join("\n");
+  const fonts = (document.querySelector('link[href*="fonts.googleapis.com/css2"]') || {}).href || "";
+  const title = `RivalCore — raport — ${o.client || main.pageName} — ${iso(todayUTC)}`;
+  const standalone = `
+/* ---- tryb samodzielnego pliku: na ekranie pokazujemy strony jak kartki, w druku nic nie zmieniamy ---- */
+@media screen{
+  html,body{background:#ececed;margin:0;padding:0}
+  #report{display:block;padding:24px 12px 60px}
+  .rp-page,.rp-cover{width:210mm;max-width:100%;min-height:297mm;box-sizing:border-box;margin:0 auto 18px;
+    box-shadow:0 2px 18px rgba(0,0,0,.14);border-radius:2px;overflow:hidden}
+  .rp-page{padding:13mm 13mm 15mm;background:#fff}
+  /* okładka ma własne tło (ciemne albo jasne) — nie nadpisujemy go, tak jak w druku idzie bez marginesów */
+  .rp-cover{padding:0;display:flex;flex-direction:column}
+  .rcbar{position:sticky;top:0;z-index:50;display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+    padding:10px 16px;background:#111;color:#fff;font:500 13px/1.3 Montserrat,system-ui,sans-serif}
+  .rcbar b{font-weight:600}
+  .rcbar .sp{margin-left:auto;opacity:.65;font-size:12px}
+  .rcbar button{appearance:none;border:1px solid rgba(255,255,255,.35);background:transparent;color:#fff;
+    border-radius:999px;padding:6px 14px;font:600 11px/1.2 Montserrat,system-ui,sans-serif;letter-spacing:.06em;
+    text-transform:uppercase;cursor:pointer}
+  .rcbar button:hover{background:#fff;color:#111}
+  @media (max-width:800px){ .rp-page,.rp-cover{min-height:0;padding:16px} #report{padding:12px 8px 40px} }
+}
+@media print{ .rcbar{display:none!important} #report{display:block} }`;
+  const doc = `<!doctype html>
+<html lang="pl" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${esc(title)}</title>
+${fonts ? `<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="${esc(fonts)}" rel="stylesheet" crossorigin="anonymous">` : ""}
+<style>${css}</style>
+<style>${standalone}</style>
+</head>
+<body>
+<div class="rcbar"><b>${esc(o.client || main.pageName)}</b><span>· raport konkurencji · ${iso(todayUTC)}</span>
+  <button type="button" onclick="window.print()">Zapisz jako PDF</button>
+  <span class="sp">BeDigital · RivalCore</span></div>
+<div id="report">${body}</div>
+</body>
+</html>`;
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([doc], {type: "text/html;charset=utf-8"}));
+  a.download = `raport_${slug(o.client || main.pageName)}_${iso(todayUTC)}.html`; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  setStatus(`Zapisano raport HTML (${(doc.length / 1024 / 1024).toFixed(1)} MB). Plik jest samodzielny — wyślij go klientowi, otworzy się w każdej przeglądarce.`);
 }
 
 function buildReport(o){
@@ -7550,7 +7615,7 @@ regionChanged();
 // ================================================================ RivalCore 20 · moduły Meta + Google
 (() => {
 "use strict";
-const RCV = "25.4";
+const RCV = "25.5";
 const E = id => document.getElementById(id);
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const NF = new Intl.NumberFormat("pl-PL", {maximumFractionDigits: 0});
@@ -8978,7 +9043,7 @@ function init(){
   const pop = ex.querySelector(".expm-pop"); pop.id = "expMenuPop";
   const sec = k => pop.querySelector(`.expm-sec[data-sec="${k}"]`);
   const moveTo = (k, id, label) => { const b = E(id); if (!b) return null; b.classList.remove("ghost", "mini"); b.classList.add("expi"); if (label) b.textContent = label; sec(k).appendChild(b); return b; };
-  moveTo("wsp", "pdf"); moveTo("wsp", "deck");
+  moveTo("wsp", "pdf", "Raport — PDF albo HTML"); moveTo("wsp", "deck");
   moveTo("meta", "xlsx", "Excel — Meta"); moveTo("meta", "strat"); moveTo("meta", "ai", "Plik dla AI — Meta");
   moveTo("ses", "saveAn", "Zapisz analizę — Meta");
   // Google i Meta + Google: przyciski źródłowe powstają dopiero przy renderze zakładki, więc tu są odpowiedniki
