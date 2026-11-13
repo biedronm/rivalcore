@@ -6285,6 +6285,26 @@ function appReportShell(o, data, css, fonts){
       ["~" + fmtK(cbm ? cbm.totI : kp.wyswMiesSr), "szac. wyświetlenia / mies.", cbm ? "oba kanały" : "Meta"]];
   } catch(e){ return []; } })();
 
+  // „Jak czytać ten raport” na wejściu: bez tego 50 sekcji przytłacza, a objaśnienia przy liczbach
+  // nikt sam nie odkryje. Liczby rodzajów informacji bierzemy z faktycznej treści raportu.
+  const cnt = (() => { const c = {d: 0, c: 0, p: 0, x: 0}; const d = document.createElement("div");
+    d.innerHTML = S.map(x => x.html).join(""); d.querySelectorAll("[data-wk]").forEach(e => { const k = e.getAttribute("data-wk"); if (c[k] != null) c[k]++; });
+    return c; })();
+  const KINDS = [["d", "Czyste dane", "wartości wprost z API Meta i ze zbioru Google — listy reklam, zasięg, daty, formaty"],
+    ["c", "Obliczenia", "matematyka na tych danych: średnie, udziały, trendy, rankingi"],
+    ["p", "Poszlaki", "modele i progi: szacowany koszt, rabaty i argumenty wykryte w tekstach, testy A/B"],
+    ["x", "Dedukcja", "interpretacje narzędzia: wnioski, rekomendacje, brief"]];
+  const howto = `
+    <div class="rcread">
+      <p class="rclead">Ten raport pokazuje, co i jak intensywnie reklamuje ${esc(main.pageName)} oraz ${sel.length - 1 > 0 ? esc(String(sel.length - 1)) + " " + (sel.length - 1 === 1 ? "konkurent" : "konkurentów") : "jej konkurencja"} — w Meta${rcG() ? " i w Google Ads" : ""}. Nie pokazuje wyników reklam (Meta ani Google nie publikują wydatków, kliknięć ani sprzedaży), więc wszędzie, gdzie pada kwota, jest to <b>szacunek</b>, dobry do porównań między markami, nie do rozliczeń.</p>
+      <div class="rctip"><b>Każda liczba mówi, skąd się wzięła.</b> Najedź na nią kursorem (na telefonie: stuknij), a zobaczysz rachunek na prawdziwych danych z tej analizy — nie ogólny wzór. Takich objaśnień jest tu <b>${fmt(cnt.d + cnt.c + cnt.p + cnt.x)}</b>. Przyciskiem <i>Podświetl objaśnienia</i> u góry zaznaczysz wszystkie miejsca, które je mają.</div>
+      <div class="rckinds">${KINDS.map(([k, t, d]) => `<div class="rck" data-k="${k}"><div class="rck-h"><i></i>${esc(t)}</div><div class="rck-n">${fmt(cnt[k])} ${plPL(cnt[k], "miejsce", "miejsca", "miejsc")}</div><div class="rck-d">${esc(d)}</div></div>`).join("")}</div>
+      <p class="rchint">Po lewej jest spis sekcji. Zacznij od <b>Podsumowania</b> — tam jest wniosek i rekomendacje. Reszta to materiał dowodowy: porównanie marek, potem każda marka osobno${rcG() ? ", a na końcu Google i oba kanały razem" : ""}. Sekcje przełączasz też strzałkami ← →.</p>
+    </div>`;
+  S.unshift({id: "howto", grp: "Na start", label: "Jak czytać ten raport", html: howto});
+  grp.length = 0;
+  S.forEach(x => { let g = grp.find(y => y.name === x.grp); if (!g) grp.push(g = {name: x.grp, items: []}); g.items.push(x); });
+
   const nav = grp.map((g, gi) => `<div class="rcg"><div class="rcg-h">${esc(g.name)}</div>${
     g.items.map(x => `<a class="rcn" href="#${x.id}" data-go="${x.id}">${esc(x.label)}</a>`).join("")}</div>`).join("");
   const body = S.map((x, i) => `<section class="rcs" id="${x.id}"${i ? ' hidden' : ''}>
@@ -6329,6 +6349,37 @@ body{background:var(--bg);color:var(--text);font-family:Montserrat,system-ui,san
 .rckpi .s{margin-top:3px;font-size:11px;color:var(--muted);opacity:.85}
 .rcnote{margin:16px 0 0;padding:13px 16px;border:1px solid var(--line);border-left:3px solid var(--c0,#4884E2);border-radius:10px;background:var(--card);font-size:13.5px;line-height:1.55}
 .rcfoot{padding:22px 26px 50px;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
+/* Treść przejęta z układu wydruku ma twardo wpisane kolory (czarny tekst na białej kartce).
+   W ciemnym raporcie były niewidoczne — przywracamy kolory z motywu. */
+.rcs .rp-method li,.rcs .rp-mix .v,.rcs .rp-mixleg,.rcs .rp-toc li small{color:var(--text)}
+.rcs .rp-toc li b{color:var(--accent)}
+.rcs .rp-brandhead,.rcs .rp-read > div{background:var(--card);color:var(--text)}
+.rcs .rp-mix .bar{background:var(--track)}
+.rcs .rp-kicker,.rcs .rp-h{background:transparent;color:var(--text);padding:0;margin:0 0 10px}
+.rcs .rp-kicker{color:var(--accent);font:600 10px/1.3 var(--mono,ui-monospace,monospace);letter-spacing:.1em;text-transform:uppercase}
+.rcs .rp-top{display:none}
+.rcs{overflow-x:auto;-webkit-overflow-scrolling:touch}
+/* sekcja „Jak czytać” */
+.rcread{max-width:980px}
+.rclead{font-size:15.5px;line-height:1.6;margin:0 0 16px}
+.rctip{padding:14px 16px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;background:var(--card);font-size:13.5px;line-height:1.6}
+.rckinds{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:18px 0}
+.rck{padding:13px 15px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.rck-h{display:flex;align-items:center;gap:8px;font-weight:600;font-size:13.5px}
+.rck-h i{width:9px;height:9px;border-radius:2px;background:var(--k);flex:none}
+.rck-n{margin:4px 0 6px;font:600 10px/1.2 var(--mono,ui-monospace,monospace);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.rck-d{font-size:12.5px;line-height:1.5;color:var(--muted)}
+.rchint{font-size:13.5px;line-height:1.6;color:var(--muted)}
+/* wyszukiwarka sekcji */
+.rcfind{margin:0 0 14px;padding:0 10px}
+.rcfind input{width:100%;box-sizing:border-box;padding:8px 11px;border:1px solid var(--line-2);border-radius:9px;
+  background:var(--field);color:var(--text);font:400 13px/1.3 Montserrat,system-ui,sans-serif}
+.rcfind input::placeholder{color:var(--faint)}
+.rcg[hidden],.rcnav .rcg a.rcn[hidden]{display:none}
+/* podświetlenie miejsc z objaśnieniem */
+body.rcwhy .rcs [data-why]{box-shadow:inset 0 -1px 0 0 color-mix(in srgb,var(--accent) 55%,transparent)}
+body.rcwhy .rcs .blk[data-why],body.rcwhy .rcs .bk[data-why],body.rcwhy .rcs .kpi[data-why]{box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 45%,transparent)}
+.rcs [data-why]{cursor:help}
 @media (max-width:900px){
   .rcwrap{grid-template-columns:1fr}
   .rcnav{position:static;max-height:none;border-right:0;border-bottom:1px solid var(--line);display:flex;gap:10px;overflow-x:auto;overflow-y:hidden;padding:10px 12px}
@@ -6378,6 +6429,57 @@ body{background:var(--bg);color:var(--text);font-family:Montserrat,system-ui,san
   // Ctrl+P z klawiatury też ma dać cały raport, nie tylko otwartą sekcję
   window.addEventListener("beforeprint",showAll);
   window.addEventListener("afterprint",restore);
+
+  // wyszukiwarka sekcji
+  var find=document.getElementById("rcFind");
+  if(find) find.addEventListener("input",function(){
+    var q=find.value.trim().toLowerCase();
+    document.querySelectorAll(".rcg").forEach(function(g){
+      var any=false;
+      g.querySelectorAll(".rcn").forEach(function(a){
+        var hit=!q||(a.textContent+" "+g.querySelector(".rcg-h").textContent).toLowerCase().indexOf(q)>=0;
+        a.hidden=!hit; if(hit) any=true;
+      });
+      g.hidden=!any;
+    });
+  });
+
+  // podświetlenie miejsc, które mają objaśnienie
+  var wb=document.getElementById("rcWhy");
+  if(wb) wb.addEventListener("click",function(){
+    var on=document.body.classList.toggle("rcwhy");
+    wb.textContent=on?"Ukryj podświetlenie":"Podświetl objaśnienia";
+  });
+
+  // dymki „skąd ta liczba” — treść jest już w atrybutach data-why
+  var tip=document.getElementById("whyTip"), cur=null, hideT=null;
+  function place(el){
+    var r=el.getBoundingClientRect(), m=10;
+    tip.style.visibility="hidden"; tip.classList.add("on");
+    var tw=tip.offsetWidth, th=tip.offsetHeight;
+    var left=Math.min(Math.max(m,r.left+r.width/2-tw/2),window.innerWidth-tw-m);
+    var top=r.bottom+8, side="b";
+    if(top+th>window.innerHeight-m && r.top-th-8>m){ top=r.top-th-8; side="t"; }
+    tip.style.left=Math.round(left)+"px"; tip.style.top=Math.round(top)+"px";
+    tip.setAttribute("data-side",side); tip.style.visibility="";
+  }
+  function showTip(el){
+    clearTimeout(hideT); if(cur===el&&tip.classList.contains("on")) return;
+    cur=el; tip.innerHTML=el.getAttribute("data-why")||""; place(el); tip.classList.add("on");
+  }
+  function hideTip(){ hideT=setTimeout(function(){ tip.classList.remove("on"); cur=null; },90); }
+  var touch=matchMedia("(hover:none)").matches;
+  if(!touch){
+    document.addEventListener("mouseover",function(e){ var el=e.target.closest&&e.target.closest("[data-why]"); if(el) showTip(el); });
+    document.addEventListener("mouseout",function(e){ var el=e.target.closest&&e.target.closest("[data-why]"); if(el) hideTip(); });
+  }
+  document.addEventListener("click",function(e){
+    var el=e.target.closest&&e.target.closest("[data-why]");
+    if(el){ if(cur===el&&tip.classList.contains("on")){ tip.classList.remove("on"); cur=null; } else showTip(el); return; }
+    tip.classList.remove("on"); cur=null;
+  });
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape"){ tip.classList.remove("on"); cur=null; } });
+  window.addEventListener("scroll",function(){ if(cur) place(cur); },{passive:true});
   show(location.hash.slice(1)||(secs[0]||{}).id,false);
 })();`;
 
@@ -6396,6 +6498,7 @@ ${fonts ? `<link rel="preconnect" href="https://fonts.googleapis.com"><link rel=
 <div class="rcbar">
   <span class="rcb-t">${esc(client)}</span><span class="rcb-s">${esc(title)} · ${iso(todayUTC)}</span>
   <span class="rcb-r">
+    <button type="button" id="rcWhy">Podświetl objaśnienia</button>
     <button type="button" id="rcTheme">Jasny motyw</button>
     <button type="button" id="rcPrint">Zapisz jako PDF</button>
   </span>
@@ -6407,9 +6510,10 @@ ${fonts ? `<link rel="preconnect" href="https://fonts.googleapis.com"><link rel=
   ${o.note ? `<div class="rcnote">${esc(o.note)}</div>` : ""}
 </div>
 <div class="rcwrap">
-  <nav class="rcnav">${nav}</nav>
+  <nav class="rcnav"><div class="rcfind"><input type="search" id="rcFind" placeholder="Szukaj sekcji…" autocomplete="off"></div>${nav}</nav>
   <main class="rcmain">${body}</main>
 </div>
+<div id="whyTip" role="tooltip"></div>
 <div class="rcfoot">Raport wygenerowany w RivalCore (BeDigital). Kwoty budżetów to szacunki z Biblioteki Reklam Meta i Centrum przejrzystości Google, nie dane o wydatkach. Strzałki ← → przełączają sekcje.</div>
 <script>${script}<\/script>
 </body>
@@ -7878,7 +7982,7 @@ regionChanged();
 // ================================================================ RivalCore 20 · moduły Meta + Google
 (() => {
 "use strict";
-const RCV = "25.7";
+const RCV = "25.8";
 const E = id => document.getElementById(id);
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const NF = new Intl.NumberFormat("pl-PL", {maximumFractionDigits: 0});
