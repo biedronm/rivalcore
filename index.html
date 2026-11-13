@@ -5668,8 +5668,9 @@ function openPdfPanel(){
     <div class="row" style="margin:14px 0 4px"><b style="margin-right:6px">Zawartość:</b><button class="ghost mini" id="pdfFull">Pełny raport</button><button class="ghost mini" id="pdfShort">Skrót dla klienta</button><button class="ghost mini" id="pdfExec" title="Okładka, raport w skrócie, rekomendacje, kanały razem, metodologia">Dla zarządu</button><button class="ghost mini" id="pdfNone">Odznacz wszystko</button></div>
     ${PDF_GROUPS.map(([g, items]) => `<h3>${g}</h3><div class="optgrid">${items.map(([k, label]) => `<label class="check" style="margin:0"><input type="checkbox" data-sec="${k}" ${secs.includes(k) ? "checked" : ""} ${k.startsWith("cmp_") && results.length < 2 ? "disabled" : ""}><span>${label}</span></label>`).join("")}</div>`).join("")}
     ${results.length > 1 ? `<h3>Marki w raporcie</h3><div class="optgrid">${results.map((r, i) => `<label class="check" style="margin:0"><input type="checkbox" data-brand="${r.uid}" checked><span><span class="dot" style="background:${color(i)}"></span>${esc(r.pageName)}</span></label>`).join("")}</div>` : ""}
-    <div class="row" style="margin-top:16px"><button id="pdfGo">Pobierz PDF</button><button class="ghost" id="pdfHtml" type="button">Raport HTML</button><span class="hint" id="pdfEst"></span></div>
-    <div class="hint" style="margin-top:6px">PDF otwiera okno drukowania. <b>Raport HTML</b> zapisuje jeden plik <code>.html</code>, który klient otwiera w przeglądarce — ten sam raport, bez drukowania, z własnym przyciskiem „Zapisz jako PDF”.</div>
+    <div class="row" style="margin-top:16px"><button id="pdfGo">Pobierz PDF</button><button class="ghost" id="pdfHtml" type="button">Raport HTML</button>
+      <select id="pdfHtmlMode" title="Wygląd raportu HTML"><option value="app">wygląd jak aplikacja (z menu)</option><option value="print">wygląd jak wydruk (kartki A4)</option></select><span class="hint" id="pdfEst"></span></div>
+    <div class="hint" style="margin-top:6px">PDF otwiera okno drukowania. <b>Raport HTML</b> zapisuje jeden plik <code>.html</code> do wysłania klientowi. W wersji <b>jak aplikacja</b> ma menu sekcji, przełącznik jasny/ciemny i wygląda jak samo narzędzie; w wersji <b>jak wydruk</b> to kartki A4 na ekranie. Obie mają przycisk „Zapisz jako PDF”.</div>
     <div class="hint">Otworzy się okno drukowania — jako drukarkę wybierz <b>„Zapisz jako PDF”</b>. Raport uwzględnia aktualne filtry, założenia kosztu i oznaczenia „Lupy detektywa” włączone na górze strony${activeMarks().length ? ` (teraz: ${activeMarks().map(k => MARKS[k][0].toLowerCase()).join(", ")})` : " (teraz wyłączone)"}. Najlepiej wygląda w Chrome lub Edge.</div>`;
   card.classList.remove("hidden");
   const est = () => { const s = [...card.querySelectorAll("input[data-sec]:checked")].map(c => c.dataset.sec); const nb = results.length > 1 ? card.querySelectorAll("input[data-brand]:checked").length : 1;
@@ -6220,6 +6221,201 @@ function generatePdf(){
   Promise.all([document.fonts ? document.fonts.ready : null, ...imgs]).then(() => setTimeout(() => window.print(), 150));
 }
 
+// Sekcje raportu "jak aplikacja" — ta sama treść co w PDF, ale pocięta na panele z nawigacją,
+// a nie na kartki A4. Każdy wpis: {id, grp (grupa w menu), label, html}.
+function appReportSections(o){
+  const sel = results.filter(r => o.brands.includes(r.uid));
+  const main = sel.find(r => r.isMain) || sel[0];
+  const has = k => o.secs.has(k);
+  const S = [], add = (id, grp, label, html) => { if (html && String(html).trim()) S.push({id, grp, label, html}); };
+  // wnętrze <section> wyjmujemy przez parser, nie regexem: usuwanie znaczników psuło strukturę
+  // i kolejne sekcje zagnieżdżały się w pierwszej
+  const inner = (html, drop) => { const d = document.createElement("div"); d.innerHTML = html;
+    const sec = d.querySelector("section"); const root = sec || d;
+    if (drop) root.querySelectorAll(drop).forEach(x => x.remove());
+    return root.innerHTML; };
+
+  if (has("exec") && sel.length > 1){ try { const ep = execPdfPage(sel, ""); if (ep) add("exec", "Podsumowanie", "Raport w skrócie", inner(ep, ".rp-top")); } catch(e){} }
+  if (has("summary")) try { add("summary", "Podsumowanie", "Najważniejsze wnioski",
+    blk("[c]Najważniejsze wnioski", sel.length > 1 ? insights(sel) : brandBullets(main))
+    + blk("[c]Marki w skrócie", `<div class="rp-scgrid">${sel.map(scoreCard).join("")}</div>`)); } catch(e){}
+  if (has("recs")) try { add("recs", "Podsumowanie", "Rekomendacje", blk("[x]Rekomendacje — co z tego wynika", recCards(recommendations(sel).slice(0, 8)))); } catch(e){}
+
+  for (const [k, l] of CMP_TABS) if (k !== "recs" && has("cmp_" + k))
+    try { add("cmp-" + k, "Porównanie marek" + (rcG() ? " · Meta" : ""), l, cmpPanel(k, sel)); } catch(e){}
+
+  const bt = BRAND_TABS.filter(([k]) => has("b_" + k));
+  if (bt.length) sel.forEach((r, i) => {
+    const topics = bt.filter(([k]) => k !== "social" || (r.polLoaded && r.pol && r.pol.n)).filter(([k]) => k !== "changes" || (r.changes && !r.changes.first));
+    topics.forEach(([k, l], j) => { try {
+      add(`b-${r.uid}-${k}`, r.pageName + (r.isMain ? " · Twoja marka" : "") + (rcG() ? " · Meta" : ""), l,
+        (j ? "" : `<div class="rp-brandhead">${brandHead(r, i)}</div>`) + brandPanel(k, r, i, true));
+    } catch(e){} });
+  });
+
+  const G = rcG();
+  if (G) try {
+    const multi = G.res.length > 1;
+    if (has("g_ins")) add("g-ins", "Google Ads", multi ? "Wnioski i marki" : esc(G.res[0].name), multi ? G.cmpTab("ins") : G.brandTab(G.res[0], "ov"));
+    if (has("g_sov") && multi) add("g-sov", "Google Ads", "Udział w głosie i budżet", G.cmpTab("sov"));
+    if (has("g_rz")){ const rz = document.getElementById("rzOut"); if (rz && rz.innerHTML.trim() && !rz.querySelector(".gempty")) add("g-rz", "Meta + Google", "Oba kanały razem", rz.innerHTML); }
+  } catch(e){}
+
+  // metodologię generuje buildReport — bierzemy ją stamtąd, żeby treść nie rozjechała się z PDF-em
+  if (has("method")) try {
+    add("method", "O raporcie", "Metodologia i zastrzeżenia", inner(buildReport({...o, secs: new Set(["method"])}), ".rp-top, h2.rp-h"));
+  } catch(e){}
+  return {S, sel, main};
+}
+
+// Powłoka raportu "jak aplikacja": sticky nagłówek, menu po lewej, jedna sekcja naraz,
+// przełącznik motywu i wydruk. Skrypt w środku jest celowo malutki i bez zależności.
+function appReportShell(o, data, css, fonts){
+  const {S, sel, main} = data;
+  const grp = [];
+  S.forEach(x => { let g = grp.find(y => y.name === x.grp); if (!g) grp.push(g = {name: x.grp, items: []}); g.items.push(x); });
+  const client = o.client || main.pageName;
+  const title = o.title || "Raport reklam konkurencji";
+  const kpi = (() => { try {
+    const cb = rcCombo(sel), cbm = cb && cb.of(main), kp = main.s;
+    const mny = v => v >= 1e6 ? (v / 1e6).toFixed(1).replace(".", ",") + " mln" : v >= 1e4 ? Math.round(v / 1e3) + " tys." : fmt(Math.round(v));
+    return [[main.idx.index + "/100", "indeks aktywności" + (rcG() ? " (Meta)" : ""), esc(main.pageName)],
+      [fmt(cbm ? cbm.totA : kp.aktywne), "aktywnych reklam", cbm ? `Meta ${fmt(cbm.ma || 0)} · Google ${fmt(cbm.ga || 0)}` : ""],
+      ["~" + mny(cbm ? cbm.tot : kp.miesSr) + " zł", "szacowany koszt / mies.", cbm ? `Meta ${mny(cbm.mc)} + Google ${mny(cbm.gc)}` : "prognoza"],
+      ["~" + fmtK(cbm ? cbm.totI : kp.wyswMiesSr), "szac. wyświetlenia / mies.", cbm ? "oba kanały" : "Meta"]];
+  } catch(e){ return []; } })();
+
+  const nav = grp.map((g, gi) => `<div class="rcg"><div class="rcg-h">${esc(g.name)}</div>${
+    g.items.map(x => `<a class="rcn" href="#${x.id}" data-go="${x.id}">${esc(x.label)}</a>`).join("")}</div>`).join("");
+  const body = S.map((x, i) => `<section class="rcs" id="${x.id}"${i ? ' hidden' : ''}>
+      <div class="rcs-h"><span class="rcs-g">${esc(x.grp)}</span><h2>${esc(x.label)}</h2></div>${x.html}</section>`).join("");
+
+  const extra = `
+/* ---------- powłoka raportu ---------- */
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:Montserrat,system-ui,sans-serif}
+.rcbar{position:sticky;top:0;z-index:60;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  padding:12px 22px;background:var(--card);border-bottom:1px solid var(--line);backdrop-filter:blur(8px)}
+.rcbar .rcb-t{font-weight:700;letter-spacing:-.01em}
+.rcbar .rcb-s{color:var(--muted);font-size:12.5px}
+.rcbar .rcb-r{margin-left:auto;display:flex;gap:8px;align-items:center}
+.rcbar button{appearance:none;cursor:pointer;border:1px solid var(--line-2);background:transparent;color:var(--text);
+  border-radius:999px;padding:7px 15px;font:600 10.5px/1 Montserrat,system-ui,sans-serif;letter-spacing:.07em;text-transform:uppercase}
+.rcbar button:hover{border-color:var(--text)}
+.rcwrap{display:grid;grid-template-columns:262px minmax(0,1fr);gap:0;align-items:start}
+/* nav i jego dzieci resetujemy wprost — aplikacja ma własne reguły dla <nav> i by je przejęły */
+.rcnav{display:block;position:sticky;top:57px;max-height:calc(100vh - 57px);overflow-y:auto;overflow-x:hidden;
+  padding:18px 14px 40px;border-right:1px solid var(--line);box-sizing:border-box;width:100%;flex:none;gap:0;background:transparent}
+.rcg{display:block;margin:0 0 16px;padding:0;border:0;background:transparent;flex:none;width:auto}
+.rcg-h{font:600 9.5px/1.3 var(--mono,ui-monospace,monospace);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:0 10px 6px}
+/* podbita specyficzność: reguły aplikacji dla <nav a> inaczej narzucają wersaliki i tło */
+.rcnav .rcg a.rcn{display:block;width:auto;margin:0;padding:7px 10px;border:0;border-radius:9px;background:transparent;
+  color:var(--text);text-decoration:none;font:400 13px/1.35 Montserrat,system-ui,sans-serif;letter-spacing:0;
+  text-transform:none;box-shadow:none;opacity:1}
+.rcnav .rcg a.rcn:hover{background:var(--card-2);color:var(--text)}
+.rcnav .rcg a.rcn.on{background:var(--text)!important;color:var(--bg)!important;font-weight:600}
+.rcnav .rcg a.rcn::before,.rcnav .rcg a.rcn::after{content:none!important}
+.rcmain{padding:22px 26px 70px;min-width:0}
+.rcs-h{margin:0 0 14px}
+.rcs-g{display:block;font:600 9.5px/1.3 var(--mono,ui-monospace,monospace);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.rcs-h h2{margin:0;font-size:25px;letter-spacing:-.02em}
+.rchero{padding:26px 26px 22px;border-bottom:1px solid var(--line)}
+.rchero h1{margin:0 0 6px;font-size:30px;letter-spacing:-.025em}
+.rchero .sub{color:var(--muted);font-size:13.5px}
+.rckpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-top:18px}
+.rckpi>div{padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+.rckpi .v{font-size:23px;font-weight:700;letter-spacing:-.02em}
+.rckpi .l{margin-top:4px;font:600 9.5px/1.3 var(--mono,ui-monospace,monospace);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.rckpi .s{margin-top:3px;font-size:11px;color:var(--muted);opacity:.85}
+.rcnote{margin:16px 0 0;padding:13px 16px;border:1px solid var(--line);border-left:3px solid var(--c0,#4884E2);border-radius:10px;background:var(--card);font-size:13.5px;line-height:1.55}
+.rcfoot{padding:22px 26px 50px;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
+@media (max-width:900px){
+  .rcwrap{grid-template-columns:1fr}
+  .rcnav{position:static;max-height:none;border-right:0;border-bottom:1px solid var(--line);display:flex;gap:10px;overflow-x:auto;overflow-y:hidden;padding:10px 12px}
+  .rcg{margin:0;flex:0 0 auto}.rcg-h{padding:0 0 4px}.rcn{white-space:nowrap}
+  .rcmain{padding:16px 12px 50px}
+  /* szeroka treść (układy z wydruku) przewija się wewnątrz sekcji, a nie całą stroną */
+  .rcs{overflow-x:auto;-webkit-overflow-scrolling:touch}
+}
+@media print{
+  .rcbar,.rcnav{display:none!important}
+  .rcwrap{display:block}.rcmain{padding:0}
+  .rcs{display:block!important;break-after:page;padding-top:6mm}
+  .rcs[hidden]{display:block!important}
+  .rchero{break-after:page}
+}`;
+
+  const script = `
+(function(){
+  var secs=[].slice.call(document.querySelectorAll(".rcs")), nav=[].slice.call(document.querySelectorAll(".rcn"));
+  function show(id,push){
+    var found=false;
+    secs.forEach(function(s){ var on=s.id===id; s.hidden=!on; if(on) found=true; });
+    if(!found && secs.length){ secs[0].hidden=false; id=secs[0].id; }
+    nav.forEach(function(a){ a.classList.toggle("on", a.dataset.go===id); });
+    var a=document.querySelector('.rcn[data-go="'+id+'"]'); if(a&&a.scrollIntoView) a.scrollIntoView({block:"nearest"});
+    window.scrollTo(0,0);
+    if(push&&history.replaceState) history.replaceState(null,"","#"+id);
+  }
+  nav.forEach(function(a){ a.addEventListener("click",function(e){ e.preventDefault(); show(a.dataset.go,true); }); });
+  window.addEventListener("hashchange",function(){ show(location.hash.slice(1),false); });
+  document.addEventListener("keydown",function(e){
+    if(e.key!=="ArrowLeft"&&e.key!=="ArrowRight") return;
+    if(/INPUT|TEXTAREA|SELECT/.test((e.target||{}).tagName||"")) return;
+    var i=secs.findIndex(function(s){return !s.hidden;}); if(i<0) return;
+    var j=e.key==="ArrowRight"?i+1:i-1; if(j<0||j>=secs.length) return; show(secs[j].id,true);
+  });
+  var t=document.getElementById("rcTheme");
+  if(t) t.addEventListener("click",function(){
+    var d=document.documentElement, light=d.getAttribute("data-theme")==="light";
+    d.setAttribute("data-theme", light?"dark":"light"); d.classList.toggle("light", !light);
+    t.textContent = light?"Jasny motyw":"Ciemny motyw";
+  });
+  var pr=document.getElementById("rcPrint");
+  function showAll(){ secs.forEach(function(s){s.hidden=false;}); }
+  function restore(){ show(location.hash.slice(1)||(secs[0]||{}).id,false); }
+  if(pr) pr.addEventListener("click",function(){ showAll(); window.print(); setTimeout(restore,600); });
+  // Ctrl+P z klawiatury też ma dać cały raport, nie tylko otwartą sekcję
+  window.addEventListener("beforeprint",showAll);
+  window.addEventListener("afterprint",restore);
+  show(location.hash.slice(1)||(secs[0]||{}).id,false);
+})();`;
+
+  return `<!doctype html>
+<html lang="pl" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${esc(title + " — " + client)}</title>
+${fonts ? `<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="${esc(fonts)}" rel="stylesheet" crossorigin="anonymous">` : ""}
+<style>${css}</style>
+<style>${extra}</style>
+</head>
+<body>
+<div class="rcbar">
+  <span class="rcb-t">${esc(client)}</span><span class="rcb-s">${esc(title)} · ${iso(todayUTC)}</span>
+  <span class="rcb-r">
+    <button type="button" id="rcTheme">Jasny motyw</button>
+    <button type="button" id="rcPrint">Zapisz jako PDF</button>
+  </span>
+</div>
+<div class="rchero">
+  <h1>${esc(title)}</h1>
+  <div class="sub">${esc(client)}${o.author ? " · " + esc(o.author) : ""} · ${esc(sel.map(r => r.pageName).join(", "))} · dane na ${iso(todayUTC)}</div>
+  ${kpi.length ? `<div class="rckpi">${kpi.map(([v, l, sub]) => `<div><div class="v">${esc(v)}</div><div class="l">${esc(l)}</div>${sub ? `<div class="s">${esc(sub)}</div>` : ""}</div>`).join("")}</div>` : ""}
+  ${o.note ? `<div class="rcnote">${esc(o.note)}</div>` : ""}
+</div>
+<div class="rcwrap">
+  <nav class="rcnav">${nav}</nav>
+  <main class="rcmain">${body}</main>
+</div>
+<div class="rcfoot">Raport wygenerowany w RivalCore (BeDigital). Kwoty budżetów to szacunki z Biblioteki Reklam Meta i Centrum przejrzystości Google, nie dane o wydatkach. Strzałki ← → przełączają sekcje.</div>
+<script>${script}<\/script>
+</body>
+</html>`;
+}
+
 // Raport jako jeden plik .html do wysłania klientowi: ta sama treść co w PDF, ale bez okna drukowania.
 // Plik jest samodzielny — style aplikacji idą w środku, wykresy są inline'owym SVG, logo to data URL.
 async function exportReportHtml(){
@@ -6231,15 +6427,35 @@ async function exportReportHtml(){
     setStatus("Buduję raport HTML…");
     await new Promise(r => setTimeout(r, 30));          // oddaj klatkę, żeby status zdążył się pokazać
 
-    let body;
-    try { $("report").innerHTML = buildReport(o); } catch(e){ return fail("nie udało się zbudować treści (" + e.message + ")"); }
-    try { rpToc(o); } catch(e){}
-    body = $("report").innerHTML;
-    if (!body || body.length < 500) return fail("treść raportu wyszła pusta — zaznacz sekcje i marki, potem spróbuj ponownie");
-
+    const mode = ($("pdfHtmlMode") || {}).value === "print" ? "print" : "app";
     const css = [...document.querySelectorAll("style")].map(x => x.textContent).join("\n");
     const fonts = (document.querySelector('link[href*="fonts.googleapis.com/css2"]') || {}).href || "";
     const title = `RivalCore — raport — ${o.client || main.pageName} — ${iso(todayUTC)}`;
+
+    let doc;
+    if (mode === "app"){
+      let data;
+      try { data = appReportSections(o); } catch(e){ return fail("nie udało się zbudować treści (" + e.message + ")"); }
+      if (!data.S.length) return fail("żadna z zaznaczonych sekcji nie dała treści — zaznacz inne i spróbuj ponownie");
+      doc = appReportShell(o, data, css, fonts);
+    } else {
+      try { doc = printReportDoc(o, main, css, fonts, title); }
+      catch(e){ return fail("nie udało się zbudować treści (" + e.message + ")"); }
+      if (!doc) return fail("treść raportu wyszła pusta — zaznacz sekcje i marki, potem spróbuj ponownie");
+    }
+    return deliverHtml(doc, o, main, btn, mode);
+  } catch(e){
+    fail((e && e.message ? e.message : String(e)) + ". Jeśli to się powtarza, zrób zrzut tego komunikatu.");
+    console.error("exportReportHtml", e);
+  }
+}
+
+// wersja "kartki A4 na ekranie" — zostaje dla tych, którzy wolą dokładnie to, co idzie do druku
+function printReportDoc(o, main, css, fonts, title){
+  $("report").innerHTML = buildReport(o);
+  try { rpToc(o); } catch(e){}
+  const body = $("report").innerHTML;
+  if (!body || body.length < 500) return null;
     const standalone = `
 /* ---- tryb samodzielnego pliku: na ekranie pokazujemy strony jak kartki, w druku nic nie zmieniamy ---- */
 @media screen{
@@ -6279,23 +6495,24 @@ ${fonts ? `<link rel="preconnect" href="https://fonts.googleapis.com"><link rel=
 </body>
 </html>`;
 
-    const mb = doc.length / 1048576;
-    const name = `raport_${slug(o.client || main.pageName)}_${iso(todayUTC)}.html`;
-    let url;
-    try { url = URL.createObjectURL(new Blob([doc], {type: "text/html;charset=utf-8"})); }
-    catch(e){ return fail("plik wyszedł za duży dla przeglądarki (" + mb.toFixed(1) + " MB). Odznacz część sekcji albo marek i spróbuj ponownie."); }
+  return doc;
+}
 
-    // kotwica MUSI być w dokumencie — część przeglądarek ignoruje klik w element poza DOM
-    const a = document.createElement("a");
-    a.href = url; a.download = name; a.rel = "noopener"; a.style.display = "none";
-    document.body.appendChild(a); a.click();
-    setTimeout(() => { a.remove(); URL.revokeObjectURL(url); }, 20000);
-    setStatus(`Zapisano raport HTML: ${name} (${mb.toFixed(1)} MB). Plik jest samodzielny — wyślij go klientowi, otworzy się w każdej przeglądarce.`);
-    if (btn) btn.disabled = false;
-  } catch(e){
-    fail((e && e.message ? e.message : String(e)) + ". Jeśli to się powtarza, zrób zrzut tego komunikatu.");
-    console.error("exportReportHtml", e);
-  }
+function deliverHtml(doc, o, main, btn, mode){
+  const fail = m => { setStatus("Raport HTML: " + m, true); if (btn) btn.disabled = false; };
+  const mb = doc.length / 1048576;
+  const name = `raport_${slug(o.client || main.pageName)}_${iso(todayUTC)}.html`;
+  let url;
+  try { url = URL.createObjectURL(new Blob([doc], {type: "text/html;charset=utf-8"})); }
+  catch(e){ return fail("plik wyszedł za duży dla przeglądarki (" + mb.toFixed(1) + " MB). Odznacz część sekcji albo marek i spróbuj ponownie."); }
+
+  // kotwica MUSI być w dokumencie — część przeglądarek ignoruje klik w element poza DOM
+  const a = document.createElement("a");
+  a.href = url; a.download = name; a.rel = "noopener"; a.style.display = "none";
+  document.body.appendChild(a); a.click();
+  setTimeout(() => { a.remove(); URL.revokeObjectURL(url); }, 20000);
+  setStatus(`Zapisano raport HTML (${mode === "app" ? "wygląd jak aplikacja" : "kartki A4"}): ${name} (${mb.toFixed(1)} MB). Plik jest samodzielny — wyślij go klientowi.`);
+  if (btn) btn.disabled = false;
 }
 
 function buildReport(o){
@@ -7661,7 +7878,7 @@ regionChanged();
 // ================================================================ RivalCore 20 · moduły Meta + Google
 (() => {
 "use strict";
-const RCV = "25.6";
+const RCV = "25.7";
 const E = id => document.getElementById(id);
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const NF = new Intl.NumberFormat("pl-PL", {maximumFractionDigits: 0});
