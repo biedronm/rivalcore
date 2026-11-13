@@ -1,15 +1,18 @@
 https://biedronm.github.io/rivalcore/#konkurencja
 
-https://biedronm.github.io/rivalcore/#konkurencja
-
 # RivalCore — README
 
 RivalCore to wewnętrzne narzędzie do analizy reklam marek i konkurencji z Biblioteki Reklam Meta (Facebook, Instagram, Messenger, Audience Network) i z Centrum przejrzystości reklam Google (Search, YouTube, sieć reklamowa), a od wersji 20 także wyników kont Google Ads naszych klientów. Jeden plik HTML — bez instalacji, bez serwera, bez opłat. Otwierasz w przeglądarce, wklejasz token, wpisujesz marki i dostajesz analizę z wykresami, raport PDF, prezentację PowerPoint, Excel oraz plik dla AI.
 
-**Aktualna wersja: 25.4 (12 listopada 2026).** Plik narzędzia nazywa się `index.html` (repozytorium `biedronm/rivalcore`, adres `https://biedronm.github.io/rivalcore/`). Wygląd ekranu, raportów PDF, prezentacji i grafik PNG jest zgodny z identyfikacją wizualną BeDigital.
+**Aktualna wersja: 25.9 (12 listopada 2026).** Plik narzędzia nazywa się `index.html` (repozytorium `biedronm/rivalcore`, adres `https://biedronm.github.io/rivalcore/`). Wygląd ekranu, raportów PDF, prezentacji i grafik PNG jest zgodny z identyfikacją wizualną BeDigital.
 
 ## Spis treści
 
+- [Co nowego? Wersja 25.9 · kalibracja na danych kont (profile branżowe)](#co-nowego-wersja-259--kalibracja-na-danych-kont-profile-branżowe)
+- [Co nowego? Wersja 25.8 · logo klienta i raport interaktywny, który opowiada](#co-nowego-wersja-258--logo-klienta-i-raport-interaktywny-który-opowiada)
+- [Co nowego? Wersja 25.7 · cena, copy, raport interaktywny, karty social](#co-nowego-wersja-257--cena-copy-raport-interaktywny-karty-social)
+- [Co nowego? Wersja 25.6 · strony docelowe, lejek, dynamika kreacji, konta Google](#co-nowego-wersja-256--strony-docelowe-lejek-dynamika-kreacji-konta-google)
+- [Co nowego? Wersja 25.5 · raport PDF z kompletem danych](#co-nowego-wersja-255--raport-pdf-z-kompletem-danych)
 - [Co nowego? Wersja 25.4 · spójne budżety Meta + Google](#co-nowego-wersja-254--spójne-budżety-meta--google)
 - [Co nowego? Wersja 25.0 · warstwa „co z tego wynika”](#co-nowego-wersja-250--warstwa-co-z-tego-wynika)
 - [Co nowego? Wersja 24.0 · nowy raport PDF](#co-nowego-wersja-240--nowy-raport-pdf)
@@ -30,6 +33,143 @@ RivalCore to wewnętrzne narzędzie do analizy reklam marek i konkurencji z Bibl
 - [11. Rozwiązywanie problemów](#11-rozwiązywanie-problemów)
 - [12. Prywatność i bezpieczeństwo](#12-prywatność-i-bezpieczeństwo)
 - [13. Najczęstsze pytania (FAQ)](#13-najczęstsze-pytania-faq)
+
+## Co nowego? Wersja 25.9 · kalibracja na danych kont (profile branżowe)
+
+Szacunki budżetów konkurencji można teraz liczyć na **realnych stawkach z kont, którymi zarządzamy**, a nie na tabeli benchmarków. To największa poprawa trafności kwot: benchmark to średnia rynkowa, a profil to CPM i częstotliwość z tej samej branży i z ostatnich 30 albo 90 dni.
+
+**Gdzie:** moduł „Wyniki kont” → karta **„Kalibracja szacunków konkurencji”**.
+
+**Google Ads:** z danych skryptu (zakładka RC_dane) narzędzie liczy realny **CPM = koszt ÷ wyświetlenia × 1000** dla każdego konta i formatu: Search (tekst), Display i Demand Gen (grafika), YouTube (wideo). Performance Max i Shopping są pomijane, bo mieszają formaty (widać, ile kosztu pominięto). Liczą się konta z co najmniej 10 tys. wyświetleń w danym formacie.
+
+**Meta:** przycisk „Wczytaj eksport z Menedżera reklam”. W Menedżerze reklam: Raporty → raport tabelaryczny na poziomie konta albo kampanii, okres 30 lub 90 dni, kolumny **Nazwa konta, Wydana kwota (PLN), Wyświetlenia, Zasięg, Częstotliwość** → Eksportuj (.csv albo .xlsx; nagłówki po polsku lub po angielsku). Narzędzie liczy CPM i częstotliwość dla każdego konta (częstotliwość z kolumny albo wyświetlenia ÷ zasięg w każdym wierszu, ważona wyświetleniami).
+
+**Profil branży:** zaznaczasz konta z tej samej branży, wpisujesz nazwę (np. „Moda damska”) i zapisujesz. Profil to średnia ważona wyświetleniami (łączny koszt ÷ łączne wyświetlenia) z zakresem: ±15% wokół średniej, a gdy są co najmniej 3 konta i wyraźnie się różnią — szerzej, do skrajnych kont (maks. 0,6–1,6× średniej). Częstotliwość ±20%.
+
+**Zastosowanie:** przyciskiem „Zastosuj” w tabeli profili albo w formularzu analizy (Ustawienia zaawansowane → „Kalibracja z danych kont (profil branży)”). Profil ustawia:
+- w Mecie globalny CPM i częstotliwość (zamiast benchmarku),
+- w Google CPM dla tekstu, grafiki i wideo.
+
+Wszystkie szacunki — zakładki Meta i Google, „Meta + Google”, PDF, Excel, prezentacja, raport interaktywny — przeliczają się od razu, bez ponownego pobierania. Założenia w metodologii PDF, w dymkach „Skąd to?” i w narracji raportu interaktywnego mówią wprost: „kalibracja z danych kont: profil „Moda damska” (3 konta Meta, 30 dni, dane z …) — CPM ~15,2 zł, częstotliwość ~2,38”. Ręczna zmiana CPM albo wybór benchmarku wyłącza profil. Założenia per marka (punkt 2) nadal mają pierwszeństwo przed profilem.
+
+**Zespół:** profile zapisują się w przeglądarce. „Eksport profili (.json)” i „Import profili” przenoszą je między komputerami — jeden plik profili dla całej agencji.
+
+**Ograniczenia:** profil jest tak dobry, jak konta, z których powstał — warto brać konta z tej samej branży i podobnego modelu (e-commerce vs leady). CPM Meta z Menedżera reklam obejmuje wszystkie umiejscowienia i kraje kampanii, a szacunek konkurencji liczy zasięg w UE z Biblioteki Reklam; przy kampaniach głównie poza UE profil może zawyżać lub zaniżać kwoty.
+
+**Prostsze uzupełnianie danych (25.9):**
+- Formularz analizy prowadzi krokami zgodnymi z paskiem u góry: 1 źródła i dostęp → 2a Twoja marka → 2b konkurenci → 3 konta Google (gdy Google jest włączone) → 4 obszar emisji **i okres** → Analizuj. **Okres analizy** jest teraz w kroku 4, a nie schowany w „Ustawieniach zaawansowanych”.
+- Brakujące pola nie świecą na czerwono, zanim zaczniesz. Po kliknięciu „Analizuj” z brakami pojawia się jedna wyraźna ramka „Zanim uruchomisz analizę, uzupełnij: 1. … 2. …” z linkami do pól, a widok przewija się do pierwszego brakującego pola (zamiast dwóch powtórzonych komunikatów).
+- Kalibracja ma pasek 4 kroków (Google → Meta → zapisz profil → zastosuj) i numery przy każdej części.
+
+**Test (12.11.2026):** dane przykładowe modułu Wyniki kont (3 konta Google) i eksport Meta z 3 kontami → profil zapisany, zastosowany z formularza analizy; budżety wszystkich marek przeliczone w Meta i Google, „Meta + Google” zgodne z zakładką Meta co do złotówki, metodologia PDF z opisem profilu, ręczna zmiana CPM wyłącza profil, 0 błędów.
+
+## Co nowego? Wersja 25.8 · logo klienta i raport interaktywny, który opowiada
+
+### Logo klienta wszędzie
+- „Eksport i zapis” → **Logo klienta**: wybierasz plik raz (PNG, JPG, SVG, WebP), narzędzie zmniejsza go do rozsądnego rozmiaru i zapamiętuje w przeglądarce. Ponowne kliknięcie pozwala usunąć logo.
+- Logo pojawia się: na okładce **i w nagłówku każdej strony raportu PDF**, w prezentacji PPTX, na **grafikach PNG** i w pakiecie do strategii, na **kartach social 4:5 / 1:1** oraz w nagłówku **raportu interaktywnego**. Logo wybrane w panelu PDF albo prezentacji też staje się logo klienta.
+
+### Raport interaktywny opowiada, a nie tylko pokazuje
+- Na górze raportu jest **narracja w 7 rozdziałach**: pozycja i budżet (Meta i łącznie z Google), tempo i sposób pracy z kreacjami, lejek, oferta i cena, jak piszą reklamy, które żyją najdłużej, co zrobić najpierw, jak czytać liczby. Każdy rozdział ma liczby z tej analizy, wykres, ramkę **„Co to znaczy”** (wniosek dla marki, np. porównanie lejka ze średnią konkurencji) i linijkę **„Skąd te liczby”**. Spis treści prowadzi do rozdziałów i do szczegółowych danych.
+- Nad każdą zakładką (Meta i Google) jest **przewodnik „O tej części raportu”**: co pokazuje, jak czytać, na co uważać.
+- Liczby w narracji są tymi samymi liczbami co w zakładkach (test sprawdza to automatycznie dla budżetów i lejka każdej marki).
+
+### Raport PDF
+- Duże bloki (tabele, listy, kafelki testów) mogą przejść na kolejną stronę zamiast zostawiać pół strony pustego miejsca; nagłówki trzymają się treści, a wiersze tabel się nie dzielą. Pełny raport testowy skrócił się z 329 do 311 stron.
+- Spis treści mieści się na jednej stronie także przy ponad 30 sekcjach (3 kolumny).
+- Na okładce kwoty nie łamią się na dwie linie.
+
+## Co nowego? Wersja 25.7 · cena, copy, raport interaktywny, karty social
+
+### Psychologia ceny (zakładka marki „Oferty i ceny”, porównanie „Przekaz i oferty”)
+- **Końcówki cen:** udział cen kończących się na ,99 / ,95 / ,90, pełnych złotych na 9 (199 zł) i kwot okrągłych (200 zł). Przewaga 9-tek = ceny psychologiczne (fashion, elektronika), przewaga okrągłych = pozycjonowanie premium.
+- **Kotwice cenowe:** dwie ceny w jednym zdaniu („zamiast 499 zł teraz 349 zł”, „149 zł (zamiast 199 zł)”, „899 zł → 629 zł”, „było… jest…”). Średnia i mediana pozornej oszczędności w zł i %, lista fragmentów z liczbą reklam.
+- **BNPL Radar:** PayPo, Klarna, Twisto, BLIK Płacę później, PayU, raty bankowe (Santander, Alior, mBank, Credit Agricole, Inbank, Comfino), raty 0%, „kup teraz, zapłać później / za 30 dni”. Udział w reklamach, w evergreenach (≥ próg „żyje długo”) i w aktywnych. Samo słowo „raty” bez operatora i 0% nie jest liczone jako BNPL.
+- **„Najniższa cena z 30 dni”** (Omnibus): ile reklam to komunikuje.
+- Ramka z wnioskiem, np. „PayPo w 40% reklam evergreen — zdejmuje barierę wejścia przy wyższym koszyku”.
+
+### Anatomia copy (zakładka „Przekaz”, porównanie, brief kreatywny)
+- **Hook — pierwsze 125 znaków** (to, co widać przed „Zobacz więcej”): pytanie, liczba / cena / rabat, emoji na początku, WIELKIE LITERY, zwykłe zdanie.
+- **Formatowanie:** krótki tekst, lista punktowana (≥3 linie zaczynające się od emoji lub punktora), akapity, „ściana tekstu”; mediana linii, długości i emoji na reklamę.
+- **Czytelność FOG** (uproszczony dla polskiego): 0,4 × (średnia długość zdania + 100 × udział słów z co najmniej 4 sylabami). Poniżej 10 = prosty język korzyści, powyżej 13 = długie zdania i żargon.
+- Wszystko w trzech kolumnach: wszystkie reklamy, żyjące ≥ progu, wyłączone ≤7 dni. W briefie kreatywnym nowy blok „Anatomia copy reklam, które żyją długo” z gotową wytyczną (np. „pytanie + emoji w pierwszej linii, 4 krótkie punkty”).
+- Linie liczone z oryginalnego tekstu reklamy. Analizy zapisane przed 25.7 nie mają podziału na linie — formatowanie wyjdzie dla nich jako „jeden blok”.
+
+### Raport interaktywny (.html) dla klienta
+- „Eksport i zapis” → **Raport interaktywny (.html)**. Powstaje jeden plik z wynikami Meta, Google i „Meta + Google”. Klient otwiera go dwuklikiem: bez internetu, tokenu i wczytywania plików.
+- Działają zakładki, przełączanie marek, porównanie, filtry wyników, Lupa detektywa i dymki „Skąd to?”.
+- Tryb tylko do odczytu: ukryte są formularz analizy, Połączenia, Wyniki kont, menu eksportu, przyciski korekt rabatów i argumentów, słownik, założenia kosztu i przyciski PNG. Zmiany nie zapisują się w przeglądarce klienta.
+- Plik nie zawiera tokenu Meta, ID projektu ani klienta OAuth — eksport sprawdza to przed zapisem i przerywa, gdyby coś takiego trafiło do danych. Kod aplikacji jest w pliku (ukryty, nie usunięty), bo to on rysuje wyniki.
+- Eksport działa, gdy RivalCore jest otwarty z https:// (GitHub Pages) albo lokalnego serwera. Z pliku na dysku przeglądarka nie pozwala odczytać kodu strony — narzędzie wtedy to powie.
+- Rozmiar: ok. 2–3 MB dla 4 marek.
+
+### Karty do social media i wektory
+- Przy każdym wykresie obok „PNG” są przyciski **4:5** (LinkedIn, Instagram, 1080 × 1350 px) i **1:1** (1080 × 1080 px). Karta ma tytuł, nazwę zakładki, logo i podpis źródła; nazwy marek są zamienione na „Twoja marka”, „Konkurent A”, „Konkurent B”… (także w legendach i na osiach), linki do reklam usunięte. Duży wykres jest skalowany, żeby zmieścił się na karcie.
+- „Pakiet do strategii” → „Dodatkowe formaty”: karty 4:5 / 1:1 / obie z wykresów porównania (anonimizacja do wyłączenia) oraz **wersje SVG** wykresów liniowych i osi czasu — prawdziwy wektor ze stylami wpisanymi w elementy (otworzysz w Illustratorze, Figmie, PowerPoincie). Tabele i wykresy zbudowane z bloków HTML zostają w PNG.
+
+## Co nowego? Wersja 25.6 · strony docelowe, lejek, dynamika kreacji, konta Google
+
+### Strony docelowe i lejek (nowa zakładka marki i porównania)
+- Ścieżka strony docelowej z **linku w treści reklamy** (pełny adres, razem z UTM) albo z **linku wyświetlanego** pod reklamą.
+- **Typ strony:** strona główna, kategoria / kolekcja, karta produktu, landing promocyjny, formularz / lead, treść (blog), marketplace, sklep z aplikacjami, profil społecznościowy. Gdy znamy tylko domenę — „znana tylko domena”; narzędzie nie zgaduje.
+- **Etap lejka:** wizerunek / prospecting, rozważanie, sprzedaż / performance, nieustalone. Kolejność źródeł: nazwa kampanii w UTM (np. prospecting, remarketing, dpa) → reklama katalogowa (szablon produktu w tekście) → typ strony → oferta, cena lub rabat w tekście. Tabela „Skąd etap” pokazuje, ile reklam oceniono którym sposobem.
+- **Podział budżetu na etapy:** udział w dziennym zasięgu aktywnych reklam × „Budżet / mies.” marki — te same kwoty co w zakładce Meta.
+- Domeny docelowe, najczęstsze ścieżki, parametry UTM (utm_campaign, źródło / medium), pokrycie („ścieżka znana dla X% reklam”).
+- **Ograniczenie:** Meta Ad Library API nie podaje adresu docelowego reklamy (ani `ad_snapshot_url` go nie zawiera). Pełną ścieżkę i UTM widać tylko wtedy, gdy marka wkleja link do tekstu albo link wyświetlany ma podstronę. Kolumna „Znana ścieżka” mówi, na ile ocena opiera się na tekście reklamy.
+
+### Dynamika kreacji (nowa zakładka marki i porównania)
+- **Tempo (Ad Velocity):** nowe reklamy tygodniowo (12 tygodni), nowe koncepty miesięcznie (3 miesiące), **wymiana puli w 30 dni** (Creative Refresh Rate = nowe reklamy z 30 dni ÷ aktywne dziś).
+- **Skąd dzienny zasięg:** udział reklam w wieku 0–7, 8–14, 15–30, 31–60, 61–90, >90 dni. Model marki: **rotacja** (≥60% zasięgu z reklam do 30 dni), **evergreeny** (≥50% z reklam starszych niż 60 dni) albo mieszany — gotowe zdanie typu „utrzymuje zasięg rotacją: 9 nowych reklam tygodniowo”.
+- **Zmęczenie kreacji:** średni zasięg dzienny reklam żyjących 31–90 dni ÷ żyjących do 14 dni. Meta podaje tylko łączny zasięg reklamy, więc to przekrój przez reklamy o różnej długości życia, a nie krzywa jednej reklamy.
+- **Koncentracja zasięgu (Pareto):** współczynnik Giniego, udział 3 największych reklam, ile reklam daje 80% zasięgu, lista „killer-kreacji”.
+- **Duplikacja vs test:** reklamy z tym samym tekstem, nagłówkiem i domeną wystartowane w odstępie do 3 dni. Porównanie deklarowanego targetowania (wiek, płeć, lokalizacje) i rozkładu zasięgu wg wieku i płci. Różne targetowanie albo różnica odbiorców ≥30% = **duplikacja na grupy** (skalowanie horyzontalne); to samo targetowanie i różnica <15% = **test kreacji**. Wskaźnik duplikacji = grupy z duplikacją ÷ wszystkie grupy.
+
+### Kilka kont Google na markę
+- W bloku kont Google każde konto to osobny „chip” z nazwą, ID i krzyżykiem. **„+ konto Google”** dopisuje kolejne konto (ID AR… albo link), „wybierz” na liście znalezionych też dopisuje, zamiast podmieniać. Konta jednej marki liczą się razem. Marka z kilkoma kontami Meta: jak dotąd „+ konto” (do 10).
+
+### Eksporty
+- Excel: nowe arkusze „Strony docelowe”, „Lejek”, „Dynamika kreacji”, „Wiek reklam a zasięg”, „Duplikacja”, „Koncentracja zasięgu”, „Ceny i kotwice”, „Psychologia ceny”, „Anatomia copy” (same wartości, bez formuł).
+- PDF: nowe zakładki są sekcjami raportu (porównanie i profile marek), z pełnymi listami. Eksport dla AI ma sekcję o lejku, dynamice, cenach i copy.
+
+### Czego nie ma: teksty reklam Google
+Teksty i grafiki reklam Google są tylko na stronach Centrum przejrzystości, renderowanych skryptami. Publiczny zbiór w BigQuery ich nie zawiera, a Google nie udostępnia oficjalnego API z treścią reklam konkurencji. Automatyczne pobieranie ich ze stron Centrum przejrzystości (skrypt w przeglądarce albo serwer z przeglądarką bezgłową) to scraping serwisu Google, którego RivalCore nie robi. Dlatego „Co przeżywa”, „Wojna rabatowa”, kotwice, BNPL i anatomia copy nadal liczą tylko Metę i mówią to wprost.
+
+### Test działania (12.11.2026, wersje 25.7–25.8)
+Test end-to-end w Chromium na danych testowych podstawionych pod API Meta i BigQuery (4 marki, ok. 1700 reklam Meta, 630 kreacji Google, w tym linki z UTM, reklamy katalogowe, duplikaty na różne grupy, kotwice cenowe, BNPL, teksty wielolinijkowe i drugie konto Google jednej marki), w trzech trybach okresu. Sprawdzone i bez błędów:
+- 106 zakładek (Meta, Google, Meta + Google), w tym nowe — 0 błędów JavaScript, 0 wartości „NaN / undefined / null”;
+- PDF ze wszystkimi sekcjami (285–425 stron) — 0 elementów interaktywnych, 0 treści poza kartką;
+- Excel (3 pliki, 37 arkuszy), PPTX, eksport dla AI, pakiet do strategii z kartami 4:5 i 1:1 (1080 × 1350 / 1080 × 1080 px) i plikami SVG — 0 złych komórek i tekstów;
+- raport interaktywny otwarty z dysku przy zablokowanym internecie — działa, przełącza zakładki i marki, ma narrację (7 rozdziałów), przewodnik nad zakładkami Meta i Google i logo klienta, 0 błędów, brak tokenów i ID dostępu w pliku, przyciski korekt i menu eksportu ukryte; kwoty i udziały lejka w narracji zgadzają się z zakładkami;
+- anonimizacja kart — żadna nazwa marki nie zostaje;
+- dodanie i usunięcie drugiego konta Google — wyniki marki sumują oba konta, „Meta + Google” się aktualizuje;
+- zapis i wczytanie analizy, ręczna korekta rabatu (widoczna w PDF i po wczytaniu), spójność kwot Meta i Google między zakładkami, PDF, Excelem i PPTX.
+Test nie zastępuje sprawdzenia na prawdziwym tokenie: dane testowe nie oddają wszystkich nietypowych przypadków z API.
+
+## Co nowego? Wersja 25.5 · raport PDF z kompletem danych
+
+Raport PDF to kartka papieru, więc nie ma w nim już nic „do klikania”, a zamiast skrótów pokazuje pełne dane. Jest przez to dłuższy (dla 4 marek z Google ok. 250–350 stron przy pełnym zestawie sekcji). Do wysyłki nadal służą zestawy „Skrót dla klienta” i „Dla zarządu” albo prezentacja PPTX.
+
+**Bez elementów interaktywnych**
+- Z PDF znikają przyciski, pola, suwaki, przełączniki, wyszukiwarki i formularze (ważne daty, słownik argumentów, dopasowanie marek, korekty rabatów). Zwinięte bloki są rozwinięte.
+- Symulator budżetu jest w PDF tabelą scenariuszy: stan dziś, wyprzedzenie marki tuż wyżej (z nazwą), zrównanie z liderem (z nazwą), udział 25% i 40% — z budżetem, zmianą, udziałem w głosie i pozycją.
+- Zdania z instrukcjami obsługi ekranu („kliknij”, „najedź”, „zmienisz w filtrze”) są usuwane, a odwołania do zakładek zamienione na nazwy sekcji raportu.
+
+**Pełne dane zamiast „pokazano 12 z…”**
+- Wszystkie evergreeny, wszystkie wykryte testy A/B (w profilu marki), wszystkie rekomendacje, wszystkie kreacje Google w okresie.
+- „Wykryte rabaty — pełna lista z uzasadnieniem”: uznane i odrzucone pozycje z decyzją, fragmentem reklamy i powodem; ręczne korekty są uwzględnione.
+- Liczby, które na ekranie są tylko w dymkach, PDF wypisuje pod wykresem jako „Dokładne wartości” (z nazwą marki). Wojna rabatowa ma dodatkowo tabelę tygodni z rabatami (reklamy z rabatem / aktywne, mediana i maks.), a podział budżetu między kanały — tabelę tydzień po tygodniu.
+- Google w PDF: wszystkie zakładki porównania (wnioski, udział w głosie, okres do okresu, kreacje, platformy i kraje, kalendarz, rankingi) oraz profile marek w Google (przegląd, budżet, kreacje, platformy, kalendarz, konta i płatnicy). Nowe sekcje są domyślnie zaznaczone.
+
+**Czytelność i spójność**
+- Siatka „Rabaty tydzień po tygodniu” w PDF jest dzielona na bloki po 26 tygodni i mieści się na kartce; nazwy marek nie są ucinane.
+- Spis treści mieści się na jednej stronie; opis indeksu aktywności poprawiony (indeks nie zawiera budżetu).
+- Jedna reguła skracania kwot w całym narzędziu (ekran, PDF, PPTX): 3 cyfry znaczące — „10,5 tys.”, „167 tys.”, „1,1 mln”. Wcześniej ta sama kwota bywała „10 tys.” w jednym miejscu i „10,5 tys.” w innym.
+- Gdy marki nie ma w analizie Google, okładka i „Kanały razem” piszą „tylko Meta” zamiast „+ Google 0 zł”.
+- Eksport dla AI: brak danych opisany jako „b.d.” (wcześniej mogło pojawić się „null”).
+
+**Test działania (12.11.2026)**
+
+Przed wydaniem narzędzie przeszło test end-to-end w przeglądarce Chromium na danych testowych podstawionych pod API Meta i BigQuery (4 marki, 1600 reklam Meta, 590 kreacji Google), w trzech trybach okresu: cała historia, ostatnie 3 miesiące, poprzedni miesiąc. Sprawdzone: 96 zakładek (Meta, Google, Meta + Google), raport PDF ze wszystkimi sekcjami, Excel (3 pliki), PPTX, eksport dla AI, pakiet do strategii (264 PNG), zapis i wczytanie analizy, ręczna korekta rabatu i jej obecność w PDF. Wynik: 0 błędów JavaScript, 0 wartości „NaN / undefined / null” w wynikach i plikach, 0 elementów interaktywnych w PDF, 0 treści wychodzących poza kartkę, te same kwoty Meta i Google we wszystkich zakładkach, PDF, Excelu i PPTX. Test nie zastępuje sprawdzenia na prawdziwym tokenie — dane testowe nie oddają wszystkich nietypowych przypadków z API.
 
 ## Co nowego? Wersja 25.4 · spójne budżety Meta + Google
 
@@ -280,11 +420,13 @@ Na górze wybierasz Porównanie albo konkretną markę (liczba obok nazwy to ind
 | Oś czasu | Starty reklam, szacowany budżet tygodniowy i fale rabatów na jednym wykresie + lista „Co się działo” |
 | Prawdopodobny budżet | Przedziały wydatków (99 / 95 / 90 / 80 / 50%), rozkład, kalkulator „jakie są szanse, że wydaje więcej niż X zł” |
 | Kreacje i testy | % reklam wyłączanych w ≤7 dni, reklamy równoległe, DCO, formaty, platformy, długość życia, evergreeny |
+| Dynamika kreacji | Tempo nowych reklam i konceptów, wymiana puli, skąd dzienny zasięg (wiek reklam), model rotacja / evergreeny, zmęczenie kreacji, koncentracja zasięgu (Gini, top 3), duplikacja vs test |
 | Kampanie | Koncepty kreatywne i fale startów |
 | Przekaz | Ton, CTA, emoji, długość tekstów, najczęstsze słowa i hasła, mechaniki, strony docelowe, nagłówki |
+| Strony docelowe i lejek | Typ strony docelowej, etap lejka z podziałem budżetu, domeny, ścieżki, UTM, pokrycie danych |
 | Co przeżywa | Argumenty reklam a przeżywalność, słowa reklam długich i krótkich, co zostawili i co wyłączyli, detektor testów A/B, **lista argumentów do korekty i słownik** |
 | Brief kreatywny | Stawiaj na / Uważaj / Język / Oferta / Do kogo / trzy koncepty, „Kopiuj brief” |
-| Oferty i ceny | Rabaty, ceny, mechaniki promocyjne, rabaty tydzień po tygodniu, zagrania promocyjne, **lista wykrytych rabatów do weryfikacji** |
+| Oferty i ceny | Rabaty, ceny, mechaniki promocyjne, rabaty tydzień po tygodniu, zagrania promocyjne, **lista wykrytych rabatów do weryfikacji**, psychologia ceny: końcówki, kotwice cenowe, BNPL, „najniższa cena z 30 dni” |
 | Odbiorcy | Piramida wieku i płci, kraje, targetowanie, lokalizacje, płatnik i beneficjent, **argumenty wg grup odbiorców** |
 | Kalendarz | Mapa cieplna startów, dzień tygodnia startu, aktywność przed ważnymi datami |
 | Zmiany | Co nowego od poprzedniej analizy |
@@ -300,7 +442,9 @@ Pod nagłówkiem „Porównanie z konkurencją” są przyciski „Porównuj:”
 | Udział w głosie | Budżety z przedziałami, udziały w wydatkach / reklamach / zasięgu, symulator budżetu |
 | Prawdopodobny budżet | Budżety wszystkich marek obok siebie i „piramidka” 50–99% |
 | Kreacje i testy | Formaty, testowanie, koncepty, DCO, evergreeny, platformy |
-| Przekaz i oferty | „Konkurencja mówi, Ty nie”, Twoje wyróżniki, oferty, rabaty, ceny, CTA |
+| Dynamika kreacji | Tempo, model utrzymywania zasięgu, zmęczenie, Gini, duplikacja — marka obok marki |
+| Przekaz i oferty | „Konkurencja mówi, Ty nie”, Twoje wyróżniki, oferty, rabaty, ceny, CTA, psychologia ceny (końcówki, kotwice, BNPL), anatomia copy |
+| Strony docelowe i lejek | Etap lejka i udział w budżecie, typy stron, domeny — marka obok marki |
 | Odbiorcy | Struktura wieku, luki demograficzne, lokalizacje |
 | Kalendarz | Tygodniowa oś startów wszystkich marek z ważnymi datami |
 | Co przeżywa | Argumenty × marki, słowa, testy A/B marka obok marki |
