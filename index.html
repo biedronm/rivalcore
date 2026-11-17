@@ -5094,23 +5094,26 @@ function sovForecastBlock(list){
   const pad = Array(SOV_FWD).fill(null);
   const clamp = v => v == null ? null : Math.max(0, Math.min(100, v));
   const series = list.map((r, i) => ({name: r.pageName, color: color(i), values: [...d.sh[i], ...pad]}));
+  const xs = k => SOV_FIT - 1 + k;                                     // pozycja w oknie dopasowania
+  // prognozę rysujemy dla każdej marki, która ma dość tygodni z danymi — inaczej wykres mówiłby tylko o jednej
+  list.forEach((r, i) => { const ff = fits[i]; if (!ff) return;
+    const head = Array(SOV_HIST - 1).fill(null).concat([d.sh[i][SOV_HIST - 1]]);
+    series.push({name: "", color: color(i), dash: true,
+      values: [...head, ...Array.from({length: SOV_FWD}, (_, k) => clamp(ff.at(xs(k + 1))))]}); });
   if (f){
-    const xs = k => SOV_FIT - 1 + k;                                   // pozycja w oknie dopasowania
-    const proj = Array.from({length: SOV_FWD}, (_, k) => clamp(f.at(xs(k + 1))));
-    const head = Array(SOV_HIST - 1).fill(null).concat([d.sh[fi][SOV_HIST - 1]]);
-    series.push({name: `${list[fi].pageName} — prognoza`, color: color(fi), dash: true, values: [...head, ...proj]});
-    series.push({name: "pasmo 80%", color: "var(--muted)", dash: true, w: 1,
-      values: [...Array(SOV_HIST).fill(null), ...Array.from({length: SOV_FWD}, (_, k) => clamp(f.at(xs(k + 1)) + f.band(xs(k + 1))))]});
-    series.push({name: "", color: "var(--muted)", dash: true, w: 1,
-      values: [...Array(SOV_HIST).fill(null), ...Array.from({length: SOV_FWD}, (_, k) => clamp(f.at(xs(k + 1)) - f.band(xs(k + 1))))]});
+    // pasmo tylko dla marki głównej — przy każdej marce wykres zrobiłby się nieczytelny
+    const bnd = sg => [...Array(SOV_HIST).fill(null), ...Array.from({length: SOV_FWD}, (_, k) => clamp(f.at(xs(k + 1)) + sg * f.band(xs(k + 1))))];
+    series.push({name: `pasmo 80% — ${list[fi].pageName}`, color: "var(--muted)", dash: true, w: 1, values: bnd(1)});
+    series.push({name: "", color: "var(--muted)", dash: true, w: 1, values: bnd(-1)});
   }
+  series.push({name: "linia przerywana = prognoza", color: "var(--muted)", dash: true, values: labels.map(() => null)});
   const now = i => d.sh[i][SOV_HIST - 1];
   const rows = list.map((r, i) => { const ff = fits[i]; const x = SOV_FIT - 1 + SOV_FWD;
     return {r, i, now: now(i), per: ff ? ff.b : null, end: ff ? clamp(ff.at(x)) : null,
       lo: ff ? clamp(ff.at(x) - ff.band(x)) : null, hi: ff ? clamp(ff.at(x) + ff.band(x)) : null}; });
   const me = rows[fi];
   const lead = me.per == null ? "" :
-    `<b>${esc(list[fi].pageName)}</b> ma dziś <b>${pct1(me.now, 100)}%</b> udziału w szacowanych wyświetleniach. Przy utrzymaniu tempa z ostatnich ${SOV_FIT} tygodni (${me.per >= 0 ? "+" : "−"}${Math.abs(me.per).toFixed(2).replace(".", ",")} pp tygodniowo) za ${SOV_FWD} tygodni byłoby to <b>${pct1(me.end, 100)}%</b>, a z pasmem 80%: <b>${pct1(me.lo, 100)}–${pct1(me.hi, 100)}%</b>.`;
+    `<b>${esc(list[fi].pageName)}</b> ma dziś <b>${pct1(me.now, 100)}%</b> udziału w szacowanych wyświetleniach. Przy utrzymaniu tempa z ostatnich ${SOV_FIT} tygodni (${me.per >= 0 ? "+" : "−"}${Math.abs(me.per).toFixed(2).replace(".", ",")} pp tygodniowo) za ${SOV_FWD} tygodni byłoby to <b>${pct1(me.end, 100)}%</b>, a z pasmem 80%: <b>${pct1(me.lo, 100)}–${pct1(me.hi, 100)}%</b>. Przerywane linie pokazują to samo wyliczenie dla pozostałych marek; pasmo rysujemy tylko dla ${list[fi].isMain ? "Twojej marki" : "marki prowadzącej"}, żeby wykres dało się czytać.`;
   const tbl = `<div class="gtw"><table class="gt"><thead><tr><th>Marka</th><th class="n">Udział dziś</th><th class="n">Tempo (pp / tydz.)</th><th class="n">Za ${SOV_FWD} tyg.</th><th class="n">Pasmo 80%</th></tr></thead><tbody>
     ${rows.map(x => `<tr><td><span class="dot" style="background:${color(x.i)}"></span>${esc(x.r.pageName)}${x.r.isMain ? " ★" : ""}</td>
       <td class="n">${x.now == null ? "—" : pct1(x.now, 100) + "%"}</td>
@@ -5121,7 +5124,7 @@ function sovForecastBlock(list){
   return blk("[p]Prognoza udziału w głosie z pasmem niepewności", `${lead ? see(lead) : ""}
     ${gLine(series, {labels, legend: true, h: 170, yKey: "pct", rng: false, title: "Prognoza udziału w głosie"})}
     <details class="fold"><summary>Tempo i prognoza dla każdej marki</summary>${tbl}</details>
-    <div class="note"><b>Jak to liczymy:</b> dla każdego tygodnia sumujemy „zasięgo-dni” każdej marki (zasięg reklamy rozłożony równo na dni emisji) i liczymy jej udział w sumie wszystkich analizowanych marek — to ta sama podstawa, co w szacunkach wyświetleń i kosztu. Przez ostatnie ${SOV_FIT} tygodni prowadzimy prostą regresję liniową i przedłużamy ją o ${SOV_FWD} tygodni. Pasmo 80% to przedział predykcji: im dalej w przyszłość, tym szerszy, bo rośnie niepewność. <b>Czego to nie jest:</b> prognozy rynku. To przedłużenie dotychczasowego tempa przy założeniu, że nikt nie zmieni strategii — każda nowa kampania konkurencji albo własne zwiększenie budżetu natychmiast ją unieważnia. Ostatni tydzień jest zawsze pełny (bieżący, niedokończony, pomijamy).</div>`);
+    <div class="note"><b>Jak to liczymy:</b> dla każdego tygodnia sumujemy „zasięgo-dni” każdej marki (zasięg reklamy rozłożony równo na dni emisji) i liczymy jej udział w sumie wszystkich analizowanych marek — to ta sama podstawa, co w szacunkach wyświetleń i kosztu. Przez ostatnie ${SOV_FIT} tygodni prowadzimy dla <b>każdej marki</b> prostą regresję liniową i przedłużamy ją o ${SOV_FWD} tygodni — to te przerywane linie w kolorach marek (marka z mniej niż czterema tygodniami danych prognozy nie dostaje). Pasmo 80% to przedział predykcji: im dalej w przyszłość, tym szerszy, bo rośnie niepewność. <b>Czego to nie jest:</b> prognozy rynku. To przedłużenie dotychczasowego tempa przy założeniu, że nikt nie zmieni strategii — każda nowa kampania konkurencji albo własne zwiększenie budżetu natychmiast ją unieważnia. Ostatni tydzień jest zawsze pełny (bieżący, niedokończony, pomijamy).</div>`);
 }
 C.sov = list => {
   const keys = list[0].months.map(m => m.key);
