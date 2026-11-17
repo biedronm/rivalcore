@@ -4941,8 +4941,10 @@ function googlePdfPages(has, top){
   const G = rcG(); if (!G) return [];
   const out = [], multi = G.res.length > 1, pg = (t, body) => `<section class="rp-page">${top}<div class="rp-kicker">Google Ads · Centrum przejrzystości reklam</div><h2 class="rp-h">${t}</h2><div class="rp-g">${body}</div></section>`;
   try {
-    if (has("g_ins")) out.push(pg(multi ? "Google: wnioski i marki" : "Google: " + esc(G.res[0].name), multi ? G.cmpTab("ins") : G.brandTab(G.res[0], "ov")));
-    if (has("g_sov") && multi) out.push(pg("Google: udział w głosie i budżet", G.cmpTab("sov")));
+    const gm = G.res.filter(x => x.n), gMulti = gm.length > 1, gcn = G.covNote ? G.covNote() : "";
+    for (const [k, l] of (G.CMP_TABS || [])) if (gMulti && has("g_" + k)){ const h = G.cmpTab(k); if (h && h.trim()) out.push(pg("Google: " + l.toLowerCase(), gcn + h)); }
+    for (const [k, l] of (G.BRAND_TABS || [])) if (has("gb_" + k))
+      for (const r of gm){ const h = G.brandTab(r, k); if (h && h.trim()) out.push(pg(`Google: ${esc(r.name)} — ${l.toLowerCase()}`, gcn + h)); }
     if (has("g_rz")){ const rz = document.getElementById("rzOut"); if (rz && rz.innerHTML.trim() && !rz.querySelector(".gempty")) out.push(`<section class="rp-page">${top}<div class="rp-kicker">Meta + Google · wszystkie kanały</div><h2 class="rp-h">Kanały razem</h2><div class="rp-g">${rz.innerHTML.replace(/<h2[\s\S]*?<\/h2>/, "")}</div></section>`); }
   } catch(e){}
   return out;
@@ -6250,10 +6252,19 @@ const PDF_GROUPS = [
   ["Ogólne", [["cover", "Okładka"], ["exec", "Raport w skrócie (1 strona dla zarządu)"], ["summary", "Podsumowanie i karty marek"], ["recs", "Rekomendacje"], ["method", "Metodologia i zastrzeżenia"]]],
   ["Porównanie marek", CMP_TABS.filter(([k]) => k !== "recs").map(([k, l]) => ["cmp_" + k, l])],
   ["Strony każdej marki", BRAND_TABS.map(([k, l]) => ["b_" + k, l])],
-  ["Google Ads (gdy jest analiza Google)", [["g_ins", "Google: wnioski i marki"], ["g_sov", "Google: udział w głosie i budżet"], ["g_rz", "Meta + Google: kanały razem"]]]
+  ["Google Ads (gdy jest analiza Google)", "G"]
 ];
-const PDF_ALL = PDF_GROUPS.flatMap(g => g[1].map(x => x[0]));
-const PDF_SHORT = ["cover", "exec", "summary", "recs", "method", "cmp_sov", "cmp_brief", "cmp_ranks", "b_overview", "g_ins", "g_rz"];
+// Zakładki Google mieszkają w module Google (drugi blok skryptu), więc listę budujemy dopiero przy
+// otwieraniu panelu — przy wczytywaniu strony ten moduł jeszcze nie istnieje.
+const G_SECS = () => { const g = rcG(); if (!g) return [["g_rz", "Meta + Google: kanały razem"]];
+  const multi = g.res.filter(x => x.n).length > 1;
+  const cmp = (g.CMP_TABS || []).map(([k, l]) => ["g_" + k, "Google · porównanie: " + l]);
+  const br = (g.BRAND_TABS || []).map(([k, l]) => ["gb_" + k, "Google · strony marek: " + l]);
+  return [...(multi ? cmp : []), ...br, ["g_rz", "Meta + Google: kanały razem"]]; };
+const pdfGroups = () => PDF_GROUPS.map(([g, items]) => [g, items === "G" ? G_SECS() : items]);
+const PDF_ALL_FIXED = PDF_GROUPS.filter(x => x[1] !== "G").flatMap(g => g[1].map(x => x[0]));
+const pdfAll = () => [...PDF_ALL_FIXED, ...G_SECS().map(x => x[0])];
+const PDF_SHORT = ["cover", "exec", "summary", "recs", "method", "cmp_sov", "cmp_brief", "cmp_ranks", "b_overview", "g_ins", "g_sov", "g_rz"];
 const PDF_EXEC = ["cover", "exec", "recs", "method", "g_rz"];
 const pdfPrefs = () => { try { return JSON.parse(store.get(PDF_KEY) || "{}"); } catch(e){ return {}; } };
 let pdfLogo = null;
@@ -6274,6 +6285,7 @@ function openPdfPanel(){
   const card = $("pdfCard"), p = pdfPrefs();
   const main = results.find(r => r.isMain) || results[0];
   const defTitle = results.length > 1 ? `${main.pageName} na tle konkurencji` : `${main.pageName} — analiza reklam`;
+  const PDF_ALL = pdfAll();
   const secs = (p.sections && p.sections.some(s => PDF_ALL.includes(s))) ? p.sections : PDF_ALL;
   pdfLogo = p.logo || null;
   card.innerHTML = `
@@ -6291,7 +6303,7 @@ function openPdfPanel(){
     <div style="margin-top:14px"><label for="pdfNote">Komentarz analityka (pojawi się na stronie podsumowania)</label>
       <textarea id="pdfNote" placeholder="np. Konkurencja mocno inwestuje w wideo i rabaty — rekomendujemy test kreacji z kodem rabatowym…"></textarea></div>
     <div class="row" style="margin:14px 0 4px"><b style="margin-right:6px">Zawartość:</b><button class="ghost mini" id="pdfFull">Pełny raport</button><button class="ghost mini" id="pdfShort">Skrót dla klienta</button><button class="ghost mini" id="pdfExec" title="Okładka, raport w skrócie, rekomendacje, kanały razem, metodologia">Dla zarządu</button><button class="ghost mini" id="pdfNone">Odznacz wszystko</button></div>
-    ${PDF_GROUPS.map(([g, items]) => `<h3>${g}</h3><div class="optgrid">${items.map(([k, label]) => `<label class="check" style="margin:0"><input type="checkbox" data-sec="${k}" ${secs.includes(k) ? "checked" : ""} ${k.startsWith("cmp_") && results.length < 2 ? "disabled" : ""}><span>${label}</span></label>`).join("")}</div>`).join("")}
+    ${pdfGroups().map(([g, items]) => `<h3>${g}</h3><div class="optgrid">${items.map(([k, label]) => `<label class="check" style="margin:0"><input type="checkbox" data-sec="${k}" ${secs.includes(k) ? "checked" : ""} ${k.startsWith("cmp_") && results.length < 2 ? "disabled" : ""}><span>${label}</span></label>`).join("")}</div>`).join("")}
     ${results.length > 1 ? `<h3>Marki w raporcie</h3><div class="optgrid">${results.map((r, i) => `<label class="check" style="margin:0"><input type="checkbox" data-brand="${r.uid}" checked><span><span class="dot" style="background:${color(i)}"></span>${esc(r.pageName)}</span></label>`).join("")}</div>` : ""}
     <div class="row" style="margin-top:16px"><button id="pdfGo">Pobierz PDF</button><button class="ghost" id="pdfHtml" type="button">Raport HTML</button>
       <select id="pdfHtmlMode" title="Wygląd raportu HTML"><option value="app">wygląd jak aplikacja (z menu)</option><option value="print">wygląd jak wydruk (kartki A4)</option></select><span class="hint" id="pdfEst"></span></div>
@@ -6303,7 +6315,7 @@ function openPdfPanel(){
     $("pdfEst").textContent = `ok. ${Math.max(1, Math.round(pages))} stron`; };
   const setSecs = list => { card.querySelectorAll("input[data-sec]").forEach(cb => { if (!cb.disabled) cb.checked = list.includes(cb.dataset.sec); }); est(); };
   card.querySelectorAll("input").forEach(i => i.addEventListener("change", est)); est();
-  $("pdfFull").onclick = () => setSecs(PDF_ALL);
+  $("pdfFull").onclick = () => setSecs(pdfAll());
   $("pdfShort").onclick = () => setSecs(PDF_SHORT);
   $("pdfExec").onclick = () => setSecs(PDF_EXEC);
   if (!secs.includes("exec") && !pdfPrefs().v22){ card.querySelectorAll('input[data-sec="exec"],input[data-sec^="g_"]').forEach(cb => { if (!cb.disabled) cb.checked = true; }); est(); }
@@ -6945,8 +6957,12 @@ function glossMark(root){
   if (G) try {
     const multi = G.res.length > 1;
     const gcn = (() => { try { return G.covNote ? G.covNote() : ""; } catch(e){ return ""; } })();
-    if (has("g_ins")) add("g-ins", "Google Ads", multi ? "Wnioski i marki" : esc(G.res[0].name), gcn + (multi ? G.cmpTab("ins") : G.brandTab(G.res[0], "ov")), "Google Ads");
-    if (has("g_sov") && multi) add("g-sov", "Google Ads", "Udział w głosie i budżet", gcn + G.cmpTab("sov"), "Google Ads");
+    const gm = G.res.filter(x => x.n), gMulti = gm.length > 1;
+    for (const [k, l] of (G.CMP_TABS || [])) if (gMulti && has("g_" + k))
+      try { const h = G.cmpTab(k); if (h && h.trim()) add("g-" + k, "Google Ads", l, gcn + h, "Google Ads"); } catch(e){}
+    for (const [k, l] of (G.BRAND_TABS || [])) if (has("gb_" + k))
+      for (let bi = 0; bi < gm.length; bi++)
+        try { const h = G.brandTab(gm[bi], k); if (h && h.trim()) add(`gb-${bi + 1}-${k}`, "Google — " + gm[bi].name, l, gcn + h, "Google Ads"); } catch(e){}
     if (has("g_rz")){ const rz = document.getElementById("rzOut"); if (rz && rz.innerHTML.trim() && !rz.querySelector(".gempty")) add("g-rz", "Meta + Google", "Oba kanały razem", rz.innerHTML, "Meta + Google"); }
   } catch(e){}
 
@@ -9762,6 +9778,8 @@ WHERE rs.last_shown >= @since AND rs.first_shown <= @until AND c.advertiser_id I
       return `<div class="vst-r"><span>${l}</span><b>${a == null ? "—" : fm(a)}</b><span>${b == null ? "—" : fm(b)}</span><span>${d == null ? "—" : `<span class="dl ${Math.abs(d) < 0.05 ? "flat" : d > 0 ? "up" : "down"}">${d > 0 ? "+" : ""}${NF.format(d * 100)}%</span>`}</span></div>`; }).join("")}</div>`;
   },
   // ---------------- porównanie
+  get CMP_TABS(){ return G_CMP_TABS; },
+  get BRAND_TABS(){ return G_BRAND_TABS; },
   covNote(){ try { return gCovNote(this.meta.cov); } catch(e){ return ""; } },
   cmpTab(t){
     const R = this.res, D = this.data, Mt = this.meta; const main = R.find(x => x.main) || R[0]; const W = R.filter(x => x.n);
