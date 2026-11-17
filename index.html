@@ -227,6 +227,15 @@ button:disabled{opacity:.5;cursor:wait}
 .kpi{border:1px solid var(--line);border-radius:var(--r-lg);padding:14px 16px;background:var(--bg-2)}
 .kpi .v{font-size:20px;font-weight:500;line-height:1.15;letter-spacing:-.03em}
 .kpi .l{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:8px;line-height:1.35}
+.gcov{display:inline-block;font:500 10px/1.3 var(--mono);letter-spacing:.04em;text-transform:none;padding:2px 7px;border-radius:999px;
+  background:color-mix(in srgb,var(--warn) 14%,transparent);border:1px solid color-mix(in srgb,var(--warn) 32%,transparent);color:var(--muted);cursor:help;vertical-align:middle}
+details.fold{margin-top:10px;border-top:1px solid var(--line);padding-top:8px}
+details.fold>summary{cursor:pointer;font:500 11px var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);list-style:none}
+details.fold>summary::-webkit-details-marker{display:none}
+details.fold>summary::before{content:"\25B8 ";display:inline-block;transition:transform .15s}
+details.fold[open]>summary::before{transform:rotate(90deg)}
+details.fold>summary:hover{color:var(--text)}
+@media print{details.fold>summary{display:none}details.fold{border:0;padding-top:0}}
 .ci{display:block;margin-top:4px;font-size:10.5px;letter-spacing:.02em;text-transform:none;font-family:var(--mono);
   color:var(--muted);border-bottom:1px dotted color-mix(in srgb,var(--muted) 55%,transparent);cursor:help;width:fit-content}
 .cost{font-size:20px;font-weight:500;letter-spacing:-.03em}
@@ -4739,8 +4748,8 @@ function heatMap(list){
   const B = x5Both(list);                       // kolumny Google dokładamy tylko, gdy są dane
   const gm = B ? list.map(r => B.cb.of(r)) : null;
   const gcol = B ? [
-    ["Google: budżet / mies.", gm.map(x => x && x.g ? x.gc : null), v => "~" + fmtK(v)],
-    ["Google: kreacje", gm.map(x => x && x.g ? (x.ga || 0) : null), v => fmt(v)],
+    [`Google: budżet / mies.${gCov() ? ` (do ${rcDate(gCov().date)})` : ""}`, gm.map(x => x && x.g ? x.gc : null), v => "~" + fmtK(v)],
+    [`Google: kreacje${gCov() ? ` (do ${rcDate(gCov().date)})` : ""}`, gm.map(x => x && x.g ? (x.ga || 0) : null), v => fmt(v)],
     ["Razem / mies.", gm.map(x => x && x.g ? x.tot : null), v => "~" + fmtK(v)],
     ["Udział Google", gm.map(x => x && x.g && x.tot ? Math.round(x.gc / x.tot * 100) : null), v => v + "%"]
   ] : [];
@@ -4754,7 +4763,7 @@ function heatMap(list){
     ["Evergreeny", g(r => r.s.evergreeny), v => fmt(v)],
     ["Indeks", g(r => r.idx.index), v => String(v)],
     ...gcol
-  ], {sparkLabel: "Nowe / mies.", sparkNote: "Linia: nowe reklamy miesiąc po miesiącu (do 12 miesięcy)." + (B ? " Kolumny Meta liczone z prognozy, kolumny Google i „Razem” ze średniej z okresu." : "")});
+  ], {sparkLabel: "Nowe / mies.", sparkNote: "Linia: nowe reklamy miesiąc po miesiącu (do 12 miesięcy)." + (B ? " Kolumny Meta liczone z prognozy, kolumny Google i „Razem” ze średniej z okresu." + (gCov() ? ` Dane Google sięgają do ${rcDate(gCov().date)} — późniejsze tygodnie to brak danych w Transparency Center, nie zerowe wydatki.` : "") : "")});
 }
 function dataFlags(list){
   const F = [];
@@ -4843,7 +4852,7 @@ function postureBlock(list){
   const lead = `<b>${name(me)}</b> opiera ${Math.round(me.gShare)}% szacowanego budżetu na Google i emituje w ${Math.round(me.cont)}% tygodni — postawa „${quad(me)}”.`
     + (far ? ` Najdalej stoi <b>${name(far.x)}</b> (${Math.round(far.x.gShare)}% Google, ${Math.round(far.x.cont)}% tygodni) — to inny model obecności, a nie tylko inny budżet.` : "");
   return blk("[p]Mapa postaw kanałowych", `${see(lead)}${svg}${tbl}
-    <div class="note"><b>Oś pozioma:</b> jaka część szacowanego budżetu marki przypada na Google (reszta na Metę) — liczona ze średniej z okresu przeliczonej na miesiąc, tak samo jak w kaflach „Meta i Google razem”. <b>Oś pionowa:</b> ciągłość emisji — w ilu z ostatnich 26 tygodni marka w ogóle emitowała; dla marek z obydwoma kanałami to średnia ważona udziałem kanału w budżecie. <b>Wielkość koła:</b> szacowany budżet miesięczny. Linie przerywane dzielą mapę na cztery postawy: przewaga Meta/Google × emisja stała (od 60% tygodni) albo zrywami. <b>Ograniczenie:</b> obie osie liczymy z publicznych bibliotek — marka obecna w kanałach spoza Meta i Google (np. telewizja, programmatic poza Google) wypadnie na mapie niżej i bardziej „metowo”, niż jest naprawdę.${d.pts.some(x => !x.g) ? " Marki bez danych Google są pokazane przy 0% — brak danych, nie brak reklam." : ""}</div>`);
+    <div class="note"><b>Oś pozioma:</b> jaka część szacowanego budżetu marki przypada na Google (reszta na Metę) — liczona ze średniej z okresu przeliczonej na miesiąc, tak samo jak w kaflach „Meta i Google razem”. <b>Oś pionowa:</b> ciągłość emisji — w ilu z ostatnich 26 tygodni marka w ogóle emitowała; dla marek z obydwoma kanałami to średnia ważona udziałem kanału w budżecie. <b>Wielkość koła:</b> szacowany budżet miesięczny. Linie przerywane dzielą mapę na cztery postawy: przewaga Meta/Google × emisja stała (od 60% tygodni) albo zrywami. <b>Ograniczenie:</b> obie osie liczymy z publicznych bibliotek — marka obecna w kanałach spoza Meta i Google (np. telewizja, programmatic poza Google) wypadnie na mapie niżej i bardziej „metowo”, niż jest naprawdę.${d.pts.some(x => !x.g) ? " Marki bez danych Google są pokazane przy 0% — brak danych, nie brak reklam." : ""}</div>${gCovLine()}`);
 }
 function execPanel(list){
   const d = x5Data(list); if (!d) return "";
@@ -4881,6 +4890,13 @@ function rcCombo(sel){
 // nigdy nie było liczby bez podpisu, skąd pochodzi.
 const rcMetaOnly = (txt = "") => rcG() ? (txt ? txt + " (Meta)" : " (Meta)") : txt;
 const rcG = () => { try { const g = window.RivalCoreG && window.RivalCoreG.G; return g && g.data && g.res && g.res.some(x => x.n) ? g : null; } catch(e){ return null; } };
+// Granica danych Google — jedna prawda dla całego narzędzia i raportu.
+// Wszędzie, gdzie pokazujemy liczbę z Google, mówimy wprost, do kiedy te dane sięgają.
+const gCov = () => { try { const g = rcG(); const c = g && g.meta && g.meta.cov; return c && c.gap ? c : null; } catch(e){ return null; } };
+const gCovChip = (extra) => { const c = gCov(); if (!c) return "";
+  return `<span class="gcov" title="Po tej dacie Transparency Center nie raportuje wyświetleń dla analizowanych marek. Późniejsze tygodnie to brak danych, a nie zerowe wydatki — na wykresach są zakreskowane, a liczby w tabelach liczymy do tej daty.">dane Google do ${esc(rcDate(c.date))}${extra ? " · " + extra : ""}</span>`; };
+const gCovLine = () => { const c = gCov(); if (!c) return "";
+  return `<div class="note"><b>Granica danych Google: ${esc(rcDate(c.date))}.</b> Wszystko, co dotyczy Google w tym bloku, jest liczone do tej daty — późniejsze tygodnie to brak danych w Transparency Center, a nie zerowe wydatki. Liczby Meta sięgają dalej, bo dane Meta są świeższe.</div>`; };
 const rcNorm = s => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/ł/g, "l").replace(/[^a-z0-9]+/g, "");
 function execText(list){
   const d = x5Data(list); if (!d) return "";
@@ -5103,7 +5119,8 @@ function sovForecastBlock(list){
       <td class="n">${x.lo == null ? "—" : pct1(x.lo, 100) + "–" + pct1(x.hi, 100) + "%"}</td></tr>`).join("")}
     </tbody></table></div>`;
   return blk("[p]Prognoza udziału w głosie z pasmem niepewności", `${lead ? see(lead) : ""}
-    ${gLine(series, {labels, legend: true, h: 260, yKey: "pct", rng: false, title: "Prognoza udziału w głosie"})}${tbl}
+    ${gLine(series, {labels, legend: true, h: 170, yKey: "pct", rng: false, title: "Prognoza udziału w głosie"})}
+    <details class="fold"><summary>Tempo i prognoza dla każdej marki</summary>${tbl}</details>
     <div class="note"><b>Jak to liczymy:</b> dla każdego tygodnia sumujemy „zasięgo-dni” każdej marki (zasięg reklamy rozłożony równo na dni emisji) i liczymy jej udział w sumie wszystkich analizowanych marek — to ta sama podstawa, co w szacunkach wyświetleń i kosztu. Przez ostatnie ${SOV_FIT} tygodni prowadzimy prostą regresję liniową i przedłużamy ją o ${SOV_FWD} tygodni. Pasmo 80% to przedział predykcji: im dalej w przyszłość, tym szerszy, bo rośnie niepewność. <b>Czego to nie jest:</b> prognozy rynku. To przedłużenie dotychczasowego tempa przy założeniu, że nikt nie zmieni strategii — każda nowa kampania konkurencji albo własne zwiększenie budżetu natychmiast ją unieważnia. Ostatni tydzień jest zawsze pełny (bieżący, niedokończony, pomijamy).</div>`);
 }
 C.sov = list => {
@@ -6924,8 +6941,9 @@ function glossMark(root){
   const G = rcG();
   if (G) try {
     const multi = G.res.length > 1;
-    if (has("g_ins")) add("g-ins", "Google Ads", multi ? "Wnioski i marki" : esc(G.res[0].name), multi ? G.cmpTab("ins") : G.brandTab(G.res[0], "ov"), "Google Ads");
-    if (has("g_sov") && multi) add("g-sov", "Google Ads", "Udział w głosie i budżet", G.cmpTab("sov"), "Google Ads");
+    const gcn = (() => { try { return G.covNote ? G.covNote() : ""; } catch(e){ return ""; } })();
+    if (has("g_ins")) add("g-ins", "Google Ads", multi ? "Wnioski i marki" : esc(G.res[0].name), gcn + (multi ? G.cmpTab("ins") : G.brandTab(G.res[0], "ov")), "Google Ads");
+    if (has("g_sov") && multi) add("g-sov", "Google Ads", "Udział w głosie i budżet", gcn + G.cmpTab("sov"), "Google Ads");
     if (has("g_rz")){ const rz = document.getElementById("rzOut"); if (rz && rz.innerHTML.trim() && !rz.querySelector(".gempty")) add("g-rz", "Meta + Google", "Oba kanały razem", rz.innerHTML, "Meta + Google"); }
   } catch(e){}
 
@@ -9306,6 +9324,13 @@ function gchInit(){
     repaint(svg); hide();
   });
   window.addEventListener("scroll", hide, true);
+  // zwinięte tabele muszą trafić na wydruk i do PDF w całości
+  window.addEventListener("beforeprint", function(){
+    var d = document.querySelectorAll("details"); for (var i = 0; i < d.length; i++){ if (!d[i].open){ d[i].open = true; d[i].setAttribute("data-wasclosed", "1"); } }
+  });
+  window.addEventListener("afterprint", function(){
+    var d = document.querySelectorAll("details[data-wasclosed]"); for (var i = 0; i < d.length; i++){ d[i].open = false; d[i].removeAttribute("data-wasclosed"); }
+  });
 }
 function lineChart(series, o = {}){
   const W = 640, H = o.h || 220, L = 64, R = 12, T = 12, B = 26;
@@ -9734,6 +9759,7 @@ WHERE rs.last_shown >= @since AND rs.first_shown <= @until AND c.advertiser_id I
       return `<div class="vst-r"><span>${l}</span><b>${a == null ? "—" : fm(a)}</b><span>${b == null ? "—" : fm(b)}</span><span>${d == null ? "—" : `<span class="dl ${Math.abs(d) < 0.05 ? "flat" : d > 0 ? "up" : "down"}">${d > 0 ? "+" : ""}${NF.format(d * 100)}%</span>`}</span></div>`; }).join("")}</div>`;
   },
   // ---------------- porównanie
+  covNote(){ try { return gCovNote(this.meta.cov); } catch(e){ return ""; } },
   cmpTab(t){
     const R = this.res, D = this.data, Mt = this.meta; const main = R.find(x => x.main) || R[0]; const W = R.filter(x => x.n);
     const lead = W.slice().sort((a, b) => b.imprMid - a.imprMid)[0];
@@ -10000,7 +10026,7 @@ function gSurfMixBlock(r, cov){
   return `<div class="blk" data-k="d"><h3>Miks powierzchni Google tydzień po tygodniu</h3>
     <div class="hint" style="margin-top:0">${lead}</div>
     ${lineChart(d.series.map((x, i) => ({name: x.name, color: COLORS[i % 8], values: x.values})), {labels: d.labels, legend: true, h: 240, yKey: "pct", band: d.band})}
-    <div class="hint">Wyświetlenia kreacji rozkładamy równo na dni jej emisji, a potem dzielimy między powierzchnie proporcjonalnie do dolnych granic, które Google podaje osobno dla każdej z nich (gdy ich nie ma — po równo). Udziały liczone tygodniowo, pokazane pięć największych powierzchni, więc linie nie muszą sumować się do 100%. Pas „brak danych” to ta sama granica świeżości, co na pozostałych wykresach Google.</div></div>`;
+    <div class="hint">Wyświetlenia kreacji rozkładamy równo na dni jej emisji, a potem dzielimy między powierzchnie proporcjonalnie do dolnych granic, które Google podaje osobno dla każdej z nich (gdy ich nie ma — po równo). Udziały liczone tygodniowo, pokazane pięć największych powierzchni, więc linie nie muszą sumować się do 100%. Pas „brak danych” to ta sama granica świeżości, co na pozostałych wykresach Google${cov && cov.gap ? ` — dane kończą się ${dPL(cov.date)}` : ""}.</div></div>`;
 }
 function surfParse(v){ // → [{s, lo}]
   const j = jparse(v); const out = []; if (!j) return out;
