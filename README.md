@@ -4,11 +4,13 @@ https://biedronm.github.io/rivalcore/#konkurencja
 
 RivalCore to wewnętrzne narzędzie do analizy reklam marek i konkurencji z Biblioteki Reklam Meta (Facebook, Instagram, Messenger, Audience Network) i z Centrum przejrzystości reklam Google (Search, YouTube, sieć reklamowa), a od wersji 20 także wyników kont Google Ads naszych klientów. Jeden plik HTML — bez instalacji, bez serwera, bez opłat. Otwierasz w przeglądarce, wklejasz token, wpisujesz marki i dostajesz analizę z wykresami, raport PDF, prezentację PowerPoint, Excel oraz plik dla AI.
 
-**Aktualna wersja: 25.8 (13 listopada 2026).** Plik narzędzia nazywa się `index.html` (repozytorium `biedronm/rivalcore`, adres `https://biedronm.github.io/rivalcore/`). Wygląd ekranu, raportów PDF, prezentacji i grafik PNG jest zgodny z identyfikacją wizualną BeDigital.
+**Aktualna wersja: 27.0 (17 listopada 2026).** Plik narzędzia nazywa się `index.html` (repozytorium `biedronm/rivalcore`, adres `https://biedronm.github.io/rivalcore/`). Wygląd ekranu, raportów PDF, prezentacji i grafik PNG jest zgodny z identyfikacją wizualną BeDigital.
 
 ## Spis treści
 
-- [Co nowego? Wersje 25.1–25.8](#co-nowego-wersje-251258)
+- [Co nowego? Wersja 27.0 · warstwa analityczna i interaktywny raport](#co-nowego-wersja-270--warstwa-analityczna-i-interaktywny-raport)
+- [Co nowego? Wersja 26.0 · podsumowania obu kanałów](#co-nowego-wersja-260--podsumowania-obu-kanałów)
+- [Co nowego? Wersje 25.1–25.9](#co-nowego-wersje-251259)
 - [Co nowego? Wersja 25.0 · warstwa „co z tego wynika”](#co-nowego-wersja-250--warstwa-co-z-tego-wynika)
 - [Starsze wersje: 20–24](#starsze-wersje-2024)
 - [1. Pierwsze uruchomienie (token Meta)](#1-pierwsze-uruchomienie-token-meta)
@@ -29,9 +31,86 @@ RivalCore to wewnętrzne narzędzie do analizy reklam marek i konkurencji z Bibl
 - [15. Prywatność i bezpieczeństwo](#15-prywatność-i-bezpieczeństwo)
 - [16. Najczęstsze pytania (FAQ)](#16-najczęstsze-pytania-faq)
 
-## Co nowego? Wersje 25.1–25.8
+## Co nowego? Wersja 27.0 · warstwa analityczna i interaktywny raport
+
+Największe wydanie od czasu dołączenia Google. Dwa kierunki: **raport HTML zachowuje się jak aplikacja**, a **analiza odpowiada na pytania, których wcześniej nie dało się zadać**.
+
+### Raport HTML: czyta się go, a nie przewija
+
+- **Wyszukiwarka po treści** — jedno pole przeszukuje wszystkie sekcje naraz, także te zwinięte.
+- **Ścieżka „obejrzyj w 5 minut”** — prowadzi przez najważniejsze sekcje z licznikiem postępu.
+- **Skróty klawiszowe** z panelem pod `?`.
+- **Wznów, gdzie skończyłeś** — raport pamięta ostatnią sekcję (osobno dla każdego klienta i daty).
+- **Słowniczek w dymkach** — 15 pojęć podkreślonych w tekście, z definicją po najechaniu.
+- **Trzy motywy**: jasny, ciemny i wysoki kontrast.
+- **Dwie wersje w jednym pliku**: skrót dla zarządu i pełna treść, przełączane jednym kliknięciem.
+- **Odczyt wartości z wykresu** — po najechaniu na punkt pojawia się linia prowadząca i wszystkie serie z wartościami.
+- **Zakres czasu na wykresach** — ostatnie 4 / 12 / 52 tygodnie (albo 3 / 6 / 12 miesięcy) bez przeładowania.
+- **Przełącznik jednostek** — wartości bezwzględne, udział procentowy albo indeks 0–100 (100 = maksimum danej serii).
+
+Wykresy w raporcie rysuje **ta sama funkcja, co w narzędziu** — trafia do pliku razem z danymi, więc raport i aplikacja nie mogą się rozjechać.
+
+### Nowe analizy
+
+| Analiza | Gdzie | Co odpowiada |
+|---|---|---|
+| Przedziały ufności przy szacunkach | kafelki kosztu, przegląd | „80% szans: A–B zł” przy każdej kwocie, z tego samego modelu co „Prawdopodobny budżet” |
+| Częstotliwość wg formatu | Ustawienia → założenia marki | osobna częstotliwość dla wideo, grafiki i karuzeli; efektywna wartość ważona udziałem formatów w zasięgu |
+| Sezonowość: presja aukcyjna | Prawdopodobny budżet | w których miesiącach kategoria emituje najwięcej i co to znaczy dla stawki (pełne i połowiczne przełożenie) |
+| Kalibracja wielopunktowa | Ustawienia → kalibracja | kilka znanych wydatków naraz, wspólny CPM, odchyłka każdego punktu, automatyczne pomijanie odstających |
+| Krzywa życia kreacji | Co przeżywa | jaki odsetek reklam przeżywa 7 / 28 / 84 dni i po ilu dniach kończy się połowa |
+| Nasycenie zasięgu | Kreacje i testy | po ilu tygodniach kreacja zbiera dziennie mniej niż połowę zasięgu z pierwszego tygodnia |
+| Miks platform w czasie | Kreacje i testy | jak przez miesiące przesuwa się obecność na Facebooku, Instagramie i pozostałych |
+| Prognoza udziału w głosie | Udział w głosie | tempo zmian w pp/tydzień i prognoza na 8 tygodni z pasmem 80% |
+| Architektura oferty | Oferty i ceny, Przekaz | trzy półki cenowe wyznaczone z rozkładu cen kategorii i obecność marek na każdej |
+| Nakładanie się grup odbiorców | Odbiorcy | macierz pokrycia: jak podobnie zbudowane grupy osiągają poszczególne marki |
+| Udział w głosie per argument | Co przeżywa | na którym argumencie marka jest głośniejsza, a na którym cichsza niż średnio |
+| Wolne pola ważone wielkością grupy | Mapa wolnych pól | potencjał luki wyrażony w wyświetleniach na miesiąc, nie tylko w procentach |
+| Mapa postaw kanałowych | Wnioski, raport | Meta vs Google × emisja stała vs zrywami, wielkość koła = budżet |
+| Miks powierzchni Google w czasie | Google → Platformy | jak zmienia się podział wyświetleń między wyszukiwarkę, YouTube i Display |
+
+Każda z nich ma pod spodem opis „jak to liczymy” wraz z ograniczeniem metody — te opisy trafiają też do raportu HTML i PDF.
+
+## Co nowego? Wersja 26.0 · podsumowania obu kanałów
+
+### Podsumowania liczą Metę i Google razem
+
+„Raport w skrócie” i blok „W 5 sekund” w narzędziu pokazywały sam obraz Meta — werdykt mówił o udziale w Meta, mapa przewag nosiła podpis „(Meta)”, a Google było tylko osobnym kafelkiem obok. Doszła warstwa liczona z obu kanałów naraz:
+
+- **werdykt** dopisuje zdanie o obrazie łącznym: udział w głosie po zsumowaniu kanałów, pozycja w zestawieniu i to, jaką część budżetu marki stanowi Google;
+- **nowy rząd kafelków „Meta i Google razem”**: udział w głosie obu kanałów, łączny budżet z rozbiciem, pozycja po zsumowaniu i udział Google u Ciebie z medianą zestawu;
+- **mapa przewag** dostaje cztery kolumny Google: budżet, kreacje, „Razem / mies.” i udział Google w budżecie marki — więc widać nie tylko kto prowadzi w Meta, ale kto prowadzi w ogóle;
+- każdy nowy kafelek ma własne objaśnienie „skąd ta liczba”, z bazą wyliczenia i datą końca danych Google.
+
+Baza dla kolumn łącznych to średnia z analizowanego okresu × 30 dni — jedyna wspólna dla obu kanałów ([punkt 5](#5-dwie-liczby-budżetu-prognoza-i-średnia-z-okresu)). Kolumny Meta zostają na prognozie i są tak podpisane.
+
+### Zakładka „Jak czytać ten raport” jako strona tytułowa
+
+Zamiast jednego akapitu i czterech kafelków — pełne wprowadzenie:
+
+- **Skąd pochodzą dane** — karta na każde źródło z liczbą pobranych reklam i kreacji oraz opisem, co dane źródło obejmuje;
+- **Czego ten raport nie pokazuje** — wydatki z kont, wyniki, kampanie spoza UE/EOG, a przy Google także brak tekstów reklam;
+- **Każda liczba mówi, skąd się wzięła** — licznik objaśnień i cztery rodzaje informacji;
+- **Jak się po nim poruszać** — menu, strzałki, motyw, wydruk, symulator, od czego zacząć;
+- **stopka** z autorem, klientem, stanem danych, datą końca danych Google i podpisem „Raport przygotowany przez beDigital w narzędziu RivalCore”.
+
+## Co nowego? Wersje 25.1–25.9
 
 Seria wydań wokół jednego: **materiał, który idzie do klienta, ma być prawdziwy, czytelny i ma tłumaczyć sam siebie.**
+
+### Raport HTML jako produkt (25.9)
+
+Cztery rzeczy, przez które raport przestaje być „wysłanym plikiem HTML”, a staje się narzędziem w rękach klienta.
+
+**Symulator budżetu działa w eksporcie.** Suwak „co, jeśli zmienisz budżet” był w pliku, ale martwy — logika została w narzędziu. Teraz jedzie razem z raportem: przesuwasz suwak, a udział w głosie, pozycja w rankingu, zmiana budżetu i słupki wszystkich marek przeliczają się na żywo. Działają też gotowe scenariusze („Stan dziś”, „Udział 25%”, „Udział 40%”, „Wyprzedź markę wyżej”). Kod symulatora trafia do raportu wprost z narzędzia, więc obie wersje nie mogą się rozjechać.
+
+**Martwe sterowanie wycięte.** Przełączniki widoku, listy ręcznej korekty rabatów i argumentów, słowniki branżowe — wszystko, co wymaga przeliczenia wyników, w samodzielnym pliku nie miało czego przeliczać. Klient klikał i nic się nie działo. Teraz tych elementów w raporcie po prostu nie ma; zostaje wynik ich działania.
+
+**Menu dwupoziomowe i zwijane.** Zamiast jednej długiej listy: kategorie (Na start, Podsumowanie, Meta, Google Ads, Meta + Google, O raporcie) z licznikiem sekcji, a w środku podgrupy — porównanie marek i każda marka osobno. Gałąź prowadząca do otwartej sekcji rozwija się sama, wyszukiwarka otwiera gałęzie z trafieniami. Pod każdą sekcją są odsyłacze „Poprzednia / Następna” z nazwami, a w nagłówku licznik „5 / 52”.
+
+**Ikona pliku i metadane.** Raport dostaje ikonę karty przeglądarki: logo wgrane w panelu raportu, a gdy go nie ma — monogram z nazwy klienta na ciemnym kwadracie. Logo trafia też do paska u góry raportu. W pliku są opis, nazwa generatora i deklaracja obsługi obu motywów. (Ikony pliku w Eksploratorze czy Finderze nie da się ustawić z wnętrza `.html` — to zawsze ikona przeglądarki.)
+
+**Kontrast sprawdzony maszynowo.** Napisałem miernik, który dla każdego elementu tekstowego w raporcie składa warstwy tła z uwzględnieniem przezroczystości i liczy kontrast. Znalazł resztki twardo wpisanych kolorów z wydruku (podtytuły „Raportu w skrócie” były czarne na czarnym) oraz ciemny tekst na nasyconych kafelkach w motywie jasnym. Po poprawkach: zero elementów poniżej progu w obu motywach.
 
 ### Raport HTML tłumaczy każdą swoją liczbę (25.8)
 
@@ -526,6 +605,10 @@ W panelu raportu, obok „Pobierz PDF”, jest przycisk **Raport HTML** i lista 
 
 **Wygląd „jak aplikacja” (domyślny)** — raport wygląda i działa jak samo narzędzie:
 
+- **działający symulator budżetu** — suwak przelicza udział w głosie, pozycję i słupki wszystkich marek na żywo, razem z gotowymi scenariuszami;
+- **menu dwupoziomowe, zwijane**: kategorie z licznikiem sekcji, w środku podgrupy (porównanie marek, każda marka osobno); gałąź do otwartej sekcji rozwija się sama;
+- **odsyłacze „Poprzednia / Następna”** pod każdą sekcją i licznik „5 / 52” w nagłówku;
+- **ikona karty przeglądarki** z Twojego logo (albo monogram klienta), logo także w pasku u góry;
 - **sekcja „Jak czytać ten raport”** na wejściu: co raport pokazuje, a czego nie, cztery rodzaje informacji z licznikiem każdego, i od czego zacząć;
 - **każda liczba tłumaczy, skąd się wzięła** — najedź kursorem (na telefonie stuknij), a zobaczysz rachunek na danych z tej analizy, np. `401 312 os./dzień × 30 dni × częst. 1,61 = 19 412 906 wyświetleń → ÷ 1000 × CPM 15,81 zł ≈ 306 945 zł`. W pełnym raporcie takich objaśnień jest ok. 190;
 - przycisk **Podświetl objaśnienia** zaznacza wszystkie miejsca, które coś tłumaczą — klient wie, gdzie klikać;
