@@ -857,6 +857,21 @@ body.is-loading #status{display:none}
 .asm-fh{display:grid;grid-template-columns:minmax(120px,1.4fr) minmax(70px,.7fr) minmax(70px,.7fr) minmax(70px,.7fr) minmax(70px,.7fr) 150px;gap:8px;margin-bottom:6px;
   font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 @media (max-width:640px){.asm-fh{display:none}}
+.sbx-h,.sbx-r{display:grid;grid-template-columns:minmax(150px,1.5fr) repeat(4,minmax(66px,.75fr)) minmax(72px,.8fr) minmax(104px,1.1fr) minmax(120px,1.2fr);gap:8px;align-items:center}
+.sbx-h{margin:10px 0 6px;font:600 9.5px/1.3 var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.sbx-r{padding:5px 0;border-top:1px solid var(--line)}
+.sbx-r input{width:100%}
+.sbx-n{display:flex;align-items:center;gap:7px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sbx-o{font:600 13px/1.25 var(--sans);text-align:right}
+.sbx-o small{display:block;margin-top:2px;font:400 10px/1.3 var(--mono);color:var(--muted)}
+.sbx-o small.sbx-w{color:var(--bad);white-space:normal;margin-top:4px}
+#sbxCard .hd{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.sbx-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:8px}
+@media (max-width:760px){.sbx-h{display:none}.sbx-r{grid-template-columns:1fr 1fr;gap:6px}.sbx-n,.sbx-o{grid-column:1/-1;text-align:left}}
+.sbxbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 14px;padding:10px 14px;border-radius:12px;
+  background:color-mix(in srgb,var(--warn) 14%,transparent);border:1px solid color-mix(in srgb,var(--warn) 34%,transparent);font-size:12.5px}
+.sbxbar b{font-weight:600}
+.sbxbar .sbxb-x{margin-left:auto}
 .asm-err{display:flex;flex-direction:column;gap:2px}
 .asm-err span{font-size:12px;color:var(--bad);margin-top:6px}
 .mixt{border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
@@ -1988,6 +2003,7 @@ body{font-variant-numeric:tabular-nums}
       <button id="xlsx" class="ghost hidden">Pobierz Excel</button>
       <button id="pdf" class="ghost hidden">Raport PDF</button>
       <button id="deck" class="ghost hidden" title="Edytowalna prezentacja .pptx — PowerPoint, Google Slides, Keynote">Prezentacja (PPTX)</button>
+      <button id="sbx" class="ghost hidden" title="Ręczna korekta wszystkich założeń z przeliczeniem całej analizy">Sandbox korekt</button>
       <button id="strat" class="ghost hidden">Pakiet do strategii (PNG + dane)</button>
       <button id="ai" class="ghost hidden">Eksport dla AI (.md)</button>
       <button id="saveAn" class="ghost hidden" title="Zapisz pobrane dane i ustawienia do pliku — wczytasz je później bez tokenu i bez pobierania">Zapisz analizę</button>
@@ -2031,6 +2047,7 @@ body{font-variant-numeric:tabular-nums}
     </div>
   </div>
 
+  <div id="sbxCard" class="card hidden"></div>
   <div id="pdfCard" class="card hidden"></div>
   <div id="deckCard" class="card hidden"></div>
   <div id="aiCard" class="card hidden"></div>
@@ -5996,17 +6013,79 @@ function periodCtx(r){
   return {hist: r.rowsAll, covMin, focus, prev, mode: r.perMode};
 }
 const rowIn = (x, w) => x.start <= w.b && x.end >= w.a;
+// ================================================================ SANDBOX KOREKT
+// Jedno miejsce, w którym można ręcznie podmienić każde założenie i każdą podstawę,
+// a potem przeliczyć całą analizę. Korekty są jawne: dopóki są włączone, narzędzie
+// i każdy eksport mówią wprost, że liczby zostały poprawione ręcznie.
+const SBX_KEY = "rivalcoreSandbox";
+let SBX = (() => { const d = {on: false, reach: {}, fix: {}, gReach: "", cpm: {}};
+  try { const v = JSON.parse(store.get(SBX_KEY) || "null"); return v && typeof v === "object" ? {...d, ...v, cpm: {}} : d; } catch(e){ return d; } })();
+const sbxSave = () => { try { store.set(SBX_KEY, JSON.stringify({on: SBX.on, reach: SBX.reach, fix: SBX.fix, gReach: SBX.gReach})); } catch(e){} };
+const sbxNum = v => { const n = +String(v == null ? "" : v).replace(",", "."); return isFinite(n) ? n : null; };
+// mnożnik zasięgu dla marki: korekta marki, a gdy jej nie ma — korekta globalna
+function sbxReach(r){
+  if (!SBX.on) return 1;
+  const own = sbxNum(SBX.reach[r.uid]), all = sbxNum(SBX.gReach);
+  const pct = own != null && own > 0 ? own : all != null && all > 0 ? all : 100;
+  return Math.max(0.01, Math.min(500, pct)) / 100;
+}
+const sbxActive = () => SBX.on && (sbxNum(SBX.gReach) > 0 && sbxNum(SBX.gReach) !== 100
+  || results.some(r => sbxNum(SBX.reach[r.uid]) > 0 && sbxNum(SBX.reach[r.uid]) !== 100 || sbxNum(SBX.fix[r.uid]) > 0));
+// opis korekt do raportów i eksportów — jedna linijka, zawsze ta sama treść
+function sbxLabel(){
+  if (!sbxActive()) return "";
+  const parts = [];
+  const g = sbxNum(SBX.gReach); if (g > 0 && g !== 100) parts.push(`zasięg wszystkich marek ×${(g / 100).toFixed(2).replace(".", ",")}`);
+  for (const r of results){
+    const k = sbxNum(SBX.reach[r.uid]), f = sbxNum(SBX.fix[r.uid]);
+    if (k > 0 && k !== 100) parts.push(`${r.pageName}: zasięg ×${(k / 100).toFixed(2).replace(".", ",")}`);
+    if (f > 0) parts.push(`${r.pageName}: budżet ustawiony ręcznie na ${fmt(Math.round(f))} zł na miesiąc`);
+  }
+  return parts.join("; ");
+}
+// zasięg skorygowany wchodzi do wszystkiego naraz — podmieniamy go na wierszach, nie w pojedynczych wzorach
+// komunikat do aplikacji i do każdego eksportu — jedna treść, żeby nigdzie nie dało się tego przeoczyć
+function sbxNote(){
+  const t = sbxLabel();
+  if (!t) return "";
+  return `<div class="sbxbar"><b>Wartości skorygowane ręcznie.</b> Ten materiał nie pokazuje surowego szacunku z bibliotek reklam — założenia zostały zmienione w sandboxie: ${esc(t)}. Wszystkie liczby, udziały i wykresy są policzone po tych korektach.</div>`;
+}
+function sbxRows(r){
+  const k = sbxReach(r);
+  for (const x of r.rowsAll){
+    if (x._reach0 === undefined){ x._reach0 = x.reach; x._rpd0 = x.rpd; }
+    if (k === 1){ x.reach = x._reach0; x.rpd = x._rpd0; }
+    else { x.reach = x._reach0 == null ? null : x._reach0 * k; x.rpd = x._rpd0 == null ? null : x._rpd0 * k; }
+  }
+}
 function reanalyze(r){
+  sbxRows(r);
   const ctx = periodCtx(r);
   const rows = ctx.focus ? r.rowsAll.filter(x => rowIn(x, ctx.focus)) : r.rowsAll;
   Object.assign(r, analyze(rows, optsFor(r), filters(), r.pageName, r.mediaLoaded, ctx));
 }
-function rerender(){ for (const r of results) reanalyze(r); renderAll(); }
+function rerender(){
+  for (const r of results) reanalyze(r);
+  // ręcznie podany budżet marki: dobieramy jej CPM tak, żeby szacunek trafił w podaną kwotę.
+  // Wyświetlenia nie zależą od CPM, więc jedno dodatkowe przeliczenie wystarczy, żeby się zgodziło.
+  let again = false;
+  for (const r of results){
+    const t = SBX.on ? sbxNum(SBX.fix[r.uid]) : null;
+    if (!(t > 0)){ if (SBX.cpm[r.uid] != null){ delete SBX.cpm[r.uid]; again = true; } continue; }
+    const imp = r.s && r.s.wyswMiesSr;
+    if (!(imp > 0)) continue;
+    const cpm = t / (imp / 1000);
+    if (SBX.cpm[r.uid] == null || Math.abs(SBX.cpm[r.uid] - cpm) / cpm > 0.002){ SBX.cpm[r.uid] = cpm; again = true; }
+  }
+  if (again) for (const r of results) reanalyze(r);
+  renderAll();
+  if (typeof renderSbx === "function" && !$("sbxCard").classList.contains("hidden")) renderSbx(true);
+}
 
 function renderAll(){
   const card = $("resultsCard");
   const any = results.length > 0;
-  ["xlsx","clear","pdf","deck","ai","strat","saveAn"].forEach(id => $(id).classList.toggle("hidden", !any));
+  ["xlsx","clear","pdf","deck","ai","strat","saveAn","sbx"].forEach(id => $(id).classList.toggle("hidden", !any));
   refreshCalib();
   $("filtersCard").classList.toggle("hidden", !any);
   $("fMediaWrap").classList.toggle("hidden", !results.some(r => r.mediaLoaded));
@@ -6023,6 +6102,7 @@ function renderAll(){
   const badge = (k, rr) => k === "changes" && rr.changes && !rr.changes.first && rr.changes.newAds.length ? `<span class="tb">+${rr.changes.newAds.length}</span>` : k === "social" && rr.pol && rr.pol.n ? `<span class="tb">${rr.pol.n}</span>` : "";
   card.classList.remove("hidden");
   card.innerHTML = `
+    ${sbxNote() ? sbxNote().replace("</div>", `<button type="button" class="ghost mini sbxb-x" id="sbxJump">Otwórz sandbox</button></div>`) : ""}
     <div class="tabs1" role="tablist">
       ${results.length > 1 ? `<button class="t1 ${isCmp ? "on" : ""}" data-top="cmp"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M8 17v-6M13 17V7M18 17v-4"/></svg>Porównanie</button>` : ""}
       ${results.map((x, i) => `<button class="t1 ${x.uid === view.top ? "on" : ""}" data-top="${x.uid}"><span class="dot" style="background:${color(i)}"></span>${esc(x.pageName)}${x.isMain ? " ★" : ""}<span class="t1i">${x.idx.index}</span></button>`).join("")}
@@ -6281,6 +6361,83 @@ function refreshOpenPanels(){
     try { open(); } catch(e){ c.classList.add("hidden"); }
   }
 }
+// ---- panel sandboxa: wszystkie założenia w jednej siatce + przelicz
+function sbxOpen(){
+  const card = $("sbxCard");
+  if (!card.classList.contains("hidden") && card.dataset.uids === uidStamp()){ card.classList.add("hidden"); return; }
+  renderSbx(false);
+  card.classList.remove("hidden");
+  card.dataset.uids = uidStamp();
+  card.scrollIntoView({behavior: "smooth", block: "start"});
+}
+function renderSbx(keep){
+  const card = $("sbxCard");
+  if (!results.length){ card.classList.add("hidden"); return; }
+  const g = opts(), G = rcG();
+  const nv = v => v == null ? "" : String(v).replace(".", ",");
+  const row = r => {
+    const a = brandAsm(r.key), u = r.s.used || {};
+    return `<div class="sbx-r" data-uid="${r.uid}">
+      <div class="sbx-n"><span class="dot" style="background:${color(results.indexOf(r))}"></span>${esc(r.pageName)}${r.isMain ? " ★" : ""}</div>
+      <input type="number" step="0.5" min="0.5" data-sb="cpmMin" value="${esc(a.cpm ? a.cpm[0] : "")}" placeholder="${nv(Math.round(g.cpmMin * 10) / 10)}" aria-label="${esc(r.pageName)} CPM min">
+      <input type="number" step="0.5" min="0.5" data-sb="cpmMax" value="${esc(a.cpm ? a.cpm[1] : "")}" placeholder="${nv(Math.round(g.cpmMax * 10) / 10)}" aria-label="${esc(r.pageName)} CPM max">
+      <input type="number" step="0.1" min="1" data-sb="freqMin" value="${esc(a.freq ? a.freq[0] : "")}" placeholder="${nv(g.freqMin)}" aria-label="${esc(r.pageName)} częstotliwość min">
+      <input type="number" step="0.1" min="1" data-sb="freqMax" value="${esc(a.freq ? a.freq[1] : "")}" placeholder="${nv(g.freqMax)}" aria-label="${esc(r.pageName)} częstotliwość max">
+      <input type="number" step="5" min="1" max="500" data-sb="reach" value="${esc(SBX.reach[r.uid] ?? "")}" placeholder="100" aria-label="${esc(r.pageName)} korekta zasięgu w procentach">
+      <input type="number" step="500" min="0" data-sb="fix" value="${esc(SBX.fix[r.uid] ?? "")}" placeholder="—" aria-label="${esc(r.pageName)} realny budżet miesięczny">
+      <div class="sbx-o">~${fmtK(r.s.miesSr)} zł<small>${nv(Math.round(u.cpmMin * 10) / 10)}–${nv(Math.round(u.cpmMax * 10) / 10)} zł · ${nv(Math.round(u.freqMin * 100) / 100)}–${nv(Math.round(u.freqMax * 100) / 100)}</small>${(() => {
+        const c = SBX.on ? SBX.cpm[r.uid] : null;
+        if (!(c > 0) || (c >= 1 && c <= 120)) return "";
+        return `<small class="sbx-w">wynikowy CPM ${nv(Math.round(c * 10) / 10)} zł — ${c < 1 ? "nierealnie nisko" : "nierealnie wysoko"}; sprawdź kwotę albo korektę zasięgu</small>`;
+      })()}</div>
+    </div>`;
+  };
+  const tot = results.reduce((a, r) => a + (r.s.miesSr || 0), 0);
+  card.innerHTML = `<div class="hd"><h2>Sandbox korekt</h2>
+      <label class="check" style="margin:0"><input type="checkbox" id="sbxOn" ${SBX.on ? "checked" : ""}><span>korekty włączone</span></label>
+      <button class="ghost mini" id="sbxClose" style="margin-left:auto">Zamknij</button></div>
+    <p class="hint" style="margin-top:0">Podmień dowolne założenie i kliknij <b>Przelicz</b> — cała analiza, wszystkie wykresy i wszystkie eksporty przeliczą się od nowa. Puste pole = wartość domyślna (widoczna jako szary podpowiadacz). Dopóki korekty są włączone, narzędzie i każdy raport mówią wprost, że liczby zostały poprawione ręcznie.</p>
+    <h3>Założenia globalne</h3>
+    <div class="sbx-g">
+      <div><label for="sbxCpmMin">CPM min (zł)</label><input type="number" step="0.5" min="0.5" id="sbxCpmMin" value="${esc(g.cpmMin)}"></div>
+      <div><label for="sbxCpmMax">CPM max (zł)</label><input type="number" step="0.5" min="0.5" id="sbxCpmMax" value="${esc(g.cpmMax)}"></div>
+      <div><label for="sbxFreqMin">Częstotliwość min</label><input type="number" step="0.1" min="1" id="sbxFreqMin" value="${esc(g.freqMin)}"></div>
+      <div><label for="sbxFreqMax">Częstotliwość max</label><input type="number" step="0.1" min="1" id="sbxFreqMax" value="${esc(g.freqMax)}"></div>
+      <div><label for="sbxGReach">Korekta zasięgu — wszystkie marki (%)</label><input type="number" step="5" min="1" max="500" id="sbxGReach" value="${esc(SBX.gReach || "")}" placeholder="100"></div>
+    </div>
+    <div class="hint">Korekta zasięgu mnoży zasięg każdej reklamy przed wszystkimi wyliczeniami. <b>100</b> = bez zmian. Użyj jej, gdy wiesz, że Meta raportuje zasięg z całej UE, a marka interesuje Cię tylko w Polsce — albo odwrotnie, gdy marka emituje też poza UE i szacunek jest zaniżony.</div>
+    <h3>Marki</h3>
+    <div class="sbx-h"><span>Marka</span><span>CPM min</span><span>CPM max</span><span>Częst. min</span><span>Częst. max</span><span>Zasięg %</span><span>Realny budżet / mies.</span><span>Wynik</span></div>
+    ${results.map(row).join("")}
+    <div class="hint">Puste pola CPM i częstotliwości = wartość globalna z góry. <b>Zasięg %</b> dotyczy tylko tej marki i nadpisuje korektę globalną. <b>Realny budżet</b> to kwota, którą znasz z konta albo od klienta — narzędzie dobiera wtedy CPM tej marki tak, żeby szacunek się z nią zgadzał, a wszystkie pochodne liczby (udział w głosie, koszt kreacji, przewagi) przeliczają się spójnie. Kolumna <b>Wynik</b> pokazuje budżet i efektywne stawki po korekcie.</div>
+    <div class="row" style="margin-top:14px"><button id="sbxGo">Przelicz</button>
+      <button class="ghost" id="sbxReset">Przywróć oryginał</button>
+      <span class="hint" id="sbxSum" style="margin:0">${sbxActive() ? `Korekty aktywne. Suma szacowanych budżetów: ${fmtK(tot)} zł/mies.` : `Bez korekt. Suma szacowanych budżetów: ${fmtK(tot)} zł/mies.`}</span></div>`;
+  $("sbxClose").onclick = () => card.classList.add("hidden");
+  $("sbxGo").onclick = () => {
+    SBX.on = $("sbxOn").checked;
+    SBX.gReach = $("sbxGReach").value;
+    const gv = {cpmMin: $("sbxCpmMin").value, cpmMax: $("sbxCpmMax").value, freqMin: $("sbxFreqMin").value, freqMax: $("sbxFreqMax").value};
+    for (const k in gv){ const el = $(k); if (el && gv[k] !== "") el.value = gv[k]; }
+    card.querySelectorAll(".sbx-r").forEach(tr => {
+      const uid = +tr.dataset.uid, r = results.find(x => x.uid === uid); if (!r) return;
+      const get = k => (tr.querySelector(`[data-sb="${k}"]`) || {}).value || "";
+      SBX.reach[uid] = get("reach"); SBX.fix[uid] = get("fix");
+      const a = asmMap[r.key] = asmMap[r.key] || {};
+      a.cpmMin = get("cpmMin"); a.cpmMax = get("cpmMax"); a.freqMin = get("freqMin"); a.freqMax = get("freqMax");
+    });
+    store.set(ASM_KEY, JSON.stringify(asmMap)); sbxSave();
+    rerender(); refreshOpenPanels();
+    setStatus(sbxActive() ? "Przeliczono z ręcznymi korektami. Każdy eksport będzie je zawierał i oznaczał." : "Przeliczono. Żadna korekta nie jest aktywna.");
+  };
+  $("sbxReset").onclick = () => {
+    SBX = {on: false, reach: {}, fix: {}, gReach: "", cpm: {}}; sbxSave();
+    results.forEach(r => { const a = asmMap[r.key]; if (a){ delete a.cpmMin; delete a.cpmMax; delete a.freqMin; delete a.freqMax; } });
+    store.set(ASM_KEY, JSON.stringify(asmMap));
+    rerender(); renderSbx(false); refreshOpenPanels();
+    setStatus("Przywrócono wartości domyślne — korekty wyłączone i wyczyszczone.");
+  };
+}
 function openPdfPanel(){
   const card = $("pdfCard"), p = pdfPrefs();
   const main = results.find(r => r.isMain) || results[0];
@@ -6298,15 +6455,19 @@ function openPdfPanel(){
         <div class="row"><button class="ghost mini" id="pdfLogoBtn">Wybierz plik</button><button class="ghost mini ${pdfLogo ? "" : "hidden"}" id="pdfLogoDel">Usuń</button>
         <img id="pdfLogoPrev" alt="" style="max-height:34px;max-width:120px;${pdfLogo ? "" : "display:none"}" src="${pdfLogo || ""}"></div>
         <input type="file" id="pdfLogoFile" accept="image/png,image/jpeg,image/svg+xml,image/webp" class="hidden"></div>
+      <div><label for="pdfPass">Hasło do raportu HTML (opcjonalnie)</label><input id="pdfPass" type="text" autocomplete="off" value="${esc(p.pass || "")}" placeholder="zostaw puste = bez hasła"></div>
+      <div><label for="pdfExp">Raport ważny do (opcjonalnie)</label><input id="pdfExp" type="date" value="${esc(p.exp || "")}" min="${iso(todayUTC)}"></div>
       <div><label for="pdfCover">Okładka</label><select id="pdfCover"><option value="dark" ${p.cover === "light" ? "" : "selected"}>ciemna — BeDigital (do wysyłki PDF)</option><option value="light" ${p.cover === "light" ? "selected" : ""}>jasna — do druku</option></select></div>
     </div>
     <div style="margin-top:14px"><label for="pdfNote">Komentarz analityka (pojawi się na stronie podsumowania)</label>
       <textarea id="pdfNote" placeholder="np. Konkurencja mocno inwestuje w wideo i rabaty — rekomendujemy test kreacji z kodem rabatowym…"></textarea></div>
+    <div class="row" style="margin:12px 0 0"><label class="check" style="margin:0"><input type="checkbox" id="pdfToc" ${p.toc === false ? "" : "checked"}><span>Spis treści z szacowanym czasem czytania (pierwsza sekcja raportu HTML)</span></label></div>
     <div class="row" style="margin:14px 0 4px"><b style="margin-right:6px">Zawartość:</b><button class="ghost mini" id="pdfFull">Pełny raport</button><button class="ghost mini" id="pdfShort">Skrót dla klienta</button><button class="ghost mini" id="pdfExec" title="Okładka, raport w skrócie, rekomendacje, kanały razem, metodologia">Dla zarządu</button><button class="ghost mini" id="pdfNone">Odznacz wszystko</button></div>
     ${pdfGroups().map(([g, items]) => `<h3>${g}</h3><div class="optgrid">${items.map(([k, label]) => `<label class="check" style="margin:0"><input type="checkbox" data-sec="${k}" ${secs.includes(k) ? "checked" : ""} ${k.startsWith("cmp_") && results.length < 2 ? "disabled" : ""}><span>${label}</span></label>`).join("")}</div>`).join("")}
     ${results.length > 1 ? `<h3>Marki w raporcie</h3><div class="optgrid">${results.map((r, i) => `<label class="check" style="margin:0"><input type="checkbox" data-brand="${r.uid}" checked><span><span class="dot" style="background:${color(i)}"></span>${esc(r.pageName)}</span></label>`).join("")}</div>` : ""}
     <div class="row" style="margin-top:16px"><button id="pdfGo">Pobierz PDF</button><button class="ghost" id="pdfHtml" type="button">Raport HTML</button>
       <select id="pdfHtmlMode" title="Wygląd raportu HTML"><option value="app">wygląd jak aplikacja (z menu)</option><option value="print">wygląd jak wydruk (kartki A4)</option></select><span class="hint" id="pdfEst"></span></div>
+    <div class="hint" style="margin-top:6px"><b>Hasło</b> szyfruje cały raport HTML (AES-256-GCM) — bez niego pliku nie da się odczytać nawet w podglądzie źródła, a zgubionego hasła nie da się odzyskać. <b>Data ważności</b> przy haśle blokuje otwarcie; w pliku bez hasła jest tylko komunikatem, bo treść leży w źródle otwartym tekstem. Oba ustawienia dotyczą raportu HTML, nie PDF-a.</div>
     <div class="hint" style="margin-top:6px">PDF otwiera okno drukowania. <b>Raport HTML</b> zapisuje jeden plik <code>.html</code> do wysłania klientowi. W wersji <b>jak aplikacja</b> ma menu sekcji, przełącznik jasny/ciemny i wygląda jak samo narzędzie; w wersji <b>jak wydruk</b> to kartki A4 na ekranie. Obie mają przycisk „Zapisz jako PDF”.</div>
     <div class="hint">Otworzy się okno drukowania — jako drukarkę wybierz <b>„Zapisz jako PDF”</b>. Raport uwzględnia aktualne filtry, założenia kosztu i oznaczenia „Lupy detektywa” włączone na górze strony${activeMarks().length ? ` (teraz: ${activeMarks().map(k => MARKS[k][0].toLowerCase()).join(", ")})` : " (teraz wyłączone)"}. Najlepiej wygląda w Chrome lub Edge.</div>`;
   card.classList.remove("hidden");
@@ -6821,6 +6982,9 @@ function pdfOpts(){
   const o = {
     title: $("pdfTitle").value.trim() || "Raport reklam Meta",
     client: $("pdfClient").value.trim(), author: $("pdfAuthor").value.trim(), note: $("pdfNote").value.trim(), logo: pdfLogo, cover: ($("pdfCover") || {}).value === "light" ? "light" : "dark",
+    toc: !$("pdfToc") || $("pdfToc").checked,
+    pass: ($("pdfPass") || {}).value || "",
+    exp: ($("pdfExp") || {}).value || "",
     secs: new Set([...card.querySelectorAll("input[data-sec]:checked")].map(cb => cb.dataset.sec)),
     brands: results.length > 1 ? [...card.querySelectorAll("input[data-brand]:checked")].map(cb => +cb.dataset.brand) : results.map(r => r.uid)
   };
@@ -6835,7 +6999,7 @@ function pdfOpts(){
   }
   o.brands = known;
   const main = results.find(r => r.isMain) || results[0];
-  const prefs = {author: o.author, client: o.client, lastBrand: main.pageName, sections: [...o.secs], cover: o.cover, v22: 1};
+  const prefs = {author: o.author, client: o.client, lastBrand: main.pageName, sections: [...o.secs], cover: o.cover, toc: o.toc, exp: o.exp, v22: 1};
   if (o.logo && o.logo.length < 400000) prefs.logo = o.logo;
   store.set(PDF_KEY, JSON.stringify(prefs));
   return o;
@@ -6968,7 +7132,7 @@ function glossMark(root){
 
   // metodologię generuje buildReport — bierzemy ją stamtąd, żeby treść nie rozjechała się z PDF-em
   if (has("method")) try {
-    add("method", "O raporcie", "Metodologia i zastrzeżenia", inner(buildReport({...o, secs: new Set(["method"])}), ".rp-top, h2.rp-h"));
+    add("method", "O raporcie", "Metodologia i zastrzeżenia", sbxNote() + inner(buildReport({...o, secs: new Set(["method"])}), ".rp-top, h2.rp-h"));
   } catch(e){}
   return {S, sel, main};
 }
@@ -6976,6 +7140,8 @@ function glossMark(root){
 // Powłoka raportu "jak aplikacja": sticky nagłówek, menu po lewej, jedna sekcja naraz,
 // przełącznik motywu i wydruk. Skrypt w środku jest celowo malutki i bez zależności.
 function appReportShell(o, data, css, fonts){
+  // sekcje wchodzące do „skrótu dla zarządu” — używa ich spis treści, filtr skrótu i ścieżka „5 minut”
+  const EXEC_IDS = ["exec", "summary", "cmp-sov", "g-sov", "g-rz", "recs", "method"];
   const {S, sel, main} = data;
   // menu dwupoziomowe: kategoria (Meta, Google, …) → grupa (Porównanie marek, konkretna marka) → sekcje
   const tree = [];
@@ -7076,11 +7242,49 @@ function appReportShell(o, data, css, fonts){
     </div>`;
   })();
   S.unshift({id: "howto", grp: "Na start", label: "Jak czytać ten raport", cat: "Na start", html: howto});
+
+  // ---- spis treści z szacowanym czasem czytania
+  // Czas liczymy z objętości tekstu (ok. 200 słów na minutę dla treści analitycznej)
+  // plus narzut na wykresy i tabele, bo na nie też trzeba popatrzeć.
+  const readMin = html => {
+    const d = document.createElement("div"); d.innerHTML = html || "";
+    const words = (d.textContent || "").trim().split(/\s+/).filter(Boolean).length;
+    const charts = d.querySelectorAll("svg").length, tables = d.querySelectorAll("table").length;
+    return Math.max(1, Math.round(words / 200 + charts * 0.4 + tables * 0.3));
+  };
+  const mins = w => w === 1 ? "1 min" : w + " min";
+  const dur = w => w < 90 ? mins(w) : Math.floor(w / 60) + " h " + (w % 60 ? (w % 60) + " min" : "").trim();
+  if (o.toc !== false){
+    build();
+    const T = S.filter(x => x.id !== "howto").map(x => ({...x, m: readMin(x.html)}));
+    const total = T.reduce((a, x) => a + x.m, 0);
+    const execT = T.filter(x => EXEC_IDS.indexOf(x.id) >= 0), execM = execT.reduce((a, x) => a + x.m, 0);
+    const cats = [];
+    T.forEach(x => { const k = x.cat || x.grp; let c = cats.find(y => y.name === k);
+      if (!c) cats.push(c = {name: k, items: [], m: 0}); c.items.push(x); c.m += x.m; });
+    const toc = `<div class="rptoc">
+      <div class="rptoc-top">
+        <div><b>${T.length}</b><span>sekcji w raporcie</span></div>
+        <div><b>~${dur(total)}</b><span>na całość</span></div>
+        ${execM ? `<div><b>~${dur(execM)}</b><span>sam skrót dla zarządu</span></div>` : ""}
+      </div>
+      <div class="rptoc-l">Czas czytania to szacunek z objętości tekstu oraz liczby wykresów i tabel — nie licznik, tylko podpowiedź, ile zarezerwować.</div>
+      ${cats.map(c => `<div class="rptoc-c">
+        <div class="rptoc-ch"><span>${esc(c.name)}</span><em>${c.items.length} · ~${dur(c.m)}</em></div>
+        ${c.items.map(x => `<a class="rptoc-i" href="#${x.id}" data-go="${x.id}">
+          <span class="rptoc-n">${esc(x.label)}</span>
+          ${x.grp && x.grp !== c.name ? `<span class="rptoc-g">${esc(x.grp)}</span>` : ""}
+          ${EXEC_IDS.indexOf(x.id) >= 0 ? `<span class="rptoc-e">skrót</span>` : ""}
+          <span class="rptoc-m">${mins(x.m)}</span></a>`).join("")}
+      </div>`).join("")}
+    </div>`;
+    S.unshift({id: "toc", grp: "Na start", label: "Spis treści", cat: "Na start", html: toc});
+  }
   build();
 
   // „Skrót dla zarządu” i ścieżka „5 minut” to te same sekcje w innej roli:
   // skrót je filtruje, ścieżka prowadzi po nich po kolei.
-  const EXEC = ["exec", "summary", "cmp-sov", "g-sov", "g-rz", "recs", "method"];
+  const EXEC = EXEC_IDS;
   const isExec = id => EXEC.indexOf(id) >= 0;
   // ścieżka „5 minut” zaczyna od instrukcji czytania, skrót dla zarządu — od razu od liczb
   const TOUR = ["howto", ...EXEC].filter(id => S.some(x => x.id === id) && id !== "method");
@@ -7160,6 +7364,24 @@ body.rcnavoff .rcnav{opacity:0;pointer-events:none;padding-left:0;padding-right:
 .rcs-g{display:flex;align-items:center;gap:10px;font:600 9.5px/1.3 var(--mono,ui-monospace,monospace);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
 .rcs-g em{font-style:normal;letter-spacing:.06em;opacity:.65;flex:none}
 .rcb-l{height:26px;width:auto;max-width:130px;object-fit:contain;flex:none}
+.rptoc-top{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:10px}
+.rptoc-top>div{padding:18px 20px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+.rptoc-top b{display:block;font-size:26px;letter-spacing:-.02em;line-height:1.1}
+.rptoc-top span{display:block;margin-top:6px;font:600 9.5px/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.rptoc-l{color:var(--muted);font-size:12.5px;line-height:1.6;margin:0 0 26px}
+.rptoc-c{margin:0 0 22px}
+.rptoc-ch{display:flex;align-items:baseline;gap:10px;padding:0 0 8px;border-bottom:1px solid var(--line);margin-bottom:4px}
+.rptoc-ch span{font:600 10px/1.3 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--text)}
+.rptoc-ch em{margin-left:auto;font:500 10px/1.3 var(--mono);font-style:normal;letter-spacing:.06em;color:var(--muted)}
+.rptoc-i{display:flex;align-items:baseline;gap:10px;padding:9px 10px;margin:0 -10px;border-radius:9px;
+  color:var(--text);text-decoration:none;font-size:14px;line-height:1.4}
+.rptoc-i:hover{background:var(--card-2)}
+.rptoc-n{flex:1;min-width:0}
+.rptoc-g{font:500 10px/1.3 var(--mono);letter-spacing:.05em;color:var(--faint);white-space:nowrap}
+.rptoc-e{font:600 9px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:999px;
+  background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+.rptoc-m{font:500 11px/1.3 var(--mono);color:var(--muted);white-space:nowrap;min-width:46px;text-align:right}
+@media print{.rptoc-i{padding:3px 0;margin:0}.rptoc-i:hover{background:none}}
 .rcnx{display:flex;gap:12px;justify-content:space-between;margin:64px 0 0;padding-top:26px;border-top:1px solid var(--line)}
 .rcnx a{display:flex;flex-direction:column;gap:3px;max-width:48%;padding:11px 15px;border:1px solid var(--line);border-radius:12px;
   background:var(--card);color:var(--text);text-decoration:none;transition:border-color .14s}
@@ -7691,6 +7913,7 @@ ${fonts ? `<link rel="preconnect" href="https://fonts.googleapis.com"><link rel=
   <div class="sub">${esc(client)}${o.author ? " · " + esc(o.author) : ""} · ${esc(sel.map(r => r.pageName).join(", "))} · dane na ${iso(todayUTC)}</div>
   ${kpi.length ? `<div class="rckpi">${kpi.map(([v, l, sub]) => `<div><div class="v">${esc(v)}</div><div class="l">${esc(l)}</div>${sub ? `<div class="s">${esc(sub)}</div>` : ""}</div>`).join("")}</div>` : ""}
   ${o.note ? `<div class="rcnote">${esc(o.note)}</div>` : ""}
+  ${sbxNote()}
 </div>
 <div class="rcwrap">
   <nav class="rcnav"><div class="rcfind"><input type="search" id="rcFind" placeholder="Szukaj w raporcie…" autocomplete="off">
@@ -7755,6 +7978,8 @@ async function exportReportHtml(){
       catch(e){ return fail("nie udało się zbudować treści (" + e.message + ")"); }
       if (!doc) return fail("treść raportu wyszła pusta — zaznacz sekcje i marki, potem spróbuj ponownie");
     }
+    try { doc = await protectDoc(doc, o, main); }
+    catch(e){ return fail(e.message || "nie udało się zabezpieczyć pliku"); }
     return deliverHtml(doc, o, main, btn, mode);
   } catch(e){
     fail((e && e.message ? e.message : String(e)) + ". Jeśli to się powtarza, zrób zrzut tego komunikatu.");
@@ -7810,6 +8035,85 @@ ${fonts ? `<link rel="preconnect" href="https://fonts.googleapis.com"><link rel=
   return doc;
 }
 
+// ================================================================ ochrona raportu: hasło i data ważności
+// Hasło szyfruje CAŁY dokument (AES-256-GCM, klucz z PBKDF2) — bez hasła w pliku nie ma czego czytać,
+// także w podglądzie źródła. Data ważności to osobna sprawa: przy haśle blokuje odszyfrowanie,
+// a w pliku bez hasła jest tylko kurtuazyjnym komunikatem, bo treść leży w źródle otwartym tekstem.
+const b64 = buf => { const u = new Uint8Array(buf); let s = ""; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); };
+async function encryptDoc(plain, pass){
+  const enc = new TextEncoder();
+  const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+  const base = await crypto.subtle.importKey("raw", enc.encode(pass), "PBKDF2", false, ["deriveKey"]);
+  const key = await crypto.subtle.deriveKey({name: "PBKDF2", salt, iterations: 250000, hash: "SHA-256"}, base,
+    {name: "AES-GCM", length: 256}, false, ["encrypt"]);
+  const ct = await crypto.subtle.encrypt({name: "AES-GCM", iv}, key, enc.encode(plain));
+  return {salt: b64(salt), iv: b64(iv), ct: b64(ct)};
+}
+const GATE_CSS = `*{box-sizing:border-box}html,body{height:100%}
+body{margin:0;display:grid;place-items:center;background:#0a0a0b;color:#f2f2f3;
+  font:400 15px/1.55 Montserrat,system-ui,-apple-system,sans-serif;padding:24px}
+.g{width:100%;max-width:430px;background:#141416;border:1px solid #262629;border-radius:18px;padding:34px 32px}
+.g h1{margin:0 0 4px;font-size:21px;letter-spacing:-.02em}
+.g p{margin:0 0 22px;color:#9a9aa2;font-size:13px;line-height:1.6}
+.g label{display:block;font:600 9.5px/1.3 ui-monospace,SFMono-Regular,monospace;letter-spacing:.12em;text-transform:uppercase;color:#9a9aa2;margin:0 0 7px}
+.g input{width:100%;padding:12px 14px;border-radius:11px;border:1px solid #2e2e33;background:#0a0a0b;color:#f2f2f3;font-size:15px;font-family:inherit}
+.g input:focus{outline:2px solid #4a7dff;outline-offset:1px;border-color:transparent}
+.g button{width:100%;margin-top:12px;padding:12px 16px;border:0;border-radius:11px;background:#f2f2f3;color:#0a0a0b;
+  font:600 11px/1 Montserrat,sans-serif;letter-spacing:.09em;text-transform:uppercase;cursor:pointer}
+.g button:disabled{opacity:.55;cursor:default}
+.g .e{margin:14px 0 0;color:#ff6b6b;font-size:13px;min-height:19px}
+.g .f{margin:24px 0 0;padding-top:18px;border-top:1px solid #262629;color:#6e6e76;font-size:11.5px;line-height:1.6}`;
+function gateDoc(title, client, exp, payload){
+  const expTxt = exp ? `<p style="margin:-14px 0 22px;color:#9a9aa2;font-size:12.5px">Raport ważny do <b style="color:#f2f2f3">${esc(rcDate(exp))}</b>.</p>` : "";
+  return `<!doctype html><html lang="pl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>${GATE_CSS}</style></head><body>
+<div class="g">
+  <h1>${esc(client)}</h1>
+  <p>Raport chroniony hasłem. Wpisz hasło otrzymane od autora raportu.</p>
+  ${expTxt}
+  <form id="f"><label for="p">Hasło</label><input id="p" type="password" autocomplete="off" autofocus>
+  <button type="submit" id="b">Otwórz raport</button></form>
+  <div class="e" id="e" role="status"></div>
+  <div class="f">Treść raportu jest zaszyfrowana w tym pliku (AES-256-GCM). Bez hasła nie da się jej odczytać — także w podglądzie źródła. Hasła nie da się odzyskać: jeśli je zgubisz, poproś autora o nowy plik.</div>
+</div>
+<script>
+var D=${JSON.stringify(payload)};
+var dec=function(s){var b=atob(s),u=new Uint8Array(b.length);for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u;};
+var f=document.getElementById("f"),p=document.getElementById("p"),b=document.getElementById("b"),e=document.getElementById("e");
+f.addEventListener("submit",function(ev){
+  ev.preventDefault();
+  if(D.exp){ var t=new Date(); t.setHours(0,0,0,0);
+    if(t>new Date(D.exp+"T23:59:59")){ e.textContent="Ten raport stracił ważność "+D.expL+". Poproś autora o aktualną wersję."; return; } }
+  e.textContent="Odszyfrowuję…"; b.disabled=true;
+  var enc=new TextEncoder();
+  crypto.subtle.importKey("raw",enc.encode(p.value),"PBKDF2",false,["deriveKey"])
+    .then(function(k){ return crypto.subtle.deriveKey({name:"PBKDF2",salt:dec(D.salt),iterations:250000,hash:"SHA-256"},k,{name:"AES-GCM",length:256},false,["decrypt"]); })
+    .then(function(k){ return crypto.subtle.decrypt({name:"AES-GCM",iv:dec(D.iv)},k,dec(D.ct)); })
+    .then(function(buf){ var html=new TextDecoder().decode(buf); document.open(); document.write(html); document.close(); })
+    .catch(function(){ e.textContent="Nieprawidłowe hasło."; b.disabled=false; p.select(); });
+});
+<\/script></body></html>`;
+}
+// plik bez hasła: data ważności jako zasłona i jasna informacja, czym ona jest
+function expiryGuard(doc, exp){
+  const g = `<script>(function(){try{var t=new Date();t.setHours(0,0,0,0);
+if(t>new Date(${JSON.stringify(exp)}+"T23:59:59")){document.documentElement.innerHTML='<head><meta charset="utf-8"><title>Raport stracił ważność</title><style>${GATE_CSS.replace(/\n/g, "")}</style></head><body><div class="g"><h1>Raport stracił ważność</h1><p>Ten raport był ważny do ${esc(rcDate(exp))}. Dane w nim są już nieaktualne — poproś autora o nową wersję.</p><div class="f">To zabezpieczenie jest kurtuazyjne: plik nie jest zaszyfrowany, więc treść da się odczytać w podglądzie źródła. Żeby raport był naprawdę zamknięty, wyeksportuj go z hasłem.</div></div></body>';}}catch(e){}})();<\/script>`;
+  return doc.replace("</body>", g + "</body>");
+}
+async function protectDoc(doc, o, main){
+  if (!o.pass && !o.exp) return doc;
+  if (o.pass){
+    if (!(window.crypto && crypto.subtle)) throw new Error("ta przeglądarka nie udostępnia szyfrowania (crypto.subtle) — zapisz raport bez hasła albo użyj Chrome/Edge/Firefox");
+    const pay = await encryptDoc(doc, o.pass);
+    pay.exp = o.exp || ""; pay.expL = o.exp ? rcDate(o.exp) : "";
+    return gateDoc(`Raport — ${o.client || main.pageName}`, o.client || main.pageName, o.exp, pay);
+  }
+  return expiryGuard(doc, o.exp);
+}
+
 function deliverHtml(doc, o, main, btn, mode){
   const fail = m => { setStatus("Raport HTML: " + m, true); if (btn) btn.disabled = false; };
   const mb = doc.length / 1048576;
@@ -7823,7 +8127,8 @@ function deliverHtml(doc, o, main, btn, mode){
   a.href = url; a.download = name; a.rel = "noopener"; a.style.display = "none";
   document.body.appendChild(a); a.click();
   setTimeout(() => { a.remove(); URL.revokeObjectURL(url); }, 20000);
-  setStatus(`Zapisano raport HTML (${mode === "app" ? "wygląd jak aplikacja" : "kartki A4"}): ${name} (${mb.toFixed(1)} MB). Plik jest samodzielny — wyślij go klientowi.`);
+  const prot = o.pass ? ` Plik jest zaszyfrowany hasłem — prześlij je osobnym kanałem${o.exp ? `, a sam raport wygasa ${rcDate(o.exp)}` : ""}.` : o.exp ? ` Raport pokaże komunikat o utracie ważności po ${rcDate(o.exp)}.` : "";
+  setStatus(`Zapisano raport HTML (${mode === "app" ? "wygląd jak aplikacja" : "kartki A4"}): ${name} (${mb.toFixed(1)} MB). Plik jest samodzielny — wyślij go klientowi.${prot}`);
   if (btn) btn.disabled = false;
 }
 
@@ -7914,6 +8219,7 @@ function buildReport(o){
     const f = filters();
     pages.push(`<section class="rp-page">${top}
       <h2 class="rp-h">Metodologia i zastrzeżenia</h2>
+      ${sbxNote()}
       <ul class="lines rp-method">
         <li><b>Źródło danych:</b> oficjalne Meta Ad Library API, reklamy dostarczone na obszarze: ${esc(regionLabel(main.region))}${main.lang ? `, język: ${esc(main.lang)}` : ""}. Stan na ${iso(todayUTC)}.</li>
         <li><b>Zakres:</b> Meta udostępnia reklamy komercyjne, które dotarły do UE (DSA), przez ok. rok od zakończenia emisji. Reklamy emitowane wyłącznie poza UE nie są widoczne.</li>
@@ -8949,7 +9255,13 @@ function optsFor(r){
   if (a.cpm){ o.cpmMin = a.cpm[0]; o.cpmMax = a.cpm[1]; }
   if (a.freq){ o.freqMin = a.freq[0]; o.freqMax = a.freq[1]; }
   if (o.own.fmt || o.own.ffmt){ if (r && r.mediaLoaded){ if (o.own.fmt) o.fmt = a.fmt; if (o.own.ffmt) o.ffmt = a.ffmt; } else o.own.fmtUnused = true; }
-  const parts = [o.own.cpm && "CPM marki", o.own.freq && "częstotliwość marki", o.fmt && "CPM wg formatu", o.ffmt && "częstotliwość wg formatu"].filter(Boolean);
+  // ręcznie podany budżet w sandboxie wygrywa z CPM marki i z CPM formatów — inaczej kwota by się nie zgodziła
+  if (SBX.on && r && SBX.cpm[r.uid] > 0){
+    const c = SBX.cpm[r.uid];
+    o.cpmMin = c / 1.15; o.cpmMax = c * 1.15; o.fmt = null;
+    o.own = {...o.own, cpm: true, fmt: 0, sbx: true};
+  }
+  const parts = [o.own.sbx ? "CPM z ręcznie podanego budżetu (sandbox)" : o.own.cpm && "CPM marki", o.own.freq && "częstotliwość marki", o.fmt && "CPM wg formatu", o.ffmt && "częstotliwość wg formatu"].filter(Boolean);
   o.label = parts.length ? `własne założenia marki: ${parts.join(", ")}; pozostałe — ${g.label}` : g.label;
   return o;
 }
@@ -9157,6 +9469,8 @@ $("xlsx").onclick = async () => {
 };
 $("strat").onclick = openStratPanel;
 $("pdf").onclick = openPdfPanel;
+$("sbx").onclick = sbxOpen;
+document.addEventListener("click", e => { if (e.target && e.target.id === "sbxJump") sbxOpen(); });
 $("deck").onclick = openDeckPanel;
 $("ai").onclick = openAiPanel;
 $("clear").onclick = () => { results = []; ASOF = null; todayUTC = REAL_TODAY; renderAll(); setStatus(""); };
@@ -9198,7 +9512,7 @@ regionChanged();
 // ================================================================ RivalCore 20 · moduły Meta + Google
 (() => {
 "use strict";
-const RCV = "27.0";
+const RCV = "28.0";
 const E = id => document.getElementById(id);
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const NF = new Intl.NumberFormat("pl-PL", {maximumFractionDigits: 0});
