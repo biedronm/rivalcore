@@ -4,10 +4,15 @@ https://biedronm.github.io/rivalcore/#konkurencja
 
 RivalCore to wewnętrzne narzędzie do analizy reklam marek i konkurencji z Biblioteki Reklam Meta (Facebook, Instagram, Messenger, Audience Network) i z Centrum przejrzystości reklam Google (Search, YouTube, sieć reklamowa), a od wersji 20 także wyników kont Google Ads naszych klientów. Jeden plik HTML — bez instalacji, bez serwera, bez opłat. Otwierasz w przeglądarce, wklejasz token, wpisujesz marki i dostajesz analizę z wykresami, raport PDF, prezentację PowerPoint, Excel oraz plik dla AI.
 
-**Aktualna wersja: 27.0 (17 listopada 2026).** Plik narzędzia nazywa się `index.html` (repozytorium `biedronm/rivalcore`, adres `https://biedronm.github.io/rivalcore/`). Wygląd ekranu, raportów PDF, prezentacji i grafik PNG jest zgodny z identyfikacją wizualną BeDigital.
+**Aktualna wersja: 29.1 (21 listopada 2026).** Od 29.0 narzędzie powstaje z kodu źródłowego w modułach (rozdział 17), a do wdrożenia trafia nadal jeden plik — zbudowany `dist/index.html`. Plik narzędzia nazywa się `index.html` (repozytorium `biedronm/rivalcore`, adres `https://biedronm.github.io/rivalcore/`). Wygląd ekranu, raportów PDF, prezentacji i grafik PNG jest zgodny z identyfikacją wizualną BeDigital.
 
 ## Spis treści
 
+- [Co nowego? Wersja 29.1 · formularz Meta | Google, raport „historia, potem aneks”](#co-nowego-wersja-291--formularz-meta--google-raport-historia-potem-aneks)
+- [Co nowego? Wersja 29.0 · kod w modułach, jedna biblioteka wykresów, wspólny model reklamy](#co-nowego-wersja-290--kod-w-modułach-jedna-biblioteka-wykresów-wspólny-model-reklamy)
+- [Co nowego? Wersja 28.2 · strategia, kampanie, rekomendacje z pomiarem, rejestr trafności](#co-nowego-wersja-282--strategia-kampanie-rekomendacje-z-pomiarem-rejestr-trafności)
+- [Co nowego? Wersja 28.1 · zasięg z wybranego obszaru zamiast z całej UE](#co-nowego-wersja-281--zasięg-z-wybranego-obszaru-zamiast-z-całej-ue)
+- [Co nowego? Wersja 28.0 · sandbox korekt, spis treści, hasło do raportu](#co-nowego-wersja-280--sandbox-korekt-spis-treści-hasło-do-raportu)
 - [Co nowego? Wersja 27.0 · warstwa analityczna i interaktywny raport](#co-nowego-wersja-270--warstwa-analityczna-i-interaktywny-raport)
 - [Co nowego? Wersja 26.0 · podsumowania obu kanałów](#co-nowego-wersja-260--podsumowania-obu-kanałów)
 - [Co nowego? Wersje 25.1–25.9](#co-nowego-wersje-251259)
@@ -30,6 +35,159 @@ RivalCore to wewnętrzne narzędzie do analizy reklam marek i konkurencji z Bibl
 - [14. Rozwiązywanie problemów](#14-rozwiązywanie-problemów)
 - [15. Prywatność i bezpieczeństwo](#15-prywatność-i-bezpieczeństwo)
 - [16. Najczęstsze pytania (FAQ)](#16-najczęstsze-pytania-faq)
+- [17. Kod źródłowy, budowanie i testy](#17-kod-źródłowy-budowanie-i-testy)
+
+## Co nowego? Wersja 29.1 · formularz Meta | Google, raport „historia, potem aneks”
+
+Liczby się nie zmieniają (test ze złotym wzorcem przechodzi), zmienia się sposób wprowadzania danych i wygląd raportu.
+
+### Poprawione błędy
+
+- **Meta i Google po cichu analizowały różne obszary.** Przy kilku krajach Meta liczy wszystkie, a Google bierze Polskę (jeśli jest wśród wybranych) albo cały EOG — Centrum przejrzystości nie ma dowolnych zestawów krajów. Teraz pod wyborem krajów widać, jaki obszar weźmie Google, z ostrzeżeniem, gdy różni się od Meta. To samo jest w metodologii raportu.
+- **Link do konkretnej sekcji raportu otwierał zawsze „Raport w skrócie”.** Przełącznik widoku podmieniał kotwicę adresu przed odczytaniem jej. Teraz link `raport.html#cmp-sov` otwiera „Udział w głosie”, a pierwsze otwarcie zaczyna od spisu treści.
+- **Logo BeDigital nie pojawiało się na okładce raportu**, a w raporcie było podwójne „Za 30 dni”.
+- **Okładka w trybie „jak wydruk” nie miała marginesów** na ekranie.
+
+### Formularz
+
+- **Kroki ponumerowane po kolei:** 1 źródła, 2 marki, 3 obszar i okres, 4 założenia kosztu, 5 analiza (wcześniej były dwa kroki „2” i brakowało „3”).
+- **Okienko marki ma teraz obie kolumny: Meta i Google.** Przy włączonym Google pod polami Meta każdej marki jest komórka Google: konto dobrane automatycznie albo wybrane, przyciski „Znajdź”, „Wklej ID”. Nie ma już osobnej listy kont Google pół ekranu niżej. Pod spodem zostaje sekcja „Google: wyszukiwanie kont i ustawienia” (źródło danych, opóźnienie, tryb pliku).
+- **Założenia kosztu w jednej sekcji, dwie kolumny:** Meta (benchmark, CPM, częstotliwość, założenia marek, kalibracja, rejestr trafności) i Google (CPM wg formatu, kalibracja Google). Podsumowanie stawek obu kanałów widać na zwiniętym pasku.
+- Nagłówek z opisem narzędzia pokazuje się w całości tylko przy pierwszej wizycie; potem jest zwinięty (klik w nazwę rozwija). Z pustego stanu zniknęła lista kroków, która powtarzała pasek kroków.
+
+### Raport HTML
+
+- **Historia, potem aneks.** Menu i kolejność: Na start → Najważniejsze (skrót, wnioski, rekomendacje, udział w głosie, budżet, strategia i testy, przekaz i oferty, Meta + Google) → Więcej porównań → Aneks: strony marek → O raporcie.
+- **Pełny nagłówek z liczbami tylko na pierwszej stronie.** W dalszych sekcjach treść zaczyna się od góry ekranu (oznaczenie korekt z sandboxu zostaje widoczne wszędzie).
+- **Karty marek** (udział w głosie, koszt, aktywne reklamy, zmiana okres do okresu) nad kluczowymi porównaniami.
+- **„Jak to liczymy” zwinięte w stopce bloku** („+ Jak to liczymy i ograniczenia metody”) — wykres i wniosek są pierwsze, metoda o jedno kliknięcie. Przy zapisie do PDF rozwija się sama.
+- Usunięte powtórzone nagłówki i notka „analiza wczytana z pliku” (zostaje w aplikacji, nie trafia do klienta).
+- **Telefon:** pasek ma „Skrót / Pełna” i przycisk „⋯” z resztą opcji.
+- **Nowa okładka „z logo klienta na pierwszym planie”** (PDF, tryb wydruku i raport „jak aplikacja”). Panel nazywa się teraz „Raport (PDF / HTML)”.
+
+## Co nowego? Wersja 29.0 · kod w modułach, jedna biblioteka wykresów, wspólny model reklamy
+
+To przebudowa „pod maską”. Na tych samych danych testowych liczby, rekomendacje, Excel (27 arkuszy) i plik dla AI są **identyczne jak w 28.2** — sprawdza to automatyczny test ze złotym wzorcem (rozdział 17). Wdrożenie wygląda tak samo: jeden plik `index.html` na GitHub Pages.
+
+**Co zniknęło i dlaczego to ważne**
+
+- **Dwa bloki `<script>` i most `window.RivalCoreG`.** Moduł Meta i moduł Google importują od siebie nawzajem tylko to, czego potrzebują — 14 nazw zamiast globalnej przestrzeni z 539 deklaracjami. Nazwa użyta w module, w którym nie istnieje, zatrzymuje budowanie (ESLint `no-undef`), zamiast wysadzać aplikację u klienta. Cała klasa błędów typu „`kk`/`dPL`/`RCV` niewidoczne w drugim skrypcie” przestaje istnieć.
+- **`toString()` dla raportu.** Skrypt raportu HTML (symulator, wykresy, nawigacja, wyszukiwarka) to zwykły moduł `src/report/runtime.js`, kompilowany przy budowaniu do jednego skryptu i wklejany do raportu. Funkcje wykresów nie muszą już być „samowystarczalne”.
+- **Style raportu w szablonach JS.** Style raportu, wersji samodzielnej i ekranu hasła to prawdziwe pliki CSS w `src/styles/`.
+- **Nadpisywanie `renderAll` z dwóch miejsc.** Zamiast podmieniać funkcję, moduły rejestrują zaczepy (`addRenderHook`) wołane po każdym renderze, w tej samej kolejności co wcześniej.
+
+**Jedna biblioteka wykresów** (`src/charts/gch.js`). Miesięczny wykres emisji w module Meta rysuje teraz ta sama funkcja co wykresy Google i raportu, więc dostał to, co tamte już miały: odczyt wartości po najechaniu, zakres czasu (3/6 mies./wszystko) i przełącznik wartości / % udziału / indeksu.
+
+**Wspólny model reklamy** (`src/model/ad.js`). Każde źródło ma przejściówkę w `src/adapters/` (`meta.js`, `google.js`), która zwraca obiekt z polami wspólnymi: źródło, identyfikator, marka, start i koniec emisji, dni, format, zasięg albo przedział wyświetleń, tekst, platformy, kraje. Pola źródłowe (np. demografia Meta, powierzchnie Google) zostają obok. Kolejne źródło (np. TikTok) to nowa przejściówka, a nie nowy moduł. Analizy Google nadal czytają swoje pola źródłowe — przeniesienie ich na pola wspólne to kolejny krok, robiony przy okazji zmian w tych analizach. Analizy zapisane przed 29.0 uzupełniają się przy wczytaniu.
+
+**Uczciwie o tym, czego ta wersja jeszcze nie robi:** moduł Meta to nadal jeden plik `src/meta/app.js` (ok. 7,1 tys. linii). Dzielenie go na mniejsze moduły (pobieranie, analiza, panele, eksporty) jest teraz bezpieczne, bo każdy błąd w nazwach wyłapie budowanie, ale robimy je krokami przy kolejnych zmianach, z testem ze złotym wzorcem po każdym kroku.
+
+## Co nowego? Wersja 28.2 · strategia, kampanie, rekomendacje z pomiarem, rejestr trafności
+
+### Poprawione błędy
+
+- **Zakładka „Zmiany” porównywała kwoty liczone na różnych założeniach.** Migawka zapisywała budżet już po korektach z sandboxu i po bieżących założeniach CPM i częstotliwości. Analiza z korektą ×2, a potem bez niej, pokazywała „budżet spadł o 50%”. Teraz migawka zapisuje swoją podstawę kosztu: zasięg obszaru, korektę zasięgu i ręczny budżet z sandboxu, CPM, częstotliwość, CPM i częstotliwość wg formatu. Gdy podstawa się różni, kwoty dostają „b.d.” z listą tego, co się zmieniło. Liczby reklam porównują się normalnie. Migawki sprzed 28.2 znają tylko podstawę zasięgu.
+- **Pamięć podręczna widoków mogła pokazać stary wynik.** Część analiz (m.in. tygodniowy koszt na osi czasu marki i we wspólnej osi Meta + Google) nie przeliczała się po zmianie w sandboxie, bo cache trzeba było unieważniać ręcznie. Teraz każdy odczyt porównuje sygnaturę stanu: ręczne korekty tekstów, podstawę zasięgu, sandbox, CPM, częstotliwość i liczbę reklam.
+- **Data ważności raportu udawała zabezpieczenie.** Teraz jest „przypomnieniem o aktualności danych”. Po terminie raport bez hasła pokazuje nakładkę z przyciskiem „Otwórz mimo to”, a raport z hasłem — ostrzeżenie na ekranie logowania. Hasło (AES-256-GCM) działa bez zmian i jest jedynym prawdziwym zabezpieczeniem.
+
+### Nowa zakładka „Strategia i testy” (porównanie i każda marka)
+
+- **Zmiany strategii.** Dla ostatnich 52 tygodni szukamy tygodnia, od którego marka wyraźnie zmieniła budżet, udział argumentu, reklam z rabatem albo formatów. Przykład: „od 14.10 argument »Cena i rabat«: 12% → 41% zasięgu”. Pokazujemy tylko duże i wyraźne zmiany: budżet ×1,5 albo ÷1,5, udział o ≥ 15 pp, statystyka różnicy ≥ 4. Ograniczenie: zasięg rozłożony równo na dni emisji wygładza serie, więc data zmiany jest przybliżona (±1–2 tygodnie).
+- **Indeks testowania** = odsetek reklam wyłączonych w ≤ 7 dni × nowe reklamy na tydzień (ostatnie 90 dni), czyli w przybliżeniu „testów tygodniowo”. Odsetek liczymy tylko z reklam, które miały 7 dni na wyłączenie. Styl marki: testuje intensywnie / dużo nowości, mało cięcia / tnie, ale mało nowego / emituje sprawdzone. Liczony względem mediany marek, z dolnym progiem 15% i 2 reklam tygodniowo. Ograniczenie: szybkie wyłączenie to poszlaka testu — tak samo wygląda krótka akcja czasowa.
+- **Dokłada czy wymienia (kanibalizacja).** Po każdej fali nowych reklam (≥ 3 reklamy, ≥ 15% dotychczasowej emisji) porównujemy łączny dzienny zasięg marki tydzień przed i tydzień po i dzielimy różnicę przez zasięg nowych reklam. Mediana ≥ 0,7 oznacza „dokłada”, ≤ 0,3 — „wymienia”. Ograniczenie: Meta podaje łączny zasięg reklamy, więc widzimy wyłączenia starych reklam, ale nie spadek ich emisji, gdy dalej działają. Prawdziwa kanibalizacja w aukcji jest niewidoczna.
+
+### Kampanie (zakładka „Kampanie” marki)
+
+Reklamy wystartowane w odstępie do 7 dni z tym samym albo podobnym tekstem (podobieństwo słów ≥ 0,35) łączą się w kampanię. Dla każdej kampanii widać:
+- liczbę reklam i długość,
+- szacowany budżet łącznie i na miesiąc,
+- argumenty i udział reklam z rabatem.
+
+Kampanie dłuższe niż 120 dni mają znacznik „always-on”. Pełna lista jest w Excelu, w arkuszu „Kampanie”. Ograniczenie: grupujemy po tekście i dacie, nie po identyfikatorze kampanii z konta (Meta go nie publikuje).
+
+### Rozjazd Meta–Google (zakładka „Meta + Google”)
+
+Dla każdej marki zestawiamy tempo zmiany szacowanego kosztu osobno w Meta i w Google: ostatnie 4 tygodnie vs pierwsze 4 z danymi w obu kanałach. Werdykty:
+- rośnie w Google, w Meta stoi (i odwrotnie),
+- przesuwa budżet,
+- wchodzi do kanału,
+- rośnie lub spada w obu.
+
+„Rośnie” oznacza zmianę o ≥ 30%, „stoi” — o < 15%. Ograniczenie: oba koszty to szacunki z różnych źródeł, więc porównujemy kierunek zmian w każdym kanale, nie kwoty między kanałami.
+
+### Rekomendacje w stałym formacie
+
+Każda rekomendacja ma cztery części: **obserwacja → działanie → oczekiwany efekt → jak zmierzyć za 30 dni**.
+- Efekt z przedziałem liczymy tam, gdzie pozwala na to ten sam model co symulator. Przykład dla niskiego udziału w głosie: ile szacowanego budżetu brakuje do równego udziału, z przedziałem 80% z niepewności szacunków konkurencji.
+- Tam, gdzie efektu nie da się policzyć z danych publicznych, narzędzie mówi to wprost i podaje mierzalny cel z benchmarku konkurencji (np. udział wideo, odsetek reklam wyłączanych w ≤ 7 dni).
+
+Nowy format jest w aplikacji, w raportach, w Excelu (nowe kolumny), w notatkach slajdu i w pliku dla AI.
+
+### Rejestr trafności (Ustawienia zaawansowane → Kalibracja)
+
+- Nowe pole „Branża”. Punkt dodany przyciskiem „Dodaj punkt” z wpisaną branżą trafia też do rejestru, który zostaje między analizami. Zapisujemy zasięg w oknie wydatku, nie wyświetlenia, więc późniejsza zmiana częstotliwości nie psuje punktów.
+- Od 3 kont w branży narzędzie liczy błąd szacunku testem „każde konto przewidziane ze stawki CPM pozostałych”. Przycisk „Skalibruj z tej branży” ustawia CPM z rejestru.
+- Raport (metodologia, skrót dla zarządu, slajd, plik dla AI) dostaje wtedy zdanie typu: „Szacunki skalibrowane na N kontach z branży X: szacunek mieścił się w ±Y% realnego wydatku dla K z N kont”.
+- Bez kalibracji z rejestru metodologia mówi wprost, że błąd szacunku nie jest zmierzony.
+- Ograniczenie: wydatki wpisujesz ręcznie. Wydatek z konta obejmuje też emisję poza wybranym obszarem, a rozjazd okien czasu zawyża błąd.
+
+## Co nowego? Wersja 28.1 · zasięg z wybranego obszaru zamiast z całej UE
+
+To poprawka błędu, nie nowa funkcja. Meta podaje przy każdej reklamie `eu_total_reach` — zasięg z **całej Unii**, niezależnie od tego, jaki obszar wybierzesz w formularzu. Marka paneuropejska (H&M, LPP, Zalando) wychodziła przez to wielokrotnie większa od marki działającej tylko w Polsce: budżet, wyświetlenia i udział w głosie były zawyżone nawet o rząd wielkości.
+
+**Jak to liczymy teraz.** Każda reklama ma rozbicie zasięgu na kraje (to samo, z którego powstaje wykres „Kraje”). Zasięg reklamy mnożymy przez udział wybranych krajów w jej rozbiciu:
+
+`zasięg obszaru = eu_total_reach × (zasięg w wybranych krajach ÷ zasięg we wszystkich krajach rozbicia)`
+
+- Reklama bez własnego rozbicia dostaje **udział całej marki** — średnią ważoną zasięgiem z reklam, które rozbicie mają.
+- Przeskalowany zasięg wchodzi do wszystkiego naraz: budżet (prognoza i średnia z okresu), wyświetlenia, udział w głosie, indeks aktywności, wykresy, Meta + Google, symulator, wszystkie eksporty.
+- **Struktura wieku i płci** (piramida, mapa wolnych pól, luki demograficzne) liczy się tylko z wybranych krajów. Wykres **„Kraje (zasięg w całej UE)”** pokazuje dalej całą UE — to dowód, ile zasięgu marki jest poza obszarem.
+- Przy „Cały świat” nic nie jest skalowane (zasięg i tak dotyczy UE).
+
+**Gdzie to widać.**
+
+- pasek nad wynikami i w nagłówku raportu HTML: „Zasięg przeskalowany do obszaru PL” z udziałem obszaru dla każdej marki, np. „Twoja marka 97% · H&M 6% · LPP 41%”;
+- dymki „Skąd to?” przy zasięgu, koszcie i wyświetleniach — rachunek z liczbami tej marki;
+- metodologia raportu HTML/PDF: pełny opis „jak to liczymy” z ograniczeniem metody;
+- slajd „Metodologia” w prezentacji, plik dla AI;
+- Excel: w arkuszu „Reklamy” trzy kolumny — „Zasięg UE (z Meta)”, „Zasięg obszaru (do wyliczeń)”, „Udział obszaru (%)”; w arkuszu „Zakres danych” kolumna „Podstawa zasięgu” dla każdej marki.
+
+**Marka bez rozbicia krajów** (np. analiza bez „Pobieraj demografię…”) zostaje **nieprzeskalowana** i narzędzie mówi to wprost: w pasku nad wynikami, w „Wiarygodności danych” i w metodologii — jej liczby dotyczą całej UE i są zawyżone względem pozostałych. Napraw to, włączając demografię, albo ręcznie w sandboxie.
+
+**Wyłącznik**: Ustawienia zaawansowane → „Zasięg tylko z wybranego obszaru” (domyślnie włączone, pamiętane w przeglądarce). Przełączenie przelicza wyniki bez ponownego pobierania. Korekta zasięgu w sandboxie działa teraz **na wierzchu** przeskalowania.
+
+**Zapisane analizy** z wersji 28.0 i starszych przeliczają się po wczytaniu automatycznie — rozbicie krajów jest w pliku.
+
+**Migawki („Zmiany”).** Pierwsza analiza po aktualizacji porównuje się z migawką liczoną z całej UE. Liczby reklam porównujemy normalnie, ale zmiany kosztu nie — zakładka pokazuje „b.d.” i wyjaśnienie, bo różnica byłaby zmianą metody, nie budżetu. Przy kolejnej analizie porównanie kwot wraca.
+
+**Ograniczenie metody.** Rozbicie krajów to też szacunek Meta, a zasięg nie sumuje się idealnie między krajami (osoba widziana w dwóch krajach liczy się w rozbiciu dwa razy) — udział obszaru jest przybliżeniem. Częstotliwość i CPM dalej pochodzą z założeń dla wybranego kraju, nie ze średniej UE.
+
+Przy okazji: w „Markach w skrócie” (Porównanie → Wnioski) przy szerokości ok. 1024 px kafelki wchodziły w trzy kolumny za wąskie na etykiety i strona dostawała poziomy pasek przewijania. Teraz przy tej szerokości są dwie kolumny.
+
+## Co nowego? Wersja 28.0 · sandbox korekt, spis treści, hasło do raportu
+
+### Sandbox korekt (przycisk „Sandbox korekt” obok eksportów)
+
+Jedno miejsce, w którym podmieniasz dowolne założenie i klikasz **Przelicz** — cała analiza, wszystkie wykresy i wszystkie eksporty liczą się od nowa.
+
+- **Założenia globalne**: CPM min/max, częstotliwość min/max.
+- **Korekta zasięgu (%)** — globalna i osobna dla każdej marki. Mnoży zasięg każdej reklamy *przed* wszystkimi wyliczeniami, więc spójnie wpływa na budżet, udział w głosie, koszt kreacji i wykresy. Od 28.1 zasięg z całej UE jest skalowany do obszaru automatycznie — korekta działa na wierzchu tego przeskalowania (przydaje się np. przy marce bez rozbicia krajów).
+- **CPM i częstotliwość osobno dla każdej marki** — te same wartości, co w ustawieniach marki, ale w jednej siatce obok siebie.
+- **Realny budżet / mies.** — wpisujesz kwotę znaną z konta albo od klienta, a narzędzie dobiera CPM tej marki tak, żeby szacunek trafił w nią co do złotówki. Gdy z kwoty wychodzi nierealna stawka (poniżej 1 zł albo powyżej 120 zł), wiersz mówi o tym wprost.
+- **Przywróć oryginał** kasuje wszystkie korekty naraz.
+
+Dopóki korekty są włączone, **narzędzie i każdy eksport mówią o tym wprost**: nad wynikami, w nagłówku raportu HTML, w sekcji metodologii i na stronie metodologii w PDF pojawia się ramka z listą zastosowanych korekt. Raport z ręcznie poprawionymi liczbami nigdy nie wygląda jak surowy szacunek.
+
+### Spis treści z czasem czytania
+
+Pierwsza sekcja raportu HTML: wszystkie sekcje pogrupowane jak w menu, z czasem czytania każdej z nich, sumą dla całego raportu i osobną sumą dla skrótu dla zarządu. Sekcje wchodzące do skrótu są oznaczone. Czas liczymy z objętości tekstu oraz liczby wykresów i tabel. Opcja przy eksporcie — można wyłączyć.
+
+### Hasło i data ważności raportu
+
+Dwa nowe pola w panelu eksportu, oba dotyczą raportu HTML:
+
+- **Hasło** szyfruje cały dokument (AES-256-GCM, klucz z PBKDF2, 250 tys. iteracji). Plik otwiera się ekranem logowania, a treści nie da się odczytać nawet w podglądzie źródła. Hasła nie da się odzyskać — zgubione oznacza nowy eksport.
+- **Data aktualności** (od 28.2 nazwana uczciwie: przypomnienie, nie zabezpieczenie) — po terminie raport pokazuje komunikat „Dane mogą być nieaktualne” z przyciskiem „Otwórz mimo to”. Nie blokuje dostępu, bo plik leży u odbiorcy i datę sprawdza jego przeglądarka.
 
 ## Co nowego? Wersja 27.0 · warstwa analityczna i interaktywny raport
 
@@ -70,6 +228,10 @@ Wykresy w raporcie rysuje **ta sama funkcja, co w narzędziu** — trafia do pli
 | Miks powierzchni Google w czasie | Google → Platformy | jak zmienia się podział wyświetleń między wyszukiwarkę, YouTube i Display |
 
 Każda z nich ma pod spodem opis „jak to liczymy” wraz z ograniczeniem metody — te opisy trafiają też do raportu HTML i PDF.
+
+### Google w eksportach: wszystko, nie wycinek
+
+Raport HTML i PDF eksportowały wcześniej trzy sekcje Google (wnioski, udział w głosie, oba kanały razem) — reszta modułu zostawała w narzędziu. Teraz do wyboru są **wszystkie zakładki Google**: porównanie marek (wnioski, udział w głosie, okres do okresu, kreacje i testy, platformy i odbiorcy, kalendarz, rankingi) oraz **osobne strony każdej marki w Google** (przegląd, budżet, kreacje, platformy, kalendarz, konta i płatnicy). Każda sekcja Google niesie własną notę o granicy danych Transparency Center — w raporcie czyta się jedną sekcję naraz, więc ostrzeżenie musi być przy każdej.
 
 ## Co nowego? Wersja 26.0 · podsumowania obu kanałów
 
@@ -404,7 +566,8 @@ Hierarchia: 1. CPM formatu tej marki → 2. CPM marki → 3. założenia globaln
 | Benchmark branżowy | Podstawia CPM i częstotliwość dla branży. Mnożnik nakłada się na stawki wybranego kraju |
 | Sezon | Korekta stawek: Q4 / Black Friday / Święta (+25%) lub lato (−10%) |
 | CPM min/max, częstotliwość | Można nadpisać ręcznie — np. realnymi stawkami z kont klientów |
-| Pobieraj demografię, targetowanie i płatników | Więcej danych, wolniej przy dużych markach. **Wymagane przez mapę wolnych pól** |
+| Pobieraj demografię, targetowanie i płatników | Więcej danych, wolniej przy dużych markach. **Wymagane przez mapę wolnych pól i przez przeskalowanie zasięgu do obszaru** |
+| Zasięg tylko z wybranego obszaru | Skaluje zasięg Meta (cała UE) udziałem wybranych krajów z rozbicia demograficznego każdej reklamy. Domyślnie włączone. Patrz [wersja 28.1](#co-nowego-wersja-281--zasięg-z-wybranego-obszaru-zamiast-z-całej-ue) |
 | Pobieraj typ mediów | Rozpoznaje wideo / grafikę (3 dodatkowe zapytania na markę) |
 | Sprawdzaj reklamy społeczne i polityczne | Dla nich Meta podaje prawdziwe wydatki |
 | Eksport / import migawek | Kopia zapasowa historii analiz |
@@ -661,7 +824,8 @@ Jeden plik `.zip`: wykresy jako PNG (z logo i podpisem źródła), `dane/fakty-d
 |---|---|
 | Aktywna reklama | Bez daty zakończenia emisji albo z datą od dziś wzwyż |
 | Evergreen | Reklama emitowana co najmniej X dni (ustawiasz sam, domyślnie 30) |
-| Zasięg | `eu_total_reach` — szacunek Meta: ile kont w UE zobaczyło reklamę |
+| Zasięg | `eu_total_reach` — szacunek Meta: ile kont w UE zobaczyło reklamę. Od 28.1 przeskalowany do wybranego obszaru udziałem tych krajów w rozbiciu demograficznym reklamy |
+| Udział obszaru | Jaka część zasięgu marki w UE przypada na wybrane kraje (z rozbicia krajów). Mnożnik zasięgu każdej reklamy |
 | **Szacowany koszt (prognoza)** | Dzisiejszy zasięg dzienny aktywnych reklam × 30 dni × częstotliwość × CPM ÷ 1000. Liczba na zakładce Meta — „ile wyda, jeśli nic nie zmieni” |
 | **Szacowany koszt (średnia z okresu)** | Koszt całego analizowanego okresu ÷ liczba dni × 30. Liczba na zakładce Meta + Google — „ile wydawała w okresie”. Jedyna baza wspólna z Google |
 | Szacowane wyświetlenia | Zasięg × częstotliwość. Meta nie podaje wyświetleń reklam komercyjnych |
@@ -688,7 +852,7 @@ Jeden plik `.zip`: wykresy jako PNG (z logo i podpisem źródła), `dane/fakty-d
 ### Meta
 
 - **Brak realnych wydatków i wyników.** Meta nie publikuje wydatków reklam komercyjnych ani CTR / konwersji / ROAS. Koszt to zawsze szacunek — do porównań między markami, nie jako dokładny budżet.
-- **Zasięg jest ogólnounijny.** `eu_total_reach` to zasięg w całej UE, a filtr obszaru dotyczy tego, gdzie reklama była emitowana. Marka paneuropejska wychodzi przez to wyżej niż marka emitująca tylko w Polsce — przy zestawianiu lokalnego gracza z siecią międzynarodową traktuj różnicę ostrożnie.
+- **Zasięg z API jest ogólnounijny — narzędzie go przeskalowuje.** `eu_total_reach` to zasięg w całej UE. Od 28.1 mnożymy go przez udział wybranych krajów w rozbiciu demograficznym reklamy. Udział obszaru to przybliżenie (rozbicie też jest szacunkiem Meta). Marka bez rozbicia krajów zostaje nieprzeskalowana i jest wtedy oznaczona — jej liczby są zawyżone.
 - **Tylko reklamy, które dotarły do UE.** Kampanie emitowane wyłącznie poza UE są niewidoczne.
 - **Opóźnienie i retencja.** Reklamy pojawiają się z opóźnieniem do 1–2 dni; zakończone znikają ok. rok po końcu emisji.
 - **Zasięg nie jest unikalny między reklamami.** Ta sama osoba może być policzona w kilku reklamach.
@@ -727,10 +891,10 @@ Jeden plik `.zip`: wykresy jako PNG (z logo i podpisem źródła), `dane/fakty-d
 | Wybrana zła strona | Podaj ID strony / link albo kliknij właściwą stronę w „Przeglądzie” |
 | Marka ma kilka fanpage'y i część reklam „ucieka” | Dodaj wszystkie konta przyciskiem „+ konto” |
 | „Pominięto — ta sama strona już jest w analizie” | To samo konto jest w dwóch markach. Zostaw je w jednej |
-| Brak demografii (i pusta mapa wolnych pól) | Włącz „Pobieraj demografię…”; dla reklam spoza UE Meta jej nie podaje |
+| Brak demografii (i pusta mapa wolnych pól, marka „bez przeskalowania” zasięgu) | Włącz „Pobieraj demografię…”; dla reklam spoza UE Meta jej nie podaje |
 | Zakładka „Zmiany” pusta | To pierwsza analiza tej strony na tym obszarze |
 | Wolne pobieranie dużej marki | Ustaw limit reklam albo wyłącz „Pobieraj demografię…” i „Pobieraj typ mediów” |
-| Marka międzynarodowa ma podejrzanie wysoki budżet | `eu_total_reach` liczy całą UE — patrz ograniczenia Meta wyżej |
+| Marka międzynarodowa ma podejrzanie wysoki budżet | Sprawdź pasek „Zasięg przeskalowany do obszaru” nad wynikami. Jeśli marka jest w nim „bez przeskalowania”, brakuje rozbicia krajów — włącz „Pobieraj demografię…” i uruchom analizę albo skoryguj zasięg w sandboxie. Sprawdź też, czy w ustawieniach nie jest wyłączone „Zasięg tylko z wybranego obszaru” |
 
 ### Google
 
@@ -798,7 +962,7 @@ Jeden plik `.zip`: wykresy jako PNG (z logo i podpisem źródła), `dane/fakty-d
 
 **Jak bardzo można ufać tym liczbom?** Jako rzędowi wielkości i do porównań między markami — bardzo dobrze, bo wszystkie marki liczone są tą samą metodą. Jako dokładnej kwoty — ostrożnie: bez kalibracji błąd może sięgać kilkudziesięciu procent. Najbardziej podnosi trafność kalibracja na realnym wydatku klienta agencji.
 
-**Dlaczego marka międzynarodowa wychodzi tak wysoko?** Zasięg z Meta API (`eu_total_reach`) jest ogólnounijny, a nie z wybranego kraju. Sieć emitująca w kilkunastu krajach będzie przez to wyglądać na dużo większą od lokalnego gracza. Przy takim zestawieniu opisz to w raporcie albo skalibruj CPM na kliencie.
+**Dlaczego marka międzynarodowa wychodziła tak wysoko?** Zasięg z Meta API (`eu_total_reach`) jest ogólnounijny. Do wersji 28.0 sieć emitująca w kilkunastu krajach wyglądała przez to na wielokrotnie większą od lokalnego gracza. Od 28.1 zasięg każdej reklamy jest skalowany udziałem wybranych krajów, a udział obszaru każdej marki widać nad wynikami. Jeśli marka nadal wychodzi wysoko, sprawdź, czy nie jest oznaczona jako „bez przeskalowania”.
 
 ### O danych Google
 
@@ -843,3 +1007,33 @@ Jeden plik `.zip`: wykresy jako PNG (z logo i podpisem źródła), `dane/fakty-d
 **Czy da się pokazać analizę bez internetu albo bez tokenu?** Tak — „Zapisz analizę” zapisuje dane i korekty do pliku, a „Wczytaj analizę” otwiera je później bez tokenu. Raport PDF działa wtedy w całości; prezentacja i Excel potrzebują internetu przy pierwszym użyciu.
 
 **Jak sprawdzić, że narzędzie liczy poprawnie?** Porównaj liczbę aktywnych reklam 2–3 marek z Biblioteką Reklam na stronie Meta (ten sam kraj). Szacunek kosztu sprawdzisz kalibracją na kliencie, którego realny wydatek znamy. Wykrywanie rabatów i argumentów sprawdzisz na listach do korekty — one pokazują fragment tekstu i powód decyzji.
+
+## 17. Kod źródłowy, budowanie i testy
+
+**Struktura**
+
+- `index.html` — szkielet strony (bez stylów i skryptów)
+- `src/main.js` — punkt wejścia: kolejność uruchamiania modułów
+- `src/meta/app.js` — moduł Meta (pobieranie, analizy, panele, eksporty)
+- `src/google/app.js` — moduł Google (BigQuery, logowanie, zakładki Google, Meta + Google)
+- `src/charts/gch.js` — wspólna biblioteka wykresów liniowych (aplikacja i raport)
+- `src/model/ad.js` — wspólny model reklamy; `src/adapters/meta.js`, `src/adapters/google.js` — przejściówki
+- `src/report/runtime.js` — skrypt raportu HTML; `src/report/styles.js` — style raportu jako tekst
+- `src/sim/simulator.js` — symulator budżetu (aplikacja i raport)
+- `src/core/` — formatowanie, daty, teksty, wersja
+- `src/styles/` — `app.css`, `report.css`, `report-standalone.css`, `gate.css`
+- `tests/` — testy jednostkowe (`unit.mjs`), testy w przeglądarce (`run_all.py`), dane testowe i złoty wzorzec
+
+**Budowanie i wdrożenie**
+
+- Raz: `npm install` (Node 18+).
+- Praca na żywo: `npm run dev` → `http://localhost:5173`.
+- Budowanie: `npm run build` → najpierw ESLint (nieznana nazwa = błąd), potem `dist/index.html` — jeden plik ze wszystkim w środku, jak dotąd.
+- Wdrożenie: `dist/index.html` podmieniasz jako `index.html` w repo `biedronm/rivalcore`. Źródła trzymaj obok, np. w folderze `app/` tego samego repo (wtedy Pages dalej serwuje plik z katalogu głównego).
+
+**Testy**
+
+- `npm test` = budowanie + testy jednostkowe modelu i przejściówek + 23 testy w przeglądarce (Playwright: `pip install playwright openpyxl` i `playwright install chromium`).
+- Testy w przeglądarce sprawdzają: wszystkie zakładki bez błędów, przełącznik zasięgu obszaru, przeliczanie pamięci podręcznej po sandboxie, podstawę migawek, Excel, plik dla AI, raport HTML (metodologia, przypomnienie o aktualności, zakres czasu na wykresie, symulator), PPTX, 5 szerokości ekranu bez przewijania w poziomie, rozjazd Meta–Google.
+- **Złoty wzorzec** (`tests/golden.json`, zrzut z 28.2): liczby marek, rekomendacje, plik dla AI i wszystkie arkusze Excela muszą wyjść identycznie. Zmiana, która celowo zmienia liczby, wymaga świadomego odświeżenia wzorca: `python3 -I tests/run_all.py --write-golden` — i opisania zmiany w „Co nowego”.
+- Dostęp testów do wnętrza aplikacji (`window.RC`) jest włączany tylko adresem z `?test`; zwykłe otwarcie pliku go nie ma.
