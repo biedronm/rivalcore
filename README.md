@@ -1,4 +1,6 @@
 https://biedronm.github.io/rivalcore/#konkurencja
+LUB Z TIKTOKIEM: 
+https://biedronm.github.io/rivalcore/
 
 # RivalCore — README
 
