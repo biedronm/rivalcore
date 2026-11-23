@@ -2,12 +2,13 @@ https://biedronm.github.io/rivalcore/#konkurencja
 
 # RivalCore — README
 
-RivalCore to wewnętrzne narzędzie do analizy reklam marek i konkurencji z Biblioteki Reklam Meta (Facebook, Instagram, Messenger, Audience Network) i z Centrum przejrzystości reklam Google (Search, YouTube, sieć reklamowa), a od wersji 20 także wyników kont Google Ads naszych klientów. Jeden plik HTML — bez instalacji, bez serwera, bez opłat. Otwierasz w przeglądarce, wklejasz token, wpisujesz marki i dostajesz analizę z wykresami, raport PDF, prezentację PowerPoint, Excel oraz plik dla AI.
+RivalCore to wewnętrzne narzędzie do analizy reklam marek i konkurencji z Biblioteki Reklam Meta (Facebook, Instagram, Messenger, Audience Network) i z Centrum przejrzystości reklam Google (Search, YouTube, sieć reklamowa), od wersji 30 z biblioteki reklam TikToka, a od wersji 20 także wyników kont Google Ads naszych klientów. Jeden plik HTML — bez instalacji, bez serwera, bez opłat. Otwierasz w przeglądarce, wklejasz token, wpisujesz marki i dostajesz analizę z wykresami, raport PDF, prezentację PowerPoint, Excel oraz plik dla AI.
 
-**Aktualna wersja: 29.1 (21 listopada 2026).** Od 29.0 narzędzie powstaje z kodu źródłowego w modułach (rozdział 17), a do wdrożenia trafia nadal jeden plik — zbudowany `dist/index.html`. Plik narzędzia nazywa się `index.html` (repozytorium `biedronm/rivalcore`, adres `https://biedronm.github.io/rivalcore/`). Wygląd ekranu, raportów PDF, prezentacji i grafik PNG jest zgodny z identyfikacją wizualną BeDigital.
+**Aktualna wersja: 30.0 (23 listopada 2026), z TikTokiem jako trzecim kanałem.** Od 29.0 narzędzie powstaje z kodu źródłowego w modułach (rozdział 17), a do wdrożenia trafia nadal jeden plik — zbudowany `dist/index.html`. Plik narzędzia nazywa się `index.html` (repozytorium `biedronm/rivalcore`, adres `https://biedronm.github.io/rivalcore/`). Wygląd ekranu, raportów PDF, prezentacji i grafik PNG jest zgodny z identyfikacją wizualną BeDigital.
 
 ## Spis treści
 
+- [Co nowego? Wersja 30.0 · TikTok jako trzeci kanał](#co-nowego-wersja-300--tiktok-jako-trzeci-kanał)
 - [Co nowego? Wersja 29.1 · formularz Meta | Google, raport „historia, potem aneks”](#co-nowego-wersja-291--formularz-meta--google-raport-historia-potem-aneks)
 - [Co nowego? Wersja 29.0 · kod w modułach, jedna biblioteka wykresów, wspólny model reklamy](#co-nowego-wersja-290--kod-w-modułach-jedna-biblioteka-wykresów-wspólny-model-reklamy)
 - [Co nowego? Wersja 28.2 · strategia, kampanie, rekomendacje z pomiarem, rejestr trafności](#co-nowego-wersja-282--strategia-kampanie-rekomendacje-z-pomiarem-rejestr-trafności)
@@ -20,6 +21,7 @@ RivalCore to wewnętrzne narzędzie do analizy reklam marek i konkurencji z Bibl
 - [Starsze wersje: 20–24](#starsze-wersje-2024)
 - [1. Pierwsze uruchomienie (token Meta)](#1-pierwsze-uruchomienie-token-meta)
 - [1b. Pierwsze uruchomienie: Google](#1b-pierwsze-uruchomienie-google)
+- [1c. Pierwsze uruchomienie: TikTok](#1c-pierwsze-uruchomienie-tiktok)
 - [2. Jak zrobić analizę](#2-jak-zrobić-analizę)
 - [3. Ustawienia](#3-ustawienia)
 - [4. Wyniki — zakładki](#4-wyniki--zakładki)
@@ -36,6 +38,30 @@ RivalCore to wewnętrzne narzędzie do analizy reklam marek i konkurencji z Bibl
 - [15. Prywatność i bezpieczeństwo](#15-prywatność-i-bezpieczeństwo)
 - [16. Najczęstsze pytania (FAQ)](#16-najczęstsze-pytania-faq)
 - [17. Kod źródłowy, budowanie i testy](#17-kod-źródłowy-budowanie-i-testy)
+
+## Co nowego? Wersja 30.0 · TikTok jako trzeci kanał
+
+RivalCore pobiera reklamy marek z biblioteki reklam TikToka (Commercial Content API) i liczy je obok Meta i Google: udział w głosie, aktywność, szacowany koszt, odbiorców, długość życia reklam. Wyniki są w aplikacji, w raporcie PDF/HTML, w prezentacji, w Excelu i w pliku dla AI.
+
+### Jak działa połączenie z TikTokiem
+
+- **Klucze wpisujesz za każdym razem.** Client key i Client secret aplikacji TikTok for Developers wklejasz w karcie TikTok (krok 1). Siedzą tylko w pamięci otwartej karty: nie trafiają do localStorage, do zapisanej analizy, do raportu, Excela ani pliku dla AI (sprawdza to test).
+- **Pośrednik (Cloudflare Worker).** TikTok nie pozwala pytać swojego API bezpośrednio ze strony na innej domenie (brak CORS), więc zapytania idą przez mały pośrednik. Pośrednik nie przechowuje kluczy ani danych, przepuszcza tylko 4 ścieżki TikToka i tylko ze stron wpisanych w ALLOWED_ORIGINS. Instrukcja wdrożenia: [rozdział 1c](#1c-pierwsze-uruchomienie-tiktok). Kod: `worker/tiktok-proxy.js`.
+- **Wyszukiwanie po nazwie, filtr po koncie.** API TikToka nie filtruje reklam po ID reklamodawcy, więc narzędzie szuka po nazwie marki, a potem zostawia tylko reklamy z wybranych kont (business_id). Konto dobiera się samo (najlepsze dopasowanie nazwy) albo wybierasz je z listy.
+- **Limit ok. 1000 zapytań dziennie.** Każda strona wyników (10 reklam) i każde zapytanie o szczegóły reklamy to jedno zapytanie. Licznik dzisiejszych zapytań widać pod ustawieniami TikToka. Domyślnie: 20 stron i 10 szczegółów na markę.
+- **Zakres dat:** do 2 dni wstecz (wcześniejszych dni TikTok jeszcze nie udostępnia) i najwyżej rok wstecz.
+
+### Co liczymy na TikToku (jak to liczymy)
+
+- **Zasięg** TikTok podaje jako przedział (np. „1M-5M”). Środek przedziału to średnia geometryczna końców; przy „0-1K” połowa górnej granicy; przy „100K+” dolna granica. Zasięg reklamy rozkładamy równo na jej dni emisji i bierzemy część przypadającą na okres analizy.
+- **Koszt = zasięg × częstotliwość × CPM ÷ 1000**, z osobnymi założeniami TikToka (domyślnie CPM 8–22 zł, częstotliwość 1,5–3; trzecia kolumna w „Założeniach kosztu”). Widełki: dolne końce przedziałów razy dolne założenia i górne razy górne.
+- **Odbiorcy:** z targetowania i rozkładu zasięgu (wiek, płeć, kraje) w szczegółach reklam o największym zasięgu.
+- **Kanały razem:** gdy w analizie jest TikTok, zakładka „Meta + Google” nazywa się „Kanały razem” i pokazuje też TikToka (udział w głosie i budżet we wszystkich kanałach). Wymaga co najmniej dwóch kanałów.
+
+### Zmiana liczb Google (celowa)
+
+- **Środek widełek CPM w Google liczymy teraz średnią geometryczną**, tak jak w Meta i TikToku (wcześniej Google brał średnią arytmetyczną). Przy CPM 10–25 zł środek spada z 17,50 zł do 15,81 zł, więc szacowany koszt środkowy Google jest niższy o kilka do kilkunastu procent. Dolne i górne widełki się nie zmieniają. Powód: wszystkie kanały liczą tak samo, a średnia geometryczna lepiej pasuje do szerokich widełek. Kalibracja Google wylicza stawki tym samym wzorem.
+- Liczby Meta, rekomendacje i Excel na danych testowych są identyczne jak w 29.1 (złoty wzorzec dostał tylko nową część „tiktok”).
 
 ## Co nowego? Wersja 29.1 · formularz Meta | Google, raport „historia, potem aneks”
 
@@ -521,6 +547,23 @@ Wymaga zatwierdzonego developer tokena i nie da się go wywołać z przeglądark
 2. Settings → Pages → Branch `main` / root. Adres: `https://biedronm.github.io/rivalcore/`.
 3. Upewnij się, że `https://biedronm.github.io` jest w „Autoryzowanych źródłach JavaScript” klienta OAuth (krok A5).
 
+## 1c. Pierwsze uruchomienie: TikTok
+
+**Potrzebujesz:** aplikacji w TikTok for Developers z dostępem do Commercial Content API (Client key i Client secret) oraz pośrednika na Cloudflare.
+
+**Pośrednik (raz, ok. 10 minut, darmowy plan Cloudflare):**
+
+1. dash.cloudflare.com → Workers & Pages → Create → Worker → nazwa np. `rivalcore-tiktok` → Deploy.
+2. Edit code → wklej cały plik `worker/tiktok-proxy.js` → Deploy.
+3. Settings → Variables and Secrets → Add: `ALLOWED_ORIGINS` = `https://biedronm.github.io` (kilka adresów po przecinku, np. dodatkowo `http://localhost:5173` do pracy lokalnej) → Deploy.
+4. Adres Workera (`https://rivalcore-tiktok.<konto>.workers.dev`) wklej w RivalCore: karta TikTok → „Adres pośrednika”. Adres się zapamiętuje, klucze nie.
+
+Sekret przechodzi przez pośrednika (w drodze do TikToka), więc Worker powinien stać na Twoim koncie Cloudflare albo koncie agencji, nie na cudzym.
+
+**W narzędziu:** krok 1 → włącz TikTok → wklej Client key i Client secret → „Sprawdź połączenie”. Potem w kroku 2 przy marce wybierz konto TikTok (albo zostaw automatyczny wybór) i uruchom analizę.
+
+**Błędy, które zobaczysz po polsku:** złe klucze aplikacji, wyczerpany dzienny limit zapytań, brak połączenia z pośrednikiem (zły adres albo strona spoza ALLOWED_ORIGINS — pośrednik odpowiada wtedy 403).
+
 ## 2. Jak zrobić analizę
 
 1. Otwórz RivalCore w Chrome lub Edge.
@@ -936,7 +979,8 @@ Jeden plik `.zip`: wykresy jako PNG (z logo i podpisem źródła), `dane/fakty-d
 
 ## 15. Prywatność i bezpieczeństwo
 
-- Plik działa w całości w Twojej przeglądarce. Dane idą tylko między przeglądarką a Meta (`graph.facebook.com`) oraz Google (`accounts.google.com`, `bigquery.googleapis.com`, `sheets.googleapis.com`). Nic nie trafia na nasz serwer.
+- Plik działa w całości w Twojej przeglądarce. Dane idą tylko między przeglądarką a Meta (`graph.facebook.com`), Google (`accounts.google.com`, `bigquery.googleapis.com`, `sheets.googleapis.com`) oraz TikTokiem przez Twojego pośrednika (Cloudflare Worker → `open.tiktokapis.com`). Pośrednik niczego nie zapisuje.
+- Klucze TikToka (Client key, Client secret) są tylko w pamięci karty, nigdy w localStorage ani w plikach eksportu. Token TikToka żyje 2 godziny i też nie jest zapisywany.
 - Logowanie Google działa przez OAuth: RivalCore dostaje token na godzinę, trzyma go w pamięci karty i nie zapisuje. ID projektu i ID klienta OAuth nie są tajne; sekretu klienta narzędzie nie używa.
 - Token Meta zapisuje się lokalnie tylko wtedy, gdy zaznaczysz „Zapamiętaj token”. Nie wysyłaj go nikomu — działa jak hasło.
 - Z internetu dociągane są wyłącznie biblioteki open source (xlsx, pptxgenjs, jszip, html-to-image — z jsDelivr, cdnjs albo unpkg) i czcionki (Google Fonts). Żadna z nich nie dostaje Twoich danych — konwersja do Excela i .pptx dzieje się w przeglądarce.
@@ -1017,7 +1061,9 @@ Jeden plik `.zip`: wykresy jako PNG (z logo i podpisem źródła), `dane/fakty-d
 - `src/meta/app.js` — moduł Meta (pobieranie, analizy, panele, eksporty)
 - `src/google/app.js` — moduł Google (BigQuery, logowanie, zakładki Google, Meta + Google)
 - `src/charts/gch.js` — wspólna biblioteka wykresów liniowych (aplikacja i raport)
-- `src/model/ad.js` — wspólny model reklamy; `src/adapters/meta.js`, `src/adapters/google.js` — przejściówki
+- `src/tiktok/` — moduł TikTok: `client.js` (zapytania, token, ponowienia), `json.js` (duże ID bez zaokrągleń), `analyze.js` (analizy), `app.js` (panele, raport, eksporty)
+- `worker/tiktok-proxy.js` — pośrednik TikTok (Cloudflare Worker), wdrażany osobno
+- `src/model/ad.js` — wspólny model reklamy; `src/adapters/meta.js`, `src/adapters/google.js`, `src/adapters/tiktok.js` — przejściówki
 - `src/report/runtime.js` — skrypt raportu HTML; `src/report/styles.js` — style raportu jako tekst
 - `src/sim/simulator.js` — symulator budżetu (aplikacja i raport)
 - `src/core/` — formatowanie, daty, teksty, wersja
@@ -1033,7 +1079,8 @@ Jeden plik `.zip`: wykresy jako PNG (z logo i podpisem źródła), `dane/fakty-d
 
 **Testy**
 
-- `npm test` = budowanie + testy jednostkowe modelu i przejściówek + 23 testy w przeglądarce (Playwright: `pip install playwright openpyxl` i `playwright install chromium`).
+- `npm test` = budowanie + testy jednostkowe modelu i przejściówek, klienta TikToka (atrapa serwera: limit, wygasły token, stronicowanie, duże ID) i pośrednika + testy w przeglądarce, w tym TikTok na atrapie API (wyniki, raport, Excel, PPTX, brak kluczy w plikach) (Playwright: `pip install playwright openpyxl` i `playwright install chromium`).
 - Testy w przeglądarce sprawdzają: wszystkie zakładki bez błędów, przełącznik zasięgu obszaru, przeliczanie pamięci podręcznej po sandboxie, podstawę migawek, Excel, plik dla AI, raport HTML (metodologia, przypomnienie o aktualności, zakres czasu na wykresie, symulator), PPTX, 5 szerokości ekranu bez przewijania w poziomie, rozjazd Meta–Google.
 - **Złoty wzorzec** (`tests/golden.json`, zrzut z 28.2): liczby marek, rekomendacje, plik dla AI i wszystkie arkusze Excela muszą wyjść identycznie. Zmiana, która celowo zmienia liczby, wymaga świadomego odświeżenia wzorca: `python3 -I tests/run_all.py --write-golden` — i opisania zmiany w „Co nowego”.
 - Dostęp testów do wnętrza aplikacji (`window.RC`) jest włączany tylko adresem z `?test`; zwykłe otwarcie pliku go nie ma.
+
