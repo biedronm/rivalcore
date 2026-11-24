@@ -4,12 +4,15 @@ https://biedronm.github.io/rivalcore/
 
 # RivalCore — README
 
-RivalCore to wewnętrzne narzędzie do analizy reklam marek i konkurencji z Biblioteki Reklam Meta (Facebook, Instagram, Messenger, Audience Network) i z Centrum przejrzystości reklam Google (Search, YouTube, sieć reklamowa), od wersji 30 z biblioteki reklam TikToka, a od wersji 20 także wyników kont Google Ads naszych klientów. Jeden plik HTML — bez instalacji, bez serwera, bez opłat. Otwierasz w przeglądarce, wklejasz token, wpisujesz marki i dostajesz analizę z wykresami, raport PDF, prezentację PowerPoint, Excel oraz plik dla AI.
+RivalCore to wewnętrzne narzędzie do analizy reklam marek i konkurencji z Biblioteki Reklam Meta (Facebook, Instagram, Messenger, Audience Network) i z Centrum przejrzystości reklam Google (Search, YouTube, sieć reklamowa), od wersji 30 z biblioteki reklam TikToka, od wersji 31 z biblioteki reklam LinkedIna, a od wersji 20 także wyników kont Google Ads naszych klientów. Jeden plik HTML — bez instalacji, bez serwera, bez opłat. Otwierasz w przeglądarce, wklejasz token, wpisujesz marki i dostajesz analizę z wykresami, raport PDF, prezentację PowerPoint, Excel oraz plik dla AI.
 
-**Aktualna wersja: 30.0 (23 listopada 2026), z TikTokiem jako trzecim kanałem.** Od 29.0 narzędzie powstaje z kodu źródłowego w modułach (rozdział 17), a do wdrożenia trafia nadal jeden plik — zbudowany `dist/index.html`. Plik narzędzia nazywa się `index.html` (repozytorium `biedronm/rivalcore`, adres `https://biedronm.github.io/rivalcore/`). Wygląd ekranu, raportów PDF, prezentacji i grafik PNG jest zgodny z identyfikacją wizualną BeDigital.
+**Aktualna wersja: 31.1 (24 listopada 2026): przejrzysty ekran startowy (wspólne ustawienia, źródła, konta); od 31.0: LinkedIn jako czwarte źródło, udział w głosie ze wszystkich kanałów, galeria i oś czasu reklam, kreator i zestawy klientów.** Od 29.0 narzędzie powstaje z kodu źródłowego w modułach (rozdział 17), a do wdrożenia trafia nadal jeden plik — zbudowany `dist/index.html`. Plik narzędzia nazywa się `index.html` (repozytorium `biedronm/rivalcore`, adres `https://biedronm.github.io/rivalcore/`). Wygląd ekranu, raportów PDF, prezentacji i grafik PNG jest zgodny z identyfikacją wizualną BeDigital.
 
 ## Spis treści
 
+- [Co nowego? Wersja 31.2 · ekran startowy krok po kroku](#co-nowego-wersja-312--ekran-startowy-krok-po-kroku)
+- [Co nowego? Wersja 31.1 · przejrzysty ekran startowy: wspólne ustawienia, źródła, konta](#co-nowego-wersja-311--przejrzysty-ekran-startowy-wspólne-ustawienia-źródła-konta)
+- [Co nowego? Wersja 31.0 · LinkedIn, udział w głosie ze wszystkich kanałów, galeria i oś czasu, kreator](#co-nowego-wersja-310--linkedin-udział-w-głosie-ze-wszystkich-kanałów-galeria-i-oś-czasu-kreator)
 - [Co nowego? Wersja 30.0 · TikTok jako trzeci kanał](#co-nowego-wersja-300--tiktok-jako-trzeci-kanał)
 - [Co nowego? Wersja 29.1 · formularz Meta | Google, raport „historia, potem aneks”](#co-nowego-wersja-291--formularz-meta--google-raport-historia-potem-aneks)
 - [Co nowego? Wersja 29.0 · kod w modułach, jedna biblioteka wykresów, wspólny model reklamy](#co-nowego-wersja-290--kod-w-modułach-jedna-biblioteka-wykresów-wspólny-model-reklamy)
@@ -24,6 +27,7 @@ RivalCore to wewnętrzne narzędzie do analizy reklam marek i konkurencji z Bibl
 - [1. Pierwsze uruchomienie (token Meta)](#1-pierwsze-uruchomienie-token-meta)
 - [1b. Pierwsze uruchomienie: Google](#1b-pierwsze-uruchomienie-google)
 - [1c. Pierwsze uruchomienie: TikTok](#1c-pierwsze-uruchomienie-tiktok)
+- [1d. Pierwsze uruchomienie: LinkedIn](#1d-pierwsze-uruchomienie-linkedin)
 - [2. Jak zrobić analizę](#2-jak-zrobić-analizę)
 - [3. Ustawienia](#3-ustawienia)
 - [4. Wyniki — zakładki](#4-wyniki--zakładki)
@@ -40,6 +44,74 @@ RivalCore to wewnętrzne narzędzie do analizy reklam marek i konkurencji z Bibl
 - [15. Prywatność i bezpieczeństwo](#15-prywatność-i-bezpieczeństwo)
 - [16. Najczęstsze pytania (FAQ)](#16-najczęstsze-pytania-faq)
 - [17. Kod źródłowy, budowanie i testy](#17-kod-źródłowy-budowanie-i-testy)
+
+## Co nowego? Wersja 31.2 · ekran startowy krok po kroku
+
+Formularz prowadzi teraz w pięciu krokach (pasek kroków u góry; do każdego kroku można wrócić jednym kliknięciem):
+
+1. **Co analizujemy** - zaznaczasz platformy: Meta, Google, TikTok, LinkedIn. Każda działa samodzielnie.
+2. **Połączenia** - tokeny, klucze i pośrednik tylko dla wybranych platform, z przyciskiem „Sprawdź połączenie”. Klucze zostają w karcie przeglądarki, nie trafiają do plików ani zestawów.
+3. **Marki** - Twoja marka i konkurenci, każda w osobnym polu (same nazwy). Kraje i okres są wspólne dla wszystkich platform.
+4. **Ustawienia platform** - platforma po platformie („Dalej: Google”, „Dalej: LinkedIn”…):
+   - A. ustawienia ogólne platformy: okres platformy, stawki (CPM, częstotliwość), limity pobierania,
+   - B. marka po marce: konta na tej platformie i zwinięte „Własne ustawienia tej marki”. Puste pole = ustawienie ogólne (pokazane na szaro), zmienione pola są oznaczone „zmienione”, „Przywróć ogólne” czyści markę.
+5. **Podsumowanie** - co zostanie pobrane, z jakim okresem, które połączenia są gotowe; tu jest „Analizuj”.
+
+Co marka może zmienić (reszta jest wspólna dla platformy):
+- Meta - okres, limit reklam, CPM min/max, częstotliwość min/max (CPM według formatu nadal w „Zaawansowane”),
+- Google - CPM min/max osobno dla tekstu, grafiki i wideo (okres jeden dla całego Google, bo to jedno zapytanie do BigQuery),
+- TikTok - strony wyników, CPM, częstotliwość,
+- LinkedIn - strony wyników, CPM.
+
+Jak to liczymy: koszt marki liczymy z jej stawek, a gdy ich nie ma - ze stawek ogólnych platformy. Zmiana stawki jednej marki przelicza tylko tę markę (dane nie są pobierane ponownie). Konto Meta wpisane w kroku 4 trafia do tych samych pól co wcześniej, a ustawienia marki przechodzą pod jej nowy klucz (ID strony). Zestawy klientów zapamiętują też nadpisania. Kreator 3 kroków jest schowany - zastępują go kroki.
+
+## Co nowego? Wersja 31.1 · przejrzysty ekran startowy: wspólne ustawienia, źródła, konta
+
+Ekran „Dane wejściowe” ma teraz trzy jasne części:
+
+1. **Wspólne ustawienia** - marki, kraje i okres analizy. Dotyczą wszystkich włączonych źródeł.
+2. **Źródła danych** - zakładka na każde źródło (Meta, Google, TikTok, LinkedIn) ze stanem: wyłączone / włączone, gotowe / włączone, czego brakuje. W zakładce: dostęp (klucze), konta, „Dostosuj …”, ustawienia i założenia kosztu tylko tego źródła. **Każde źródło działa samodzielnie** - wystarczy włączyć jedno (np. sam LinkedIn), a ustawienia jednego źródła nie zmieniają pozostałych (np. limit reklam Mety nie rusza okresu Google).
+3. **„Analiza obejmie”** nad przyciskiem „Analizuj” - co dokładnie zostanie pobrane i z jakim okresem w każdym źródle.
+
+**Dostosuj (zwinięte, domyślnie nic nie trzeba zmieniać):** kolejność to konto → źródło → wspólne. Puste pole = wartość z poziomu wyżej. Każda zmiana jest oznaczona „zmienione”, zakładka pokazuje liczbę zmian, a „Przywróć domyślne” czyści je dla źródła.
+
+- Meta: własny okres źródła, a dla każdego konta własny okres i limit reklam.
+- Google: własny okres źródła (wszystkie marki idą jednym zapytaniem do BigQuery, więc okres konta nie ma sensu).
+- TikTok i LinkedIn: własny okres źródła i liczba stron wyników na konto (okres wspólny dla marek, bo udziały porównujemy w tym samym okresie).
+
+Nadpisania zapisują się w tej przeglądarce i w zestawach klientów (bez kluczy). Kolorowe ramki kart i pomarańczowy pasek kroków zastąpił stonowany układ z jednym akcentem.
+
+## Co nowego? Wersja 31.0 · LinkedIn, udział w głosie ze wszystkich kanałów, galeria i oś czasu, kreator
+
+### Nowe funkcje
+
+- **LinkedIn Ad Library** jako czwarte źródło: reklamy B2B (oficjalne API LinkedIna), liczba reklam, aktywne, nowe w 30 dniach, typy i formaty, szacowany koszt, udział w głosie. Statystyki wyświetleń LinkedIn podaje tylko dla reklam emitowanych w UE. Instrukcja dostępu: [rozdział 1d](#1d-pierwsze-uruchomienie-linkedin).
+- **Udział w głosie: wszystkie kanały w jednym wskaźniku** (zakładka „Kanały razem”, raport, PDF): Meta + Google + TikTok + LinkedIn. Jak to liczymy: dla każdej marki sumujemy szacowany miesięczny koszt reklam ze wszystkich kanałów, a udział = suma marki ÷ suma wszystkich marek. Kanał, w którym rynek wydaje więcej, waży więcej (wagi kanałów są pokazane). Dodatkowo pokazujemy udział „w kanale” i wariant z równymi wagami kanałów.
+- **Reklamy: galeria, porównanie i oś czasu** (zakładka „Reklamy” i sekcje raportu HTML): filtry - platforma, format, kraj, aktywne / zakończone, marka - i wyszukiwarka; podgląd reklamy; porównanie do 4 reklam obok siebie; **oś czasu emisji (Gantt)** kampanii każdego konkurenta.
+- **Zestawy konkurentów per klient:** zestaw ma pole „Klient” i zapamiętuje marki, okres, kraje, ustawienia i włączone źródła. Pod nagłówkiem „01 Dane wejściowe” są przyciski zestawów pogrupowane po klientach - jedno kliknięcie wczytuje zestaw. Klucze i tokeny nigdy nie trafiają do zestawu.
+- **Kreator 3 kroków** (przycisk „Kreator 3 kroków”): klient → konkurenci → okres i kraje (oraz źródła) → gotowe. Wypełnia formularz i zapisuje zestaw klienta.
+- **Pasek postępu per źródło** (Meta, Google, TikTok, LinkedIn) pod przyciskiem „Analizuj” i w okienku pobierania oraz **zużycie dziennego limitu TikToka**.
+- **Tryb „dla klienta”** (przełącznik w pasku aplikacji i w raporcie HTML): ukrywa szczegóły techniczne (klucze, pośredników, lupę źródeł, metodologię), zostawia wyniki i wnioski. Raport zapisany w tym trybie otwiera się od razu w trybie dla klienta.
+- **Styl BeDigital w Excelu:** nagłówki arkuszy na czarnym tle (#0B0B0B) z jasnym pogrubionym tekstem (#EEEEEE), przypięty pierwszy wiersz. Wartości bez zmian, bez formuł.
+
+### Wyraźne komunikaty
+
+Każde źródło pokazuje jeden z czterech stanów:
+
+- **BŁĄD** - awaria (złe klucze, limit API, brak połączenia). Wynik nic nie mówi o konkurencji - trzeba naprawić przyczynę.
+- **BRAK DANYCH** - źródło odpowiedziało poprawnie, ale marka nie ma reklam w tym okresie i obszarze. To wynik, nie usterka.
+- **NIEPEŁNE DANE** - pobieranie zatrzymane przed końcem (limit stron, limit bezpieczeństwa).
+- **BRAK DOSTĘPU** - źródło działa, ale aplikacja nie ma jeszcze zgody na dane (LinkedIn przed akceptacją Ad Library API).
+
+**Poprawiony błąd: ciche urywanie pobierania z Mety.** Przy bardzo dużych markach pobieranie zatrzymywało się na limicie bezpieczeństwa (ok. 100 tys. reklam) bez słowa. Teraz wynik jest oznaczony jako NIEPEŁNE DANE z liczbą pobranych reklam, a ostrzeżenie widać przy wynikach marki.
+
+### Porządki w kodzie (plan 29.2)
+
+`src/meta/app.js` podzielony na moduły (z ok. 7200 do ok. 3800 linii): pobieranie z API, okienko ładowania, promocje i ceny, Excel, plik dla AI, pakiet do strategii, ochrona raportu, PDF, prezentacja, analizy, budżet, rekomendacje, podsumowanie, obszar, odkrywanie konkurentów, zestawy, kreator. Liczby, rekomendacje, plik dla AI i Excel identyczne jak w złotym wzorcu (test).
+
+### LinkedIn: co jest do potwierdzenia na prawdziwym tokenie
+
+Nazwy parametrów filtrów (kraje, zakres dat) i stronicowania wzięliśmy z publicznych opisów API - LinkedIn nie publikuje pełnej specyfikacji bez dostępu. Przy pierwszym tokenie uruchom `node tests/test-linkedin.mjs "Nazwa reklamodawcy"` (instrukcja w pliku; token tylko w zmiennej środowiskowej, nigdzie nie jest wypisywany) i prześlij wynik - poprawki będą w `src/linkedin/client.js`.
 
 ## Co nowego? Wersja 30.0 · TikTok jako trzeci kanał
 
@@ -566,6 +638,40 @@ Sekret przechodzi przez pośrednika (w drodze do TikToka), więc Worker powinien
 
 **Błędy, które zobaczysz po polsku:** złe klucze aplikacji, wyczerpany dzienny limit zapytań, brak połączenia z pośrednikiem (zły adres albo strona spoza ALLOWED_ORIGINS — pośrednik odpowiada wtedy 403).
 
+## 1d. Pierwsze uruchomienie: LinkedIn
+
+**Potrzebujesz:** aplikacji w LinkedIn Developers z zatwierdzonym produktem Ad Library API, tokenu OAuth tej aplikacji i pośrednika na Cloudflare (tego samego co dla TikToka).
+
+**Co wpisujesz w karcie LinkedIn (krok 1 → włącz LinkedIn):**
+
+- **Token dostępu** - nie Client ID ani Client Secret. Token wpisujesz przy każdej sesji (pole hasła, tylko pamięć karty). Ważny ok. 60 dni.
+- **Adres pośrednika** - adres Workera `worker/rivalcore-proxy.js` (zapamiętuje się).
+- **Wersja API** (opcjonalnie, domyślnie 202510) - nagłówek LinkedIn-Version w formacie RRRRMM.
+
+Potem „Sprawdź połączenie”. W kroku 2 przy marce możesz wpisać nazwę strony firmy na LinkedInie, jeśli różni się od nazwy marki.
+
+**Pośrednik TikTok i LinkedIn (jeden Worker):** wdrożenie jak w [rozdziale 1c](#1c-pierwsze-uruchomienie-tiktok), tylko wklejasz plik `worker/rivalcore-proxy.js`. Jeśli masz już pośrednika z 30.0, podmień jego kod na ten plik - adres zostaje ten sam. Pośrednik przepuszcza tylko ścieżki biblioteki reklam TikToka (POST) i LinkedIna (GET /rest/adLibrary), tylko ze stron z ALLOWED_ORIGINS, i niczego nie przechowuje.
+
+### LinkedIn: jak złożyć wniosek o dostęp (krok po kroku)
+
+LinkedIn ma oficjalne API biblioteki reklam (Ad Library API), ale daje je tylko aplikacjom, które zatwierdzi. **Do czasu akceptacji źródło LinkedIn pokazuje stan BRAK DOSTĘPU** (nie BŁĄD i nie BRAK DANYCH), a Meta, Google i TikTok liczą się normalnie.
+
+1. Zaloguj się na LinkedInie kontem, które jest **administratorem strony firmy BeDigital** (strona firmowa jest wymagana do utworzenia aplikacji).
+2. Wejdź na https://www.linkedin.com/developers/apps i kliknij **Create app**.
+3. Wypełnij formularz: nazwa aplikacji (np. „RivalCore BeDigital”), **LinkedIn Page** = strona BeDigital, adres polityki prywatności (strona bedigital), logo. Zaakceptuj warunki i kliknij **Create app**.
+4. W zakładce **Settings** aplikacji kliknij **Verify** przy stronie firmy i wyślij link weryfikacyjny administratorowi strony (jeśli to Ty - otwórz go sam i zatwierdź).
+5. Przejdź do zakładki **Products**, znajdź **Ad Library API** (nazwa w portalu może się nieznacznie różnić, szukaj „Ad Library”) i kliknij **Request access**.
+6. Wypełnij formularz wniosku. Opis zastosowania: *„Analiza publicznie dostępnych reklam B2B konkurencji dla klientów agencji (narzędzie wewnętrzne, odczyt danych z biblioteki reklam, bez publikowania i bez danych osobowych)”*. Zaznacz, że dane służą do badań rynku i przejrzystości reklam.
+7. Czekaj na decyzję LinkedIna (zwykle od kilku dni do kilku tygodni; status widać w zakładce **Products**: „Review in progress” → „Added”).
+8. Po akceptacji: zakładka **Auth** → **OAuth 2.0 tools / Token generator** → wygeneruj token z uprawnieniem zaproponowanym dla Ad Library API. Token jest ważny ok. 60 dni.
+9. W RivalCore włącz źródło **LinkedIn**, wklej token (pole hasła, trzymane tylko w pamięci karty) i adres pośrednika `worker/rivalcore-proxy.js`, kliknij **Sprawdź połączenie**. Wynik „działa” = gotowe; „BRAK DOSTĘPU” = wniosek jeszcze niezatwierdzony albo token z innej aplikacji.
+10. Przy pierwszym prawdziwym tokenie uruchom `node tests/test-linkedin.mjs` (instrukcja w pliku), żeby potwierdzić nazwy parametrów i pól odpowiedzi. Token nie trafia do logów ani plików.
+
+Nigdy nie wklejaj tokenu do czatu, e-maila ani plików projektu.
+
+
+**Jak to liczymy (LinkedIn):** LinkedIn podaje wyświetlenia reklamy jako przedział za cały czas emisji. Rozkładamy je równo na dni emisji i bierzemy dni z okresu analizy; przy wybranych krajach mnożymy przez udział tych krajów w wyświetleniach reklamy. Koszt = wyświetlenia × CPM ÷ 1000, przeliczony na miesiąc (domyślnie CPM 40-120 zł, środek to średnia geometryczna). Reklama jest „aktywna”, gdy ostatnie wyświetlenie było najwyżej 3 dni przed datą danych (LinkedIn nie podaje statusu).
+
 ## 2. Jak zrobić analizę
 
 1. Otwórz RivalCore w Chrome lub Edge.
@@ -1064,12 +1170,16 @@ Jeden plik `.zip`: wykresy jako PNG (z logo i podpisem źródła), `dane/fakty-d
 - `src/google/app.js` — moduł Google (BigQuery, logowanie, zakładki Google, Meta + Google)
 - `src/charts/gch.js` — wspólna biblioteka wykresów liniowych (aplikacja i raport)
 - `src/tiktok/` — moduł TikTok: `client.js` (zapytania, token, ponowienia), `json.js` (duże ID bez zaokrągleń), `analyze.js` (analizy), `app.js` (panele, raport, eksporty)
-- `worker/tiktok-proxy.js` — pośrednik TikTok (Cloudflare Worker), wdrażany osobno
+- `worker/rivalcore-proxy.js` — pośrednik TikTok + LinkedIn (Cloudflare Worker, od 31.0), wdrażany osobno; `worker/tiktok-proxy.js` — dawny pośrednik tylko dla TikToka (działa dalej)
+- `src/linkedin/` — moduł LinkedIn: `client.js` (zapytania Rest.li, ponowienia, BRAK DOSTĘPU), `analyze.js` (wskaźniki), `app.js` (karta, wyniki, eksporty); `src/adapters/linkedin.js` — przejściówka
+- `src/sov/` — udział w głosie ze wszystkich kanałów; `src/explorer/` — galeria, filtry, porównanie, oś czasu; `src/v31/` — spięcie z modułami źródeł
+- `src/meta/*.js` — moduły wydzielone z `app.js` (api, loader, promo, xlsx, ai-export, strategy-pack, report-protect, report-pdf, pptx, analyze, budget, recs, exec, geo, discover, sets, wizard)
+- `src/ui/progress.js` — pasek postępu per źródło; `src/ui/client-mode.js` — tryb dla klienta; `src/core/state.js` — stany BŁĄD / BRAK DANYCH / NIEPEŁNE DANE / BRAK DOSTĘPU; `src/core/xlsx-brand.js` — styl Excela
 - `src/model/ad.js` — wspólny model reklamy; `src/adapters/meta.js`, `src/adapters/google.js`, `src/adapters/tiktok.js` — przejściówki
 - `src/report/runtime.js` — skrypt raportu HTML; `src/report/styles.js` — style raportu jako tekst
 - `src/sim/simulator.js` — symulator budżetu (aplikacja i raport)
 - `src/core/` — formatowanie, daty, teksty, wersja
-- `src/styles/` — `app.css`, `report.css`, `report-standalone.css`, `gate.css`
+- `src/styles/` — `app.css`, `v31.css` (nowe elementy 31.0), `report.css`, `report-standalone.css`, `gate.css`
 - `tests/` — testy jednostkowe (`unit.mjs`), testy w przeglądarce (`run_all.py`), dane testowe i złoty wzorzec
 
 **Budowanie i wdrożenie**
@@ -1081,7 +1191,7 @@ Jeden plik `.zip`: wykresy jako PNG (z logo i podpisem źródła), `dane/fakty-d
 
 **Testy**
 
-- `npm test` = budowanie + testy jednostkowe modelu i przejściówek, klienta TikToka (atrapa serwera: limit, wygasły token, stronicowanie, duże ID) i pośrednika + testy w przeglądarce, w tym TikTok na atrapie API (wyniki, raport, Excel, PPTX, brak kluczy w plikach) (Playwright: `pip install playwright openpyxl` i `playwright install chromium`).
+- `npm test` = budowanie + testy jednostkowe modelu i przejściówek, klienta TikToka (atrapa serwera: limit, wygasły token, stronicowanie, duże ID) i pośrednika, testy 31.0 (`unit_v31.mjs`: limit Mety, udział w głosie, filtry i oś czasu, LinkedIn, styl Excela; `unit_proxy.mjs`: pośrednik TikTok + LinkedIn) + testy w przeglądarce, w tym LinkedIn na atrapie API (wyniki, BRAK DOSTĘPU przy 403, udział w głosie, galeria i raport z filtrami, tryb dla klienta, kreator i zestawy, brak tokenu w plikach), w tym TikTok na atrapie API (wyniki, raport, Excel, PPTX, brak kluczy w plikach) (Playwright: `pip install playwright openpyxl` i `playwright install chromium`).
 - Testy w przeglądarce sprawdzają: wszystkie zakładki bez błędów, przełącznik zasięgu obszaru, przeliczanie pamięci podręcznej po sandboxie, podstawę migawek, Excel, plik dla AI, raport HTML (metodologia, przypomnienie o aktualności, zakres czasu na wykresie, symulator), PPTX, 5 szerokości ekranu bez przewijania w poziomie, rozjazd Meta–Google.
 - **Złoty wzorzec** (`tests/golden.json`, zrzut z 28.2): liczby marek, rekomendacje, plik dla AI i wszystkie arkusze Excela muszą wyjść identycznie. Zmiana, która celowo zmienia liczby, wymaga świadomego odświeżenia wzorca: `python3 -I tests/run_all.py --write-golden` — i opisania zmiany w „Co nowego”.
 - Dostęp testów do wnętrza aplikacji (`window.RC`) jest włączany tylko adresem z `?test`; zwykłe otwarcie pliku go nie ma.
